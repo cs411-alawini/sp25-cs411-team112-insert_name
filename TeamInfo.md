@@ -12,8 +12,8 @@
 | Member1     |   imoha8@illinois.edu  |
 | Member2     | Saishashank Bhagavatula     |
 | Member2     |  sbhag3@illinois.edu |
-| Member3     |                        |
-| Member3     |                        |
+| Member3     |        Ashley Witte                |
+| Member3     |           agwitte2             |
 
 ## Project Information
 
