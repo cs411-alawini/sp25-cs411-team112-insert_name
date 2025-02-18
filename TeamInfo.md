@@ -25,6 +25,7 @@
 
 ## Project Summary
 
-GreenChain is a web application that enables users—logistics managers, sustainability analysts, or curious consumers—to explore how different industries and product categories contribute to greenhouse gas (GHG) emissions. By leveraging a detailed dataset of GHG emission factors (mapped to NAICS industry codes) and a large supply chain operational dataset, the platform highlights the carbon footprint associated with the movement and sale of goods.
+GreenChain Insights is a web application that enables users to explore greenhouse gas emissions data across different industry sectors, with a focus on NAICS code classifications. Through an interactive dashboard interface, users can analyze emissions data and simulate the impact of their own purchases, providing both broad industry-level insights and personalized carbon footprint calculations. The platform serves as a comprehensive tool for understanding emissions patterns and their relationship to individual consumer choices.
 
-At its core, the system calculates carbon footprints in multiple ways: from the raw emission factors tied to each industry category to real shipping data that includes late-delivery risk, shipping durations, and order-level details. Users can search for specific product categories, compare emission metrics across industry sectors, and gain actionable insights into how supply chain decisions—such as switching categories or optimizing shipping schedules—might reduce overall carbon impact.
+The system's strength lies in its ability to combine historical industry data with personal impact simulations, creating a bridge between macro-level emissions data and individual decision-making. Users can explore detailed breakdowns of emissions by sector, conduct advanced searches based on various parameters, and generate personalized scenarios to understand the environmental impact of their purchasing decisions.
+
