@@ -1,0 +1,94 @@
+.category-results {
+    width: 100%;
+  }
+  
+  .category-results h2 {
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  
+  .result-card {
+    background-color: #f8fffa;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  }
+  
+  .result-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  
+  .result-header h3 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #27ae60;
+    text-transform: capitalize;
+  }
+  
+  .naics-badge {
+    background-color: #eafaf1;
+    color: #27ae60;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-weight: bold;
+  }
+  
+  .emission-data {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0;
+  }
+  
+  .emission-value {
+    text-align: center;
+  }
+  
+  .emission-value .value {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #2c3e50;
+    display: block;
+  }
+  
+  .emission-value .unit {
+    font-size: 1rem;
+    color: #7f8c8d;
+    display: block;
+    margin-top: 5px;
+  }
+  
+  .result-footer {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #e0e0e0;
+    text-align: center;
+  }
+  
+  .result-footer p {
+    color: #7f8c8d;
+    margin-bottom: 15px;
+  }
+  
+  .explore-btn {
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .explore-btn:hover {
+    background-color: #219653;
+  }
