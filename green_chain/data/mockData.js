@@ -31,14 +31,6 @@ const mockData = [
         isActive: false,
         hobbies: ["fishing", "gardening", "woodworking"],
     },
-    {
-        id: 5,
-        name: "Charlie Green",
-        age: 30,
-        email: "charliegreen@example.com",
-        isActive: true,
-        hobbies: ["running", "swimming", "coding"],
-    },
 ];
 
 module.exports = mockData;
