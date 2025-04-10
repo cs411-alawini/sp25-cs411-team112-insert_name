@@ -6,7 +6,7 @@ function Header() {
     <div className="header">
       <h1>Find out your carbon footprint</h1>
       <p className="subtitle">
-        Search for an industry category to see its greenhouse gas emissions data
+        Search for a category of items to see its greenhouse gas emissions data
       </p>
     </div>
   );

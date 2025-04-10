@@ -1,13 +1,11 @@
 Category_ID,Category_Name,NAICS_Code
 73,Sporting Goods,451110
 17,Cleats,316210
-29,Shop By Sport,451110
 24,Women's Apparel,448120
 13,Electronics,443142
 12,Boxing & MMA,451110
 9,Cardio Equipment,339920
 41,Trade-In,453310
-37,Electronics,443142
 38,Kids' Golf Clubs,451110
 44,Hunting & Shooting,451110
 3,Baseball & Softball,451110
@@ -25,7 +23,6 @@ Category_ID,Category_Name,NAICS_Code
 70,Men's Clothing,448110
 6,Tennis & Racquet,451110
 11,Fitness Accessories,339920
-16,As Seen on  TV!,454390
 36,Golf Balls,339920
 10,Strength Training,339920
 63,Children's Clothing,448130

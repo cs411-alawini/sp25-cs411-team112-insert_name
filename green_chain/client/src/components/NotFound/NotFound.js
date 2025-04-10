@@ -1,7 +1,12 @@
 import React from 'react';
 import './NotFound.css';
 
-function NotFound() {
+function NotFound({ suggestions = [], onSuggestionClick }) {
+  // Ensure we have at least some default suggestions if none provided
+  const displaySuggestions = suggestions.length > 0 
+    ? suggestions.slice(0, 5) 
+    : ['Sporting Goods', 'Electronics', 'Footwear', 'Men\'s Clothing', 'Women\'s Clothing'];
+
   return (
     <div className="not-found">
       <div className="not-found-content">
@@ -14,10 +19,11 @@ function NotFound() {
         <div className="suggestions">
           <p>Try searching for common categories like:</p>
           <ul>
-            <li>Manufacturing</li>
-            <li>Agriculture</li>
-            <li>Transportation</li>
-            <li>Retail</li>
+            {displaySuggestions.map((suggestion, index) => (
+              <li key={index} onClick={() => onSuggestionClick && onSuggestionClick(suggestion)}>
+                {suggestion}
+              </li>
+            ))}
           </ul>
         </div>
       </div>

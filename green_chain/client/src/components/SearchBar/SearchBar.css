@@ -1,49 +1,85 @@
 .search-container {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .search-form {
-    display: flex;
-    width: 100%;
-    max-width: 600px;
-  }
-  
-  .search-input {
-    flex: 1;
-    padding: 12px 15px;
-    font-size: 1rem;
-    border: 2px solid #ddd;
-    border-radius: 4px 0 0 4px;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-  
-  .search-input:focus {
-    border-color: #27ae60;
-  }
-  
-  .search-button {
-    background-color: #27ae60;
-    color: white;
-    border: none;
-    padding: 0 20px;
-    font-size: 1rem;
-    font-weight: bold;
-    border-radius: 0 4px 4px 0;
-    cursor: pointer;
-    transition: background-color 0.2s;
-  }
-  
-  .search-button:hover {
-    background-color: #219653;
-  }
-  
-  .search-examples {
-    margin-top: 10px;
-    font-size: 0.9rem;
-    color: #95a5a6;
-    text-align: center;
-  }
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.search-form {
+  display: flex;
+  width: 100%;
+  max-width: 600px;
+}
+
+.search-input {
+  flex: 1;
+  padding: 12px 15px;
+  font-size: 1rem;
+  border: 2px solid #ddd;
+  border-radius: 4px 0 0 4px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.search-input:focus {
+  border-color: #27ae60;
+}
+
+.search-button {
+  background-color: #27ae60;
+  color: white;
+  border: none;
+  padding: 0 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 0 4px 4px 0;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.search-button:hover {
+  background-color: #219653;
+}
+
+.search-button:disabled {
+  background-color: #95a5a6;
+  cursor: not-allowed;
+}
+
+.search-examples {
+  margin-top: 10px;
+  font-size: 0.9rem;
+  color: #95a5a6;
+  text-align: center;
+}
+
+/* Suggestions dropdown styling */
+.suggestions-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 600px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 0 0 4px 4px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  margin-top: -1px;
+}
+
+.suggestion-item {
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.suggestion-item:hover {
+  background-color: #f0f9f4;
+}
+
+.suggestion-item:not(:last-child) {
+  border-bottom: 1px solid #f0f0f0;
+}
