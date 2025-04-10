@@ -1,7 +1,7 @@
 {
-  "name": "server",
+  "name": "green-chain-server",
   "version": "1.0.0",
-  "description": "Backend for GreenChain Insights application",
+  "description": "Backend server for GreenChain Insights",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
@@ -10,8 +10,9 @@
   },
   "dependencies": {
     "cors": "^2.8.5",
-    "csv-parser": "^3.2.0",
-    "express": "^4.21.2"
+    "csv-parser": "^3.0.0",
+    "express": "^4.18.2",
+    "sqlite3": "^5.1.7"
   },
   "devDependencies": {
     "nodemon": "^2.0.22"
