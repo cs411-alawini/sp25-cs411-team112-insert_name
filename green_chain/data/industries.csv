@@ -1,0 +1,1017 @@
+NAICS_Code,Title,Description,Emissions
+111110,Soybean Farming,"kg CO2e/2022 USD, purchaser price",532
+111120,Oilseed (except Soybean) Farming,"kg CO2e/2022 USD, purchaser price",532
+111130,Dry Pea and Bean Farming,"kg CO2e/2022 USD, purchaser price",848
+111140,Wheat Farming,"kg CO2e/2022 USD, purchaser price",848
+111150,Corn Farming,"kg CO2e/2022 USD, purchaser price",848
+111160,Rice Farming,"kg CO2e/2022 USD, purchaser price",848
+111191,Oilseed and Grain Combination Farming,"kg CO2e/2022 USD, purchaser price",848
+111199,All Other Grain Farming,"kg CO2e/2022 USD, purchaser price",848
+111211,Potato Farming,"kg CO2e/2022 USD, purchaser price",631
+111219,Other Vegetable (except Potato) and Melon Farming,"kg CO2e/2022 USD, purchaser price",631
+111310,Orange Groves,"kg CO2e/2022 USD, purchaser price",488
+111320,Citrus (except Orange) Groves,"kg CO2e/2022 USD, purchaser price",488
+111331,Apple Orchards,"kg CO2e/2022 USD, purchaser price",488
+111332,Grape Vineyards,"kg CO2e/2022 USD, purchaser price",488
+111333,Strawberry Farming,"kg CO2e/2022 USD, purchaser price",488
+111334,Berry (except Strawberry) Farming,"kg CO2e/2022 USD, purchaser price",488
+111335,Tree Nut Farming,"kg CO2e/2022 USD, purchaser price",488
+111336,Fruit and Tree Nut Combination Farming,"kg CO2e/2022 USD, purchaser price",488
+111339,Other Noncitrus Fruit Farming,"kg CO2e/2022 USD, purchaser price",488
+111411,Mushroom Production,"kg CO2e/2022 USD, purchaser price",307
+111419,Other Food Crops Grown Under Cover,"kg CO2e/2022 USD, purchaser price",307
+111421,Nursery and Tree Production,"kg CO2e/2022 USD, purchaser price",307
+111422,Floriculture Production,"kg CO2e/2022 USD, purchaser price",307
+111910,Tobacco Farming,"kg CO2e/2022 USD, purchaser price",740
+111920,Cotton Farming,"kg CO2e/2022 USD, purchaser price",740
+111930,Sugarcane Farming,"kg CO2e/2022 USD, purchaser price",740
+111940,Hay Farming,"kg CO2e/2022 USD, purchaser price",740
+111991,Sugar Beet Farming,"kg CO2e/2022 USD, purchaser price",740
+111992,Peanut Farming,"kg CO2e/2022 USD, purchaser price",740
+111998,All Other Miscellaneous Crop Farming,"kg CO2e/2022 USD, purchaser price",740
+112111,Beef Cattle Ranching and Farming,"kg CO2e/2022 USD, purchaser price",2893
+112112,Cattle Feedlots,"kg CO2e/2022 USD, purchaser price",2893
+112120,Dairy Cattle and Milk Production,"kg CO2e/2022 USD, purchaser price",1724
+112130,Dual-Purpose Cattle Ranching and Farming,"kg CO2e/2022 USD, purchaser price",2893
+112210,Hog and Pig Farming,"kg CO2e/2022 USD, purchaser price",1128
+112310,Chicken Egg Production,"kg CO2e/2022 USD, purchaser price",438
+112320,Broilers and Other Meat Type Chicken Production,"kg CO2e/2022 USD, purchaser price",438
+112330,Turkey Production,"kg CO2e/2022 USD, purchaser price",438
+112340,Poultry Hatcheries,"kg CO2e/2022 USD, purchaser price",438
+112390,Other Poultry Production,"kg CO2e/2022 USD, purchaser price",438
+112410,Sheep Farming,"kg CO2e/2022 USD, purchaser price",1128
+112420,Goat Farming,"kg CO2e/2022 USD, purchaser price",1128
+112511,Finfish Farming and Fish Hatcheries,"kg CO2e/2022 USD, purchaser price",1128
+112512,Shellfish Farming,"kg CO2e/2022 USD, purchaser price",1128
+112519,Other Aquaculture,"kg CO2e/2022 USD, purchaser price",1128
+112910,Apiculture,"kg CO2e/2022 USD, purchaser price",1128
+112920,Horses and Other Equine Production,"kg CO2e/2022 USD, purchaser price",1128
+112930,Fur-Bearing Animal and Rabbit Production,"kg CO2e/2022 USD, purchaser price",1128
+112990,All Other Animal Production,"kg CO2e/2022 USD, purchaser price",1128
+113110,Timber Tract Operations,"kg CO2e/2022 USD, purchaser price",243
+113210,Forest Nurseries and Gathering of Forest Products,"kg CO2e/2022 USD, purchaser price",243
+113310,Logging,"kg CO2e/2022 USD, purchaser price",243
+114111,Finfish Fishing,"kg CO2e/2022 USD, purchaser price",154
+114112,Shellfish Fishing,"kg CO2e/2022 USD, purchaser price",154
+114119,Other Marine Fishing,"kg CO2e/2022 USD, purchaser price",154
+114210,Hunting and Trapping,"kg CO2e/2022 USD, purchaser price",154
+115111,Cotton Ginning,"kg CO2e/2022 USD, purchaser price",384
+115112,"Soil Preparation, Planting, and Cultivating","kg CO2e/2022 USD, purchaser price",384
+115113,"Crop Harvesting, Primarily by Machine","kg CO2e/2022 USD, purchaser price",384
+115114,Postharvest Crop Activities (except Cotton Ginning),"kg CO2e/2022 USD, purchaser price",384
+115115,Farm Labor Contractors and Crew Leaders,"kg CO2e/2022 USD, purchaser price",384
+115116,Farm Management Services,"kg CO2e/2022 USD, purchaser price",384
+115210,Support Activities for Animal Production,"kg CO2e/2022 USD, purchaser price",384
+115310,Support Activities for Forestry,"kg CO2e/2022 USD, purchaser price",384
+211120,Crude Petroleum Extraction,"kg CO2e/2022 USD, purchaser price",405
+211130,Natural Gas Extraction,"kg CO2e/2022 USD, purchaser price",405
+212111,Bituminous Coal and Lignite Surface Mining,"kg CO2e/2022 USD, purchaser price",841
+212112,Bituminous Coal Underground Mining,"kg CO2e/2022 USD, purchaser price",841
+212113,Anthracite Mining,"kg CO2e/2022 USD, purchaser price",841
+212210,Iron Ore Mining,"kg CO2e/2022 USD, purchaser price",593
+212221,Gold Ore Mining,"kg CO2e/2022 USD, purchaser price",593
+212222,Silver Ore Mining,"kg CO2e/2022 USD, purchaser price",593
+212230,"Copper, Nickel, Lead, and Zinc Mining","kg CO2e/2022 USD, purchaser price",324
+212291,Uranium-Radium-Vanadium Ore Mining,"kg CO2e/2022 USD, purchaser price",593
+212299,All Other Metal Ore Mining,"kg CO2e/2022 USD, purchaser price",593
+212311,Dimension Stone Mining and Quarrying,"kg CO2e/2022 USD, purchaser price",279
+212312,Crushed and Broken Limestone Mining and Quarrying,"kg CO2e/2022 USD, purchaser price",279
+212313,Crushed and Broken Granite Mining and Quarrying,"kg CO2e/2022 USD, purchaser price",279
+212319,Other Crushed and Broken Stone Mining and Quarrying,"kg CO2e/2022 USD, purchaser price",279
+212321,Construction Sand and Gravel Mining,"kg CO2e/2022 USD, purchaser price",309
+212322,Industrial Sand Mining,"kg CO2e/2022 USD, purchaser price",309
+212324,Kaolin and Ball Clay Mining,"kg CO2e/2022 USD, purchaser price",309
+212325,Clay and Ceramic and Refractory Minerals Mining,"kg CO2e/2022 USD, purchaser price",309
+212391,"Potash, Soda, and Borate Mineral Mining","kg CO2e/2022 USD, purchaser price",309
+212392,Phosphate Rock Mining,"kg CO2e/2022 USD, purchaser price",309
+212393,Other Chemical and Fertilizer Mineral Mining,"kg CO2e/2022 USD, purchaser price",309
+212399,All Other Nonmetallic Mineral Mining,"kg CO2e/2022 USD, purchaser price",309
+213111,Drilling Oil and Gas Wells,"kg CO2e/2022 USD, purchaser price",407
+213112,Support Activities for Oil and Gas Operations,"kg CO2e/2022 USD, purchaser price",372
+213113,Support Activities for Coal Mining,"kg CO2e/2022 USD, purchaser price",372
+213114,Support Activities for Metal Mining,"kg CO2e/2022 USD, purchaser price",372
+213115,Support Activities for Nonmetallic Minerals (except Fuels) Mining,"kg CO2e/2022 USD, purchaser price",372
+221210,Natural Gas Distribution,"kg CO2e/2022 USD, purchaser price",532
+221310,Water Supply and Irrigation Systems,"kg CO2e/2022 USD, purchaser price",578
+221320,Sewage Treatment Facilities,"kg CO2e/2022 USD, purchaser price",578
+221330,Steam and Air-Conditioning Supply,"kg CO2e/2022 USD, purchaser price",578
+236115,New Single-Family Housing Construction (except For-Sale Builders),"kg CO2e/2022 USD, purchaser price",194
+236116,New Multifamily Housing Construction (except For-Sale Builders),"kg CO2e/2022 USD, purchaser price",221
+236117,New Housing For-Sale Builders,"kg CO2e/2022 USD, purchaser price",216
+236118,Residential Remodelers,"kg CO2e/2022 USD, purchaser price",211
+236210,Industrial Building Construction,"kg CO2e/2022 USD, purchaser price",239
+236220,Commercial and Institutional Building Construction,"kg CO2e/2022 USD, purchaser price",224
+237110,Water and Sewer Line and Related Structures Construction,"kg CO2e/2022 USD, purchaser price",277
+237120,Oil and Gas Pipeline and Related Structures Construction,"kg CO2e/2022 USD, purchaser price",277
+237130,Power and Communication Line and Related Structures Construction,"kg CO2e/2022 USD, purchaser price",277
+237210,Land Subdivision,"kg CO2e/2022 USD, purchaser price",221
+237310,"Highway, Street, and Bridge Construction","kg CO2e/2022 USD, purchaser price",255
+237990,Other Heavy and Civil Engineering Construction,"kg CO2e/2022 USD, purchaser price",202
+238110,Poured Concrete Foundation and Structure Contractors,"kg CO2e/2022 USD, purchaser price",221
+238120,Structural Steel and Precast Concrete Contractors,"kg CO2e/2022 USD, purchaser price",221
+238130,Framing Contractors,"kg CO2e/2022 USD, purchaser price",221
+238140,Masonry Contractors,"kg CO2e/2022 USD, purchaser price",221
+238150,Glass and Glazing Contractors,"kg CO2e/2022 USD, purchaser price",221
+238160,Roofing Contractors,"kg CO2e/2022 USD, purchaser price",221
+238170,Siding Contractors,"kg CO2e/2022 USD, purchaser price",221
+238190,"Other Foundation, Structure, and Building Exterior Contractors","kg CO2e/2022 USD, purchaser price",221
+238210,Electrical Contractors and Other Wiring Installation Contractors,"kg CO2e/2022 USD, purchaser price",221
+238220,"Plumbing, Heating, and Air-Conditioning Contractors","kg CO2e/2022 USD, purchaser price",221
+238290,Other Building Equipment Contractors,"kg CO2e/2022 USD, purchaser price",221
+238310,Drywall and Insulation Contractors,"kg CO2e/2022 USD, purchaser price",221
+238320,Painting and Wall Covering Contractors,"kg CO2e/2022 USD, purchaser price",221
+238330,Flooring Contractors,"kg CO2e/2022 USD, purchaser price",221
+238340,Tile and Terrazzo Contractors,"kg CO2e/2022 USD, purchaser price",221
+238350,Finish Carpentry Contractors,"kg CO2e/2022 USD, purchaser price",221
+238390,Other Building Finishing Contractors,"kg CO2e/2022 USD, purchaser price",221
+238910,Site Preparation Contractors,"kg CO2e/2022 USD, purchaser price",221
+238990,All Other Specialty Trade Contractors,"kg CO2e/2022 USD, purchaser price",221
+311111,Dog and Cat Food Manufacturing,"kg CO2e/2022 USD, purchaser price",333
+311119,Other Animal Food Manufacturing,"kg CO2e/2022 USD, purchaser price",459
+311211,Flour Milling,"kg CO2e/2022 USD, purchaser price",769
+311212,Rice Milling,"kg CO2e/2022 USD, purchaser price",769
+311213,Malt Manufacturing,"kg CO2e/2022 USD, purchaser price",769
+311221,Wet Corn Milling,"kg CO2e/2022 USD, purchaser price",993
+311224,Soybean and Other Oilseed Processing,"kg CO2e/2022 USD, purchaser price",511
+311225,Fats and Oils Refining and Blending,"kg CO2e/2022 USD, purchaser price",385
+311230,Breakfast Cereal Manufacturing,"kg CO2e/2022 USD, purchaser price",473
+311313,Beet Sugar Manufacturing,"kg CO2e/2022 USD, purchaser price",482
+311314,Cane Sugar Manufacturing,"kg CO2e/2022 USD, purchaser price",482
+311340,Nonchocolate Confectionery Manufacturing,"kg CO2e/2022 USD, purchaser price",482
+311351,Chocolate and Confectionery Manufacturing from Cacao Beans,"kg CO2e/2022 USD, purchaser price",482
+311352,Confectionery Manufacturing from Purchased Chocolate,"kg CO2e/2022 USD, purchaser price",482
+311411,"Frozen Fruit, Juice, and Vegetable Manufacturing","kg CO2e/2022 USD, purchaser price",485
+311412,Frozen Specialty Food Manufacturing,"kg CO2e/2022 USD, purchaser price",485
+311421,Fruit and Vegetable Canning,"kg CO2e/2022 USD, purchaser price",381
+311422,Specialty Canning,"kg CO2e/2022 USD, purchaser price",381
+311423,Dried and Dehydrated Food Manufacturing,"kg CO2e/2022 USD, purchaser price",381
+311511,Fluid Milk Manufacturing,"kg CO2e/2022 USD, purchaser price",803
+311512,Creamery Butter Manufacturing,"kg CO2e/2022 USD, purchaser price",803
+311513,Cheese Manufacturing,"kg CO2e/2022 USD, purchaser price",969
+311514,"Dry, Condensed, and Evaporated Dairy Product Manufacturing","kg CO2e/2022 USD, purchaser price",642
+311520,Ice Cream and Frozen Dessert Manufacturing,"kg CO2e/2022 USD, purchaser price",580
+311611,Animal (except Poultry) Slaughtering,"kg CO2e/2022 USD, purchaser price",1120
+311612,Meat Processed from Carcasses,"kg CO2e/2022 USD, purchaser price",1120
+311613,Rendering and Meat Byproduct Processing,"kg CO2e/2022 USD, purchaser price",1120
+311615,Poultry Processing,"kg CO2e/2022 USD, purchaser price",391
+311710,Seafood Product Preparation and Packaging,"kg CO2e/2022 USD, purchaser price",266
+311811,Retail Bakeries,"kg CO2e/2022 USD, purchaser price",253
+311812,Commercial Bakeries,"kg CO2e/2022 USD, purchaser price",253
+311813,"Frozen Cakes, Pies, and Other Pastries Manufacturing","kg CO2e/2022 USD, purchaser price",253
+311821,Cookie and Cracker Manufacturing,"kg CO2e/2022 USD, purchaser price",356
+311824,"Dry Pasta, Dough, and Flour Mixes Manufacturing from Purchased Flour","kg CO2e/2022 USD, purchaser price",356
+311830,Tortilla Manufacturing,"kg CO2e/2022 USD, purchaser price",356
+311911,Roasted Nuts and Peanut Butter Manufacturing,"kg CO2e/2022 USD, purchaser price",372
+311919,Other Snack Food Manufacturing,"kg CO2e/2022 USD, purchaser price",372
+311920,Coffee and Tea Manufacturing,"kg CO2e/2022 USD, purchaser price",353
+311930,Flavoring Syrup and Concentrate Manufacturing,"kg CO2e/2022 USD, purchaser price",216
+311941,"Mayonnaise, Dressing, and Other Prepared Sauce Manufacturing","kg CO2e/2022 USD, purchaser price",344
+311942,Spice and Extract Manufacturing,"kg CO2e/2022 USD, purchaser price",344
+311991,Perishable Prepared Food Manufacturing,"kg CO2e/2022 USD, purchaser price",401
+311999,All Other Miscellaneous Food Manufacturing,"kg CO2e/2022 USD, purchaser price",401
+312111,Soft Drink Manufacturing,"kg CO2e/2022 USD, purchaser price",214
+312112,Bottled Water Manufacturing,"kg CO2e/2022 USD, purchaser price",214
+312113,Ice Manufacturing,"kg CO2e/2022 USD, purchaser price",214
+312120,Breweries,"kg CO2e/2022 USD, purchaser price",274
+312130,Wineries,"kg CO2e/2022 USD, purchaser price",182
+312140,Distilleries,"kg CO2e/2022 USD, purchaser price",305
+312230,Tobacco Manufacturing,"kg CO2e/2022 USD, purchaser price",101
+313110,"Fiber, Yarn, and Thread Mills","kg CO2e/2022 USD, purchaser price",659
+313210,Broadwoven Fabric Mills,"kg CO2e/2022 USD, purchaser price",507
+313220,Narrow Fabric Mills and Schiffli Machine Embroidery,"kg CO2e/2022 USD, purchaser price",507
+313230,Nonwoven Fabric Mills,"kg CO2e/2022 USD, purchaser price",507
+313240,Knit Fabric Mills,"kg CO2e/2022 USD, purchaser price",507
+313310,Textile and Fabric Finishing Mills,"kg CO2e/2022 USD, purchaser price",396
+313320,Fabric Coating Mills,"kg CO2e/2022 USD, purchaser price",396
+314110,Carpet and Rug Mills,"kg CO2e/2022 USD, purchaser price",292
+314120,Curtain and Linen Mills,"kg CO2e/2022 USD, purchaser price",267
+314910,Textile Bag and Canvas Mills,"kg CO2e/2022 USD, purchaser price",243
+314994,"Rope, Cordage, Twine, Tire Cord, and Tire Fabric Mills","kg CO2e/2022 USD, purchaser price",243
+314999,All Other Miscellaneous Textile Product Mills,"kg CO2e/2022 USD, purchaser price",243
+315110,Hosiery and Sock Mills,"kg CO2e/2022 USD, purchaser price",120
+315190,Other Apparel Knitting Mills,"kg CO2e/2022 USD, purchaser price",120
+315210,Cut and Sew Apparel Contractors,"kg CO2e/2022 USD, purchaser price",120
+315220,Men's and Boys' Cut and Sew Apparel Manufacturing,"kg CO2e/2022 USD, purchaser price",120
+315240,"Women's, Girls', and Infants' Cut and Sew Apparel Manufacturing","kg CO2e/2022 USD, purchaser price",120
+315280,Other Cut and Sew Apparel Manufacturing,"kg CO2e/2022 USD, purchaser price",120
+315990,Apparel Accessories and Other Apparel Manufacturing,"kg CO2e/2022 USD, purchaser price",120
+316110,Leather and Hide Tanning and Finishing,"kg CO2e/2022 USD, purchaser price",282
+316210,Footwear Manufacturing,"kg CO2e/2022 USD, purchaser price",282
+316992,Women's Handbag and Purse Manufacturing,"kg CO2e/2022 USD, purchaser price",282
+316998,All Other Leather Good and Allied Product Manufacturing,"kg CO2e/2022 USD, purchaser price",282
+321113,Sawmills,"kg CO2e/2022 USD, purchaser price",264
+321114,Wood Preservation,"kg CO2e/2022 USD, purchaser price",264
+321211,Hardwood Veneer and Plywood Manufacturing,"kg CO2e/2022 USD, purchaser price",208
+321212,Softwood Veneer and Plywood Manufacturing,"kg CO2e/2022 USD, purchaser price",208
+321213,Engineered Wood Member (except Truss) Manufacturing,"kg CO2e/2022 USD, purchaser price",208
+321214,Truss Manufacturing,"kg CO2e/2022 USD, purchaser price",208
+321219,Reconstituted Wood Product Manufacturing,"kg CO2e/2022 USD, purchaser price",208
+321911,Wood Window and Door Manufacturing,"kg CO2e/2022 USD, purchaser price",154
+321912,"Cut Stock, Resawing Lumber, and Planing","kg CO2e/2022 USD, purchaser price",154
+321918,Other Millwork (including Flooring),"kg CO2e/2022 USD, purchaser price",154
+321920,Wood Container and Pallet Manufacturing,"kg CO2e/2022 USD, purchaser price",164
+321991,Manufactured Home (Mobile Home) Manufacturing,"kg CO2e/2022 USD, purchaser price",164
+321992,Prefabricated Wood Building Manufacturing,"kg CO2e/2022 USD, purchaser price",164
+321999,All Other Miscellaneous Wood Product Manufacturing,"kg CO2e/2022 USD, purchaser price",164
+322110,Pulp Mills,"kg CO2e/2022 USD, purchaser price",1002
+322121,Paper (except Newsprint) Mills,"kg CO2e/2022 USD, purchaser price",649
+322122,Newsprint Mills,"kg CO2e/2022 USD, purchaser price",649
+322130,Paperboard Mills,"kg CO2e/2022 USD, purchaser price",829
+322211,Corrugated and Solid Fiber Box Manufacturing,"kg CO2e/2022 USD, purchaser price",479
+322212,Folding Paperboard Box Manufacturing,"kg CO2e/2022 USD, purchaser price",479
+322219,Other Paperboard Container Manufacturing,"kg CO2e/2022 USD, purchaser price",479
+322220,Paper Bag and Coated and Treated Paper Manufacturing,"kg CO2e/2022 USD, purchaser price",364
+322230,Stationery Product Manufacturing,"kg CO2e/2022 USD, purchaser price",296
+322291,Sanitary Paper Product Manufacturing,"kg CO2e/2022 USD, purchaser price",340
+322299,All Other Converted Paper Product Manufacturing,"kg CO2e/2022 USD, purchaser price",343
+323111,Commercial Printing (except Screen and Books),"kg CO2e/2022 USD, purchaser price",236
+323113,Commercial Screen Printing,"kg CO2e/2022 USD, purchaser price",236
+323117,Books Printing,"kg CO2e/2022 USD, purchaser price",236
+323120,Support Activites for Printing,"kg CO2e/2022 USD, purchaser price",237
+324110,Petroleum Refineries,"kg CO2e/2022 USD, purchaser price",270
+324121,Asphalt Paving Mixture and Block Manufacturing,"kg CO2e/2022 USD, purchaser price",1121
+324122,Asphalt Shingle and Coating Materials Manufacturing,"kg CO2e/2022 USD, purchaser price",608
+324191,Petroleum Lubricating Oil and Grease Manufacturing,"kg CO2e/2022 USD, purchaser price",391
+324199,All Other Petroleum and Coal Products Manufacturing,"kg CO2e/2022 USD, purchaser price",391
+325110,Petrochemical Manufacturing,"kg CO2e/2022 USD, purchaser price",811
+325120,Industrial Gas Manufacturing,"kg CO2e/2022 USD, purchaser price",1211
+325130,Synthetic Dye and Pigment Manufacturing,"kg CO2e/2022 USD, purchaser price",432
+325180,Other Basic Inorganic Chemical Manufacturing,"kg CO2e/2022 USD, purchaser price",1010
+325193,Ethyl Alcohol Manufacturing,"kg CO2e/2022 USD, purchaser price",1184
+325194,"Cyclic Crude, Intermediate, and Gum and Wood Chemical Manufacturing","kg CO2e/2022 USD, purchaser price",1184
+325199,All Other Basic Organic Chemical Manufacturing,"kg CO2e/2022 USD, purchaser price",1184
+325211,Plastics Material and Resin Manufacturing,"kg CO2e/2022 USD, purchaser price",1045
+325212,Synthetic Rubber Manufacturing,"kg CO2e/2022 USD, purchaser price",902
+325220,Artificial and Synthetic Fibers and Filaments Manufacturing,"kg CO2e/2022 USD, purchaser price",902
+325311,Nitrogenous Fertilizer Manufacturing,"kg CO2e/2022 USD, purchaser price",1137
+325312,Phosphatic Fertilizer Manufacturing,"kg CO2e/2022 USD, purchaser price",1137
+325314,Fertilizer (Mixing Only) Manufacturing,"kg CO2e/2022 USD, purchaser price",1137
+325320,Pesticide and Other Agricultural Chemical Manufacturing,"kg CO2e/2022 USD, purchaser price",463
+325411,Medicinal and Botanical Manufacturing,"kg CO2e/2022 USD, purchaser price",189
+325412,Pharmaceutical Preparation Manufacturing,"kg CO2e/2022 USD, purchaser price",99
+325413,In-Vitro Diagnostic Substance Manufacturing,"kg CO2e/2022 USD, purchaser price",183
+325414,Biological Product (except Diagnostic) Manufacturing,"kg CO2e/2022 USD, purchaser price",150
+325510,Paint and Coating Manufacturing,"kg CO2e/2022 USD, purchaser price",291
+325520,Adhesive Manufacturing,"kg CO2e/2022 USD, purchaser price",531
+325611,Soap and Other Detergent Manufacturing,"kg CO2e/2022 USD, purchaser price",355
+325612,Polish and Other Sanitation Good Manufacturing,"kg CO2e/2022 USD, purchaser price",355
+325613,Surface Active Agent Manufacturing,"kg CO2e/2022 USD, purchaser price",355
+325620,Toilet Preparation Manufacturing,"kg CO2e/2022 USD, purchaser price",194
+325910,Printing Ink Manufacturing,"kg CO2e/2022 USD, purchaser price",386
+325920,Explosives Manufacturing,"kg CO2e/2022 USD, purchaser price",500
+325991,Custom Compounding of Purchased Resins,"kg CO2e/2022 USD, purchaser price",500
+325992,"Photographic Film, Paper, Plate, and Chemical Manufacturing","kg CO2e/2022 USD, purchaser price",500
+325998,All Other Miscellaneous Chemical Product and Preparation Manufacturing,"kg CO2e/2022 USD, purchaser price",500
+326111,Plastics Bag and Pouch Manufacturing,"kg CO2e/2022 USD, purchaser price",544
+326112,Plastics Packaging Film and Sheet (including Laminated) Manufacturing,"kg CO2e/2022 USD, purchaser price",544
+326113,Unlaminated Plastics Film and Sheet (except Packaging) Manufacturing,"kg CO2e/2022 USD, purchaser price",544
+326121,Unlaminated Plastics Profile Shape Manufacturing,"kg CO2e/2022 USD, purchaser price",351
+326122,Plastics Pipe and Pipe Fitting Manufacturing,"kg CO2e/2022 USD, purchaser price",351
+326130,"Laminated Plastics Plate, Sheet (except Packaging), and Shape Manufacturing","kg CO2e/2022 USD, purchaser price",460
+326140,Polystyrene Foam Product Manufacturing,"kg CO2e/2022 USD, purchaser price",271
+326150,Urethane and Other Foam Product (except Polystyrene) Manufacturing,"kg CO2e/2022 USD, purchaser price",360
+326160,Plastics Bottle Manufacturing,"kg CO2e/2022 USD, purchaser price",579
+326191,Plastics Plumbing Fixture Manufacturing,"kg CO2e/2022 USD, purchaser price",371
+326199,All Other Plastics Product Manufacturing,"kg CO2e/2022 USD, purchaser price",371
+326211,Tire Manufacturing (except Retreading),"kg CO2e/2022 USD, purchaser price",276
+326212,Tire Retreading,"kg CO2e/2022 USD, purchaser price",276
+326220,Rubber and Plastics Hoses and Belting Manufacturing,"kg CO2e/2022 USD, purchaser price",309
+326291,Rubber Product Manufacturing for Mechanical Use,"kg CO2e/2022 USD, purchaser price",343
+326299,All Other Rubber Product Manufacturing,"kg CO2e/2022 USD, purchaser price",343
+327110,"Pottery, Ceramics, and Plumbing Fixture Manufacturing","kg CO2e/2022 USD, purchaser price",451
+327120,Clay Building Material and Refractories Manufacturing,"kg CO2e/2022 USD, purchaser price",451
+327211,Flat Glass Manufacturing,"kg CO2e/2022 USD, purchaser price",597
+327212,Other Pressed and Blown Glass and Glassware Manufacturing,"kg CO2e/2022 USD, purchaser price",597
+327213,Glass Container Manufacturing,"kg CO2e/2022 USD, purchaser price",597
+327215,Glass Product Manufacturing Made of Purchased Glass,"kg CO2e/2022 USD, purchaser price",597
+327310,Cement Manufacturing,"kg CO2e/2022 USD, purchaser price",3924
+327320,Ready-Mix Concrete Manufacturing,"kg CO2e/2022 USD, purchaser price",606
+327331,Concrete Block and Brick Manufacturing,"kg CO2e/2022 USD, purchaser price",328
+327332,Concrete Pipe Manufacturing,"kg CO2e/2022 USD, purchaser price",328
+327390,Other Concrete Product Manufacturing,"kg CO2e/2022 USD, purchaser price",317
+327410,Lime Manufacturing,"kg CO2e/2022 USD, purchaser price",1623
+327420,Gypsum Product Manufacturing,"kg CO2e/2022 USD, purchaser price",1623
+327910,Abrasive Product Manufacturing,"kg CO2e/2022 USD, purchaser price",187
+327991,Cut Stone and Stone Product Manufacturing,"kg CO2e/2022 USD, purchaser price",195
+327992,Ground or Treated Mineral and Earth Manufacturing,"kg CO2e/2022 USD, purchaser price",497
+327993,Mineral Wool Manufacturing,"kg CO2e/2022 USD, purchaser price",393
+327999,All Other Miscellaneous Nonmetallic Mineral Product Manufacturing,"kg CO2e/2022 USD, purchaser price",787
+331110,Iron and Steel Mills and Ferroalloy Manufacturing,"kg CO2e/2022 USD, purchaser price",787
+331210,Iron and Steel Pipe and Tube Manufacturing from Purchased Steel,"kg CO2e/2022 USD, purchaser price",360
+331221,Rolled Steel Shape Manufacturing,"kg CO2e/2022 USD, purchaser price",360
+331222,Steel Wire Drawing,"kg CO2e/2022 USD, purchaser price",360
+331313,Alumina Refining and Primary Aluminum Production,"kg CO2e/2022 USD, purchaser price",1018
+331315,"Aluminum Sheet, Plate, and Foil Manufacturing","kg CO2e/2022 USD, purchaser price",721
+331318,"Other Aluminum Rolling, Drawing, and Extruding","kg CO2e/2022 USD, purchaser price",721
+331410,Nonferrous Metal (except Aluminum) Smelting and Refining,"kg CO2e/2022 USD, purchaser price",423
+331420,"Copper Rolling, Drawing, Extruding, and Alloying","kg CO2e/2022 USD, purchaser price",334
+331491,"Nonferrous Metal (except Copper and Aluminum) Rolling, Drawing, and Extruding","kg CO2e/2022 USD, purchaser price",431
+331492,"Secondary Smelting, Refining, and Alloying of Nonferrous Metal (except Copper and Aluminum)","kg CO2e/2022 USD, purchaser price",431
+331511,Iron Foundries,"kg CO2e/2022 USD, purchaser price",369
+331512,Steel Investment Foundries,"kg CO2e/2022 USD, purchaser price",369
+331513,Steel Foundries (except Investment),"kg CO2e/2022 USD, purchaser price",369
+331523,Nonferrous Metal Die-Casting Foundries,"kg CO2e/2022 USD, purchaser price",462
+331524,Aluminum Foundries (except Die-Casting),"kg CO2e/2022 USD, purchaser price",462
+331529,Other Nonferrous Metal Foundries (except Die-Casting),"kg CO2e/2022 USD, purchaser price",462
+332111,Iron and Steel Forging,"kg CO2e/2022 USD, purchaser price",493
+332112,Nonferrous Forging,"kg CO2e/2022 USD, purchaser price",493
+332114,Custom Roll Forming,"kg CO2e/2022 USD, purchaser price",362
+332117,Powder Metallurgy Part Manufacturing,"kg CO2e/2022 USD, purchaser price",493
+332119,"Metal Crown, Closure, and Other Metal Stamping (except Automotive)","kg CO2e/2022 USD, purchaser price",319
+332215,"Metal Kitchen Cookware, Utensil, Cutlery, and Flatware (except Precious) Manufacturing","kg CO2e/2022 USD, purchaser price",223
+332216,Saw Blade and Handtool Manufacturing,"kg CO2e/2022 USD, purchaser price",223
+332311,Prefabricated Metal Building and Component Manufacturing,"kg CO2e/2022 USD, purchaser price",262
+332312,Fabricated Structural Metal Manufacturing,"kg CO2e/2022 USD, purchaser price",262
+332313,Plate Work Manufacturing,"kg CO2e/2022 USD, purchaser price",262
+332321,Metal Window and Door Manufacturing,"kg CO2e/2022 USD, purchaser price",221
+332322,Sheet Metal Work Manufacturing,"kg CO2e/2022 USD, purchaser price",221
+332323,Ornamental and Architectural Metal Work Manufacturing,"kg CO2e/2022 USD, purchaser price",221
+332410,Power Boiler and Heat Exchanger Manufacturing,"kg CO2e/2022 USD, purchaser price",209
+332420,Metal Tank (Heavy Gauge) Manufacturing,"kg CO2e/2022 USD, purchaser price",279
+332431,Metal Can Manufacturing,"kg CO2e/2022 USD, purchaser price",318
+332439,Other Metal Container Manufacturing,"kg CO2e/2022 USD, purchaser price",318
+332510,Hardware Manufacturing,"kg CO2e/2022 USD, purchaser price",191
+332613,Spring Manufacturing,"kg CO2e/2022 USD, purchaser price",233
+332618,Other Fabricated Wire Product Manufacturing,"kg CO2e/2022 USD, purchaser price",233
+332710,Machine Shops,"kg CO2e/2022 USD, purchaser price",278
+332721,Precision Turned Product Manufacturing,"kg CO2e/2022 USD, purchaser price",248
+332722,"Bolt, Nut, Screw, Rivet, and Washer Manufacturing","kg CO2e/2022 USD, purchaser price",248
+332811,Metal Heat Treating,"kg CO2e/2022 USD, purchaser price",382
+332812,"Metal Coating, Engraving (except Jewelry and Silverware), and Allied Services to Manufacturers","kg CO2e/2022 USD, purchaser price",382
+332813,"Electroplating, Plating, Polishing, Anodizing, and Coloring","kg CO2e/2022 USD, purchaser price",382
+332911,Industrial Valve Manufacturing,"kg CO2e/2022 USD, purchaser price",173
+332912,Fluid Power Valve and Hose Fitting Manufacturing,"kg CO2e/2022 USD, purchaser price",173
+332913,Plumbing Fixture Fitting and Trim Manufacturing,"kg CO2e/2022 USD, purchaser price",171
+332919,Other Metal Valve and Pipe Fitting Manufacturing,"kg CO2e/2022 USD, purchaser price",173
+332991,Ball and Roller Bearing Manufacturing,"kg CO2e/2022 USD, purchaser price",203
+332992,Small Arms Ammunition Manufacturing,"kg CO2e/2022 USD, purchaser price",168
+332993,Ammunition (except Small Arms) Manufacturing,"kg CO2e/2022 USD, purchaser price",168
+332994,"Small Arms, Ordnance, and Ordnance Accessories Manufacturing","kg CO2e/2022 USD, purchaser price",168
+332996,Fabricated Pipe and Pipe Fitting Manufacturing,"kg CO2e/2022 USD, purchaser price",238
+332999,All Other Miscellaneous Fabricated Metal Product Manufacturing,"kg CO2e/2022 USD, purchaser price",272
+333111,Farm Machinery and Equipment Manufacturing,"kg CO2e/2022 USD, purchaser price",220
+333112,Lawn and Garden Tractor and Home Lawn and Garden Equipment Manufacturing,"kg CO2e/2022 USD, purchaser price",120
+333120,Construction Machinery Manufacturing,"kg CO2e/2022 USD, purchaser price",228
+333131,Mining Machinery and Equipment Manufacturing,"kg CO2e/2022 USD, purchaser price",219
+333132,Oil and Gas Field Machinery and Equipment Manufacturing,"kg CO2e/2022 USD, purchaser price",219
+333241,Food Product Machinery Manufacturing,"kg CO2e/2022 USD, purchaser price",185
+333242,Semiconductor Machinery Manufacturing,"kg CO2e/2022 USD, purchaser price",150
+333243,"Sawmill, Woodworking, and Paper Machinery Manufacturing","kg CO2e/2022 USD, purchaser price",185
+333244,Printing Machinery and Equipment Manufacturing,"kg CO2e/2022 USD, purchaser price",185
+333249,Other Industrial Machinery Manufacturing,"kg CO2e/2022 USD, purchaser price",185
+333314,Optical Instrument and Lens Manufacturing,"kg CO2e/2022 USD, purchaser price",175
+333316,Photographic and Photocopying Equipment Manufacturing,"kg CO2e/2022 USD, purchaser price",135
+333318,Other Commercial and Service Industry Machinery Manufacturing,"kg CO2e/2022 USD, purchaser price",205
+333413,Industrial and Commercial Fan and Blower and Air Purification Equipment Manufacturing,"kg CO2e/2022 USD, purchaser price",210
+333414,Heating Equipment (except Warm Air Furnaces) Manufacturing,"kg CO2e/2022 USD, purchaser price",176
+333415,Air-Conditioning and Warm Air Heating Equipment and Commercial and Industrial Refrigeration Equipment Manufacturing,"kg CO2e/2022 USD, purchaser price",184
+333511,Industrial Mold Manufacturing,"kg CO2e/2022 USD, purchaser price",262
+333514,"Special Die and Tool, Die Set, Jig, and Fixture Manufacturing","kg CO2e/2022 USD, purchaser price",210
+333515,Cutting Tool and Machine Tool Accessory Manufacturing,"kg CO2e/2022 USD, purchaser price",207
+333517,Machine Tool Manufacturing,"kg CO2e/2022 USD, purchaser price",199
+333519,Rolling Mill and Other Metalworking Machinery Manufacturing,"kg CO2e/2022 USD, purchaser price",207
+333611,Turbine and Turbine Generator Set Units Manufacturing,"kg CO2e/2022 USD, purchaser price",201
+333612,"Speed Changer, Industrial High-Speed Drive, and Gear Manufacturing","kg CO2e/2022 USD, purchaser price",179
+333613,Mechanical Power Transmission Equipment Manufacturing,"kg CO2e/2022 USD, purchaser price",209
+333618,Other Engine Equipment Manufacturing,"kg CO2e/2022 USD, purchaser price",297
+333912,Air and Gas Compressor Manufacturing,"kg CO2e/2022 USD, purchaser price",177
+333914,"Measuring, Dispensing, and Other Pumping Equipment Manufacturing","kg CO2e/2022 USD, purchaser price",223
+333921,Elevator and Moving Stairway Manufacturing,"kg CO2e/2022 USD, purchaser price",256
+333922,Conveyor and Conveying Equipment Manufacturing,"kg CO2e/2022 USD, purchaser price",256
+333923,"Overhead Traveling Crane, Hoist, and Monorail System Manufacturing","kg CO2e/2022 USD, purchaser price",256
+333924,"Industrial Truck, Tractor, Trailer, and Stacker Machinery Manufacturing","kg CO2e/2022 USD, purchaser price",256
+333991,Power-Driven Handtool Manufacturing,"kg CO2e/2022 USD, purchaser price",136
+333992,Welding and Soldering Equipment Manufacturing,"kg CO2e/2022 USD, purchaser price",249
+333993,Packaging Machinery Manufacturing,"kg CO2e/2022 USD, purchaser price",136
+333994,Industrial Process Furnace and Oven Manufacturing,"kg CO2e/2022 USD, purchaser price",190
+333995,Fluid Power Cylinder and Actuator Manufacturing,"kg CO2e/2022 USD, purchaser price",202
+333996,Fluid Power Pump and Motor Manufacturing,"kg CO2e/2022 USD, purchaser price",202
+333997,Scale and Balance Manufacturing,"kg CO2e/2022 USD, purchaser price",249
+333999,All Other Miscellaneous General Purpose Machinery Manufacturing,"kg CO2e/2022 USD, purchaser price",249
+334111,Electronic Computer Manufacturing,"kg CO2e/2022 USD, purchaser price",58
+334112,Computer Storage Device Manufacturing,"kg CO2e/2022 USD, purchaser price",71
+334118,Computer Terminal and Other Computer Peripheral Equipment Manufacturing,"kg CO2e/2022 USD, purchaser price",143
+334210,Telephone Apparatus Manufacturing,"kg CO2e/2022 USD, purchaser price",96
+334220,Radio and Television Broadcasting and Wireless Communications Equipment Manufacturing,"kg CO2e/2022 USD, purchaser price",111
+334290,Other Communications Equipment Manufacturing,"kg CO2e/2022 USD, purchaser price",80
+334310,Audio and Video Equipment Manufacturing,"kg CO2e/2022 USD, purchaser price",81
+334412,Bare Printed Circuit Board Manufacturing,"kg CO2e/2022 USD, purchaser price",98
+334413,Semiconductor and Related Device Manufacturing,"kg CO2e/2022 USD, purchaser price",215
+334416,"Capacitor, Resistor, Coil, Transformer, and Other Inductor Manufacturing","kg CO2e/2022 USD, purchaser price",98
+334417,Electronic Connector Manufacturing,"kg CO2e/2022 USD, purchaser price",98
+334418,Printed Circuit Assembly (Electronic Assembly) Manufacturing,"kg CO2e/2022 USD, purchaser price",101
+334419,Other Electronic Component Manufacturing,"kg CO2e/2022 USD, purchaser price",98
+334510,Electromedical and Electrotherapeutic Apparatus Manufacturing,"kg CO2e/2022 USD, purchaser price",135
+334511,"Search, Detection, Navigation, Guidance, Aeronautical, and Nautical System and Instrument Manufacturing","kg CO2e/2022 USD, purchaser price",71
+334512,"Automatic Environmental Control Manufacturing for Residential, Commercial, and Appliance Use","kg CO2e/2022 USD, purchaser price",70
+334513,"Instruments and Related Products Manufacturing for Measuring, Displaying, and Controlling Industrial Process Variables","kg CO2e/2022 USD, purchaser price",63
+334514,Totalizing Fluid Meter and Counting Device Manufacturing,"kg CO2e/2022 USD, purchaser price",84
+334515,Instrument Manufacturing for Measuring and Testing Electricity and Electrical Signals,"kg CO2e/2022 USD, purchaser price",79
+334516,Analytical Laboratory Instrument Manufacturing,"kg CO2e/2022 USD, purchaser price",102
+334517,Irradiation Apparatus Manufacturing,"kg CO2e/2022 USD, purchaser price",135
+334519,Other Measuring and Controlling Device Manufacturing,"kg CO2e/2022 USD, purchaser price",87
+334613,Blank Magnetic and Optical Recording Media Manufacturing,"kg CO2e/2022 USD, purchaser price",63
+334614,"Software and Other Prerecorded Compact Disc, Tape, and Record Reproducing","kg CO2e/2022 USD, purchaser price",63
+335110,Electric Lamp Bulb and Part Manufacturing,"kg CO2e/2022 USD, purchaser price",173
+335121,Residential Electric Lighting Fixture Manufacturing,"kg CO2e/2022 USD, purchaser price",185
+335122,"Commercial, Industrial, and Institutional Electric Lighting Fixture Manufacturing","kg CO2e/2022 USD, purchaser price",185
+335129,Other Lighting Equipment Manufacturing,"kg CO2e/2022 USD, purchaser price",185
+335210,Small Electrical Appliance Manufacturing,"kg CO2e/2022 USD, purchaser price",157
+335220,Major Household Appliance Manufacturing,"kg CO2e/2022 USD, purchaser price",172
+335311,"Power, Distribution, and Specialty Transformer Manufacturing","kg CO2e/2022 USD, purchaser price",133
+335312,Motor and Generator Manufacturing,"kg CO2e/2022 USD, purchaser price",152
+335313,Switchgear and Switchboard Apparatus Manufacturing,"kg CO2e/2022 USD, purchaser price",174
+335314,Relay and Industrial Control Manufacturing,"kg CO2e/2022 USD, purchaser price",138
+335911,Storage Battery Manufacturing,"kg CO2e/2022 USD, purchaser price",337
+335912,Primary Battery Manufacturing,"kg CO2e/2022 USD, purchaser price",103
+335921,Fiber Optic Cable Manufacturing,"kg CO2e/2022 USD, purchaser price",235
+335929,Other Communication and Energy Wire Manufacturing,"kg CO2e/2022 USD, purchaser price",235
+335931,Current-Carrying Wiring Device Manufacturing,"kg CO2e/2022 USD, purchaser price",127
+335932,Noncurrent-Carrying Wiring Device Manufacturing,"kg CO2e/2022 USD, purchaser price",127
+335991,Carbon and Graphite Product Manufacturing,"kg CO2e/2022 USD, purchaser price",363
+335999,All Other Miscellaneous Electrical Equipment and Component Manufacturing,"kg CO2e/2022 USD, purchaser price",128
+336111,Automobile Manufacturing,"kg CO2e/2022 USD, purchaser price",240
+336112,Light Truck and Utility Vehicle Manufacturing,"kg CO2e/2022 USD, purchaser price",268
+336120,Heavy Duty Truck Manufacturing,"kg CO2e/2022 USD, purchaser price",272
+336211,Motor Vehicle Body Manufacturing,"kg CO2e/2022 USD, purchaser price",253
+336212,Truck Trailer Manufacturing,"kg CO2e/2022 USD, purchaser price",200
+336213,Motor Home Manufacturing,"kg CO2e/2022 USD, purchaser price",107
+336214,Travel Trailer and Camper Manufacturing,"kg CO2e/2022 USD, purchaser price",160
+336310,Motor Vehicle Gasoline Engine and Engine Parts Manufacturing,"kg CO2e/2022 USD, purchaser price",259
+336320,Motor Vehicle Electrical and Electronic Equipment Manufacturing,"kg CO2e/2022 USD, purchaser price",218
+336330,Motor Vehicle Steering and Suspension Components (except Spring) Manufacturing,"kg CO2e/2022 USD, purchaser price",278
+336340,Motor Vehicle Brake System Manufacturing,"kg CO2e/2022 USD, purchaser price",278
+336350,Motor Vehicle Transmission and Power Train Parts Manufacturing,"kg CO2e/2022 USD, purchaser price",252
+336360,Motor Vehicle Seating and Interior Trim Manufacturing,"kg CO2e/2022 USD, purchaser price",333
+336370,Motor Vehicle Metal Stamping,"kg CO2e/2022 USD, purchaser price",503
+336390,Other Motor Vehicle Parts Manufacturing,"kg CO2e/2022 USD, purchaser price",265
+336411,Aircraft Manufacturing,"kg CO2e/2022 USD, purchaser price",139
+336412,Aircraft Engine and Engine Parts Manufacturing,"kg CO2e/2022 USD, purchaser price",156
+336413,Other Aircraft Parts and Auxiliary Equipment Manufacturing,"kg CO2e/2022 USD, purchaser price",170
+336414,Guided Missile and Space Vehicle Manufacturing,"kg CO2e/2022 USD, purchaser price",142
+336415,Guided Missile and Space Vehicle Propulsion Unit and Propulsion Unit Parts Manufacturing,"kg CO2e/2022 USD, purchaser price",294
+336419,Other Guided Missile and Space Vehicle Parts and Auxiliary Equipment Manufacturing,"kg CO2e/2022 USD, purchaser price",294
+336510,Railroad Rolling Stock Manufacturing,"kg CO2e/2022 USD, purchaser price",444
+336611,Ship Building and Repairing,"kg CO2e/2022 USD, purchaser price",196
+336612,Boat Building,"kg CO2e/2022 USD, purchaser price",182
+336991,"Motorcycle, Bicycle, and Parts Manufacturing","kg CO2e/2022 USD, purchaser price",222
+336992,"Military Armored Vehicle, Tank, and Tank Component Manufacturing","kg CO2e/2022 USD, purchaser price",443
+336999,All Other Transportation Equipment Manufacturing,"kg CO2e/2022 USD, purchaser price",195
+337110,Wood Kitchen Cabinet and Countertop Manufacturing,"kg CO2e/2022 USD, purchaser price",166
+337121,Upholstered Household Furniture Manufacturing,"kg CO2e/2022 USD, purchaser price",188
+337122,Nonupholstered Wood Household Furniture Manufacturing,"kg CO2e/2022 USD, purchaser price",178
+337124,Metal Household Furniture Manufacturing,"kg CO2e/2022 USD, purchaser price",227
+337125,Household Furniture (except Wood and Metal) Manufacturing,"kg CO2e/2022 USD, purchaser price",227
+337127,Institutional Furniture Manufacturing,"kg CO2e/2022 USD, purchaser price",246
+337211,Wood Office Furniture Manufacturing,"kg CO2e/2022 USD, purchaser price",240
+337212,Custom Architectural Woodwork and Millwork Manufacturing,"kg CO2e/2022 USD, purchaser price",240
+337214,Office Furniture (except Wood) Manufacturing,"kg CO2e/2022 USD, purchaser price",240
+337215,"Showcase, Partition, Shelving, and Locker Manufacturing","kg CO2e/2022 USD, purchaser price",246
+337910,Mattress Manufacturing,"kg CO2e/2022 USD, purchaser price",173
+337920,Blind and Shade Manufacturing,"kg CO2e/2022 USD, purchaser price",173
+339112,Surgical and Medical Instrument Manufacturing,"kg CO2e/2022 USD, purchaser price",156
+339113,Surgical Appliance and Supplies Manufacturing,"kg CO2e/2022 USD, purchaser price",140
+339114,Dental Equipment and Supplies Manufacturing,"kg CO2e/2022 USD, purchaser price",174
+339115,Ophthalmic Goods Manufacturing,"kg CO2e/2022 USD, purchaser price",138
+339116,Dental Laboratories,"kg CO2e/2022 USD, purchaser price",117
+339910,Jewelry and Silverware Manufacturing,"kg CO2e/2022 USD, purchaser price",108
+339920,Sporting and Athletic Goods Manufacturing,"kg CO2e/2022 USD, purchaser price",167
+339930,"Doll, Toy, and Game Manufacturing","kg CO2e/2022 USD, purchaser price",146
+339940,Office Supplies (except Paper) Manufacturing,"kg CO2e/2022 USD, purchaser price",265
+339950,Sign Manufacturing,"kg CO2e/2022 USD, purchaser price",250
+339991,"Gasket, Packing, and Sealing Device Manufacturing","kg CO2e/2022 USD, purchaser price",182
+339992,Musical Instrument Manufacturing,"kg CO2e/2022 USD, purchaser price",182
+339993,"Fastener, Button, Needle, and Pin Manufacturing","kg CO2e/2022 USD, purchaser price",182
+339994,"Broom, Brush, and Mop Manufacturing","kg CO2e/2022 USD, purchaser price",182
+339995,Burial Casket Manufacturing,"kg CO2e/2022 USD, purchaser price",182
+339999,All Other Miscellaneous Manufacturing,"kg CO2e/2022 USD, purchaser price",182
+423110,Automobile and Other Motor Vehicle Merchant Wholesalers,"kg CO2e/2022 USD, purchaser price",115
+423120,Motor Vehicle Supplies and New Parts Merchant Wholesalers,"kg CO2e/2022 USD, purchaser price",115
+423130,Tire and Tube Merchant Wholesalers,"kg CO2e/2022 USD, purchaser price",115
+423140,Motor Vehicle Parts (Used) Merchant Wholesalers,"kg CO2e/2022 USD, purchaser price",115
+423210,Furniture Merchant Wholesalers,"kg CO2e/2022 USD, purchaser price",108
+423220,Home Furnishing Merchant Wholesalers,"kg CO2e/2022 USD, purchaser price",108
+423310,"Lumber, Plywood, Millwork, and Wood Panel Merchant Wholesalers","kg CO2e/2022 USD, purchaser price",108
+423320,"Brick, Stone, and Related Construction Material Merchant Wholesalers","kg CO2e/2022 USD, purchaser price",108
+423330,"Roofing, Siding, and Insulation Material Merchant Wholesalers","kg CO2e/2022 USD, purchaser price",108
+423390,Other Construction Material Merchant Wholesalers,"kg CO2e/2022 USD, purchaser price",108
+423410,Photographic Equipment and Supplies Merchant Wholesalers,"kg CO2e/2022 USD, purchaser price",74
+423420,Office Equipment Merchant Wholesalers,"kg CO2e/2022 USD, purchaser price",74
+423430,Computer and Computer Peripheral Equipment and Software Merchant Wholesalers,"kg CO2e/2022 USD, purchaser price",74
+423440,Other Commercial Equipment Merchant Wholesalers,"kg CO2e/2022 USD, purchaser price",74
+423450,"Medical, Dental, and Hospital Equipment and Supplies Merchant Wholesalers","kg CO2e/2022 USD, purchaser price",74
+423460,Ophthalmic Goods Merchant Wholesalers,"kg CO2e/2022 USD, purchaser price",74
+423490,Other Professional Equipment and Supplies Merchant Wholesalers,"kg CO2e/2022 USD, purchaser price",74
+423510,Metal Service Centers and Other Metal Merchant Wholesalers,"kg CO2e/2022 USD, purchaser price",108
+423520,Coal and Other Mineral and Ore Merchant Wholesalers,"kg CO2e/2022 USD, purchaser price",108
+423610,"Electrical Apparatus and Equipment, Wiring Supplies, and Related Equipment Merchant Wholesalers","kg CO2e/2022 USD, purchaser price",83
+423620,"Household Appliances, Electric Housewares, and Consumer Electronics Merchant Wholesalers","kg CO2e/2022 USD, purchaser price",83
+423690,Other Electronic Parts and Equipment Merchant Wholesalers,"kg CO2e/2022 USD, purchaser price",83
+423710,Hardware Merchant Wholesalers,"kg CO2e/2022 USD, purchaser price",108
+423720,Plumbing and Heating Equipment and Supplies (Hydronics) Merchant Wholesalers,"kg CO2e/2022 USD, purchaser price",108
+423730,Warm Air Heating and Air-Conditioning Equipment and Supplies Merchant Wholesalers,"kg CO2e/2022 USD, purchaser price",108
+423740,Refrigeration Equipment and Supplies Merchant Wholesalers,"kg CO2e/2022 USD, purchaser price",108
+423810,Construction and Mining (except Oil Well) Machinery and Equipment Merchant Wholesalers,"kg CO2e/2022 USD, purchaser price",115
+423820,Farm and Garden Machinery and Equipment Merchant Wholesalers,"kg CO2e/2022 USD, purchaser price",115
+423830,Industrial Machinery and Equipment Merchant Wholesalers,"kg CO2e/2022 USD, purchaser price",115
+423840,Industrial Supplies Merchant Wholesalers,"kg CO2e/2022 USD, purchaser price",115
+423850,Service Establishment Equipment and Supplies Merchant Wholesalers,"kg CO2e/2022 USD, purchaser price",115
+423860,Transportation Equipment and Supplies (except Motor Vehicle) Merchant Wholesalers,"kg CO2e/2022 USD, purchaser price",115
+423910,Sporting and Recreational Goods and Supplies Merchant Wholesalers,"kg CO2e/2022 USD, purchaser price",108
+423920,Toy and Hobby Goods and Supplies Merchant Wholesalers,"kg CO2e/2022 USD, purchaser price",108
+423930,Recyclable Material Merchant Wholesalers,"kg CO2e/2022 USD, purchaser price",108
+423940,"Jewelry, Watch, Precious Stone, and Precious Metal Merchant Wholesalers","kg CO2e/2022 USD, purchaser price",108
+423990,Other Miscellaneous Durable Goods Merchant Wholesalers,"kg CO2e/2022 USD, purchaser price",108
+424110,Printing and Writing Paper Merchant Wholesalers,"kg CO2e/2022 USD, purchaser price",144
+424120,Stationery and Office Supplies Merchant Wholesalers,"kg CO2e/2022 USD, purchaser price",144
+424130,Industrial and Personal Service Paper Merchant Wholesalers,"kg CO2e/2022 USD, purchaser price",144
+424210,Drugs and Druggists' Sundries Merchant Wholesalers,"kg CO2e/2022 USD, purchaser price",95
+424310,"Piece Goods, Notions, and Other Dry Goods Merchant Wholesalers","kg CO2e/2022 USD, purchaser price",144
+424320,Men's and Boys' Clothing and Furnishings Merchant Wholesalers,"kg CO2e/2022 USD, purchaser price",144
+424330,"Women's, Children's, and Infants' Clothing and Accessories Merchant Wholesalers","kg CO2e/2022 USD, purchaser price",144
+424340,Footwear Merchant Wholesalers,"kg CO2e/2022 USD, purchaser price",144
+424410,General Line Grocery Merchant Wholesalers,"kg CO2e/2022 USD, purchaser price",159
+424420,Packaged Frozen Food Merchant Wholesalers,"kg CO2e/2022 USD, purchaser price",159
+424430,Dairy Product (except Dried or Canned) Merchant Wholesalers,"kg CO2e/2022 USD, purchaser price",159
+424440,Poultry and Poultry Product Merchant Wholesalers,"kg CO2e/2022 USD, purchaser price",159
+424450,Confectionery Merchant Wholesalers,"kg CO2e/2022 USD, purchaser price",159
+424460,Fish and Seafood Merchant Wholesalers,"kg CO2e/2022 USD, purchaser price",159
+424470,Meat and Meat Product Merchant Wholesalers,"kg CO2e/2022 USD, purchaser price",159
+424480,Fresh Fruit and Vegetable Merchant Wholesalers,"kg CO2e/2022 USD, purchaser price",159
+424490,Other Grocery and Related Products Merchant Wholesalers,"kg CO2e/2022 USD, purchaser price",159
+424510,Grain and Field Bean Merchant Wholesalers,"kg CO2e/2022 USD, purchaser price",144
+424520,Livestock Merchant Wholesalers,"kg CO2e/2022 USD, purchaser price",144
+424590,Other Farm Product Raw Material Merchant Wholesalers,"kg CO2e/2022 USD, purchaser price",144
+424610,Plastics Materials and Basic Forms and Shapes Merchant Wholesalers,"kg CO2e/2022 USD, purchaser price",144
+424690,Other Chemical and Allied Products Merchant Wholesalers,"kg CO2e/2022 USD, purchaser price",144
+424710,Petroleum Bulk Stations and Terminals,"kg CO2e/2022 USD, purchaser price",102
+424720,Petroleum and Petroleum Products Merchant Wholesalers (except Bulk Stations and Terminals),"kg CO2e/2022 USD, purchaser price",102
+424810,Beer and Ale Merchant Wholesalers,"kg CO2e/2022 USD, purchaser price",144
+424820,Wine and Distilled Alcoholic Beverage Merchant Wholesalers,"kg CO2e/2022 USD, purchaser price",144
+424910,Farm Supplies Merchant Wholesalers,"kg CO2e/2022 USD, purchaser price",144
+424920,"Book, Periodical, and Newspaper Merchant Wholesalers","kg CO2e/2022 USD, purchaser price",144
+424930,"Flower, Nursery Stock, and Florists' Supplies Merchant Wholesalers","kg CO2e/2022 USD, purchaser price",144
+424940,Tobacco and Tobacco Product Merchant Wholesalers,"kg CO2e/2022 USD, purchaser price",144
+424950,"Paint, Varnish, and Supplies Merchant Wholesalers","kg CO2e/2022 USD, purchaser price",144
+424990,Other Miscellaneous Nondurable Goods Merchant Wholesalers,"kg CO2e/2022 USD, purchaser price",144
+425110,Business to Business Electronic Markets,"kg CO2e/2022 USD, purchaser price",92
+425120,Wholesale Trade Agents and Brokers,"kg CO2e/2022 USD, purchaser price",92
+441110,New Car Dealers,"kg CO2e/2022 USD, purchaser price",73
+441120,Used Car Dealers,"kg CO2e/2022 USD, purchaser price",73
+441210,Recreational Vehicle Dealers,"kg CO2e/2022 USD, purchaser price",73
+441222,Boat Dealers,"kg CO2e/2022 USD, purchaser price",73
+441228,"Motorcycle, ATV, and All Other Motor Vehicle Dealers","kg CO2e/2022 USD, purchaser price",73
+441310,Automotive Parts and Accessories Stores,"kg CO2e/2022 USD, purchaser price",73
+441320,Tire Dealers,"kg CO2e/2022 USD, purchaser price",73
+442110,Furniture Stores,"kg CO2e/2022 USD, purchaser price",111
+442210,Floor Covering Stores,"kg CO2e/2022 USD, purchaser price",111
+442291,Window Treatment Stores,"kg CO2e/2022 USD, purchaser price",111
+442299,All Other Home Furnishings Stores,"kg CO2e/2022 USD, purchaser price",111
+443141,Household Appliance Stores,"kg CO2e/2022 USD, purchaser price",111
+443142,Electronics Stores,"kg CO2e/2022 USD, purchaser price",111
+444110,Home Centers,"kg CO2e/2022 USD, purchaser price",87
+444120,Paint and Wallpaper Stores,"kg CO2e/2022 USD, purchaser price",87
+444130,Hardware Stores,"kg CO2e/2022 USD, purchaser price",87
+444190,Other Building Material Dealers,"kg CO2e/2022 USD, purchaser price",87
+444210,Outdoor Power Equipment Stores,"kg CO2e/2022 USD, purchaser price",87
+444220,"Nursery, Garden Center, and Farm Supply Stores","kg CO2e/2022 USD, purchaser price",87
+445110,Supermarkets and Other Grocery (except Convenience) Stores,"kg CO2e/2022 USD, purchaser price",186
+445120,Convenience Stores,"kg CO2e/2022 USD, purchaser price",186
+445210,Meat Markets,"kg CO2e/2022 USD, purchaser price",186
+445220,Fish and Seafood Markets,"kg CO2e/2022 USD, purchaser price",186
+445230,Fruit and Vegetable Markets,"kg CO2e/2022 USD, purchaser price",186
+445291,Baked Goods Stores,"kg CO2e/2022 USD, purchaser price",186
+445292,Confectionery and Nut Stores,"kg CO2e/2022 USD, purchaser price",186
+445299,All Other Specialty Food Stores,"kg CO2e/2022 USD, purchaser price",186
+445310,"Beer, Wine, and Liquor Stores","kg CO2e/2022 USD, purchaser price",186
+446110,Pharmacies and Drug Stores,"kg CO2e/2022 USD, purchaser price",130
+446120,"Cosmetics, Beauty Supplies, and Perfume Stores","kg CO2e/2022 USD, purchaser price",130
+446130,Optical Goods Stores,"kg CO2e/2022 USD, purchaser price",130
+446191,Food (Health) Supplement Stores,"kg CO2e/2022 USD, purchaser price",130
+446199,All Other Health and Personal Care Stores,"kg CO2e/2022 USD, purchaser price",130
+447110,Gasoline Stations with Convenience Stores,"kg CO2e/2022 USD, purchaser price",183
+447190,Other Gasoline Stations,"kg CO2e/2022 USD, purchaser price",183
+448110,Men's Clothing Stores,"kg CO2e/2022 USD, purchaser price",138
+448120,Women's Clothing Stores,"kg CO2e/2022 USD, purchaser price",138
+448130,Children's and Infants' Clothing Stores,"kg CO2e/2022 USD, purchaser price",138
+448140,Family Clothing Stores,"kg CO2e/2022 USD, purchaser price",138
+448150,Clothing Accessories Stores,"kg CO2e/2022 USD, purchaser price",138
+448190,Other Clothing Stores,"kg CO2e/2022 USD, purchaser price",138
+448210,Shoe Stores,"kg CO2e/2022 USD, purchaser price",138
+448310,Jewelry Stores,"kg CO2e/2022 USD, purchaser price",138
+448320,Luggage and Leather Goods Stores,"kg CO2e/2022 USD, purchaser price",138
+451110,Sporting Goods Stores,"kg CO2e/2022 USD, purchaser price",111
+451120,"Hobby, Toy, and Game Stores","kg CO2e/2022 USD, purchaser price",111
+451130,"Sewing, Needlework, and Piece Goods Stores","kg CO2e/2022 USD, purchaser price",111
+451140,Musical Instrument and Supplies Stores,"kg CO2e/2022 USD, purchaser price",111
+451211,Book Stores,"kg CO2e/2022 USD, purchaser price",111
+451212,News Dealers and Newsstands,"kg CO2e/2022 USD, purchaser price",111
+452210,Department Stores,"kg CO2e/2022 USD, purchaser price",164
+452311,Warehouse Clubs and Supercenters,"kg CO2e/2022 USD, purchaser price",164
+452319,All Other General Merchandise Stores,"kg CO2e/2022 USD, purchaser price",164
+453110,Florists,"kg CO2e/2022 USD, purchaser price",111
+453210,Office Supplies and Stationery Stores,"kg CO2e/2022 USD, purchaser price",111
+453220,"Gift, Novelty, and Souvenir Stores","kg CO2e/2022 USD, purchaser price",111
+453310,Used Merchandise Stores,"kg CO2e/2022 USD, purchaser price",111
+453910,Pet and Pet Supplies Stores,"kg CO2e/2022 USD, purchaser price",111
+453920,Art Dealers,"kg CO2e/2022 USD, purchaser price",111
+453930,Manufactured (Mobile) Home Dealers,"kg CO2e/2022 USD, purchaser price",111
+453991,Tobacco Stores,"kg CO2e/2022 USD, purchaser price",111
+453998,All Other Miscellaneous Store Retailers (except Tobacco Stores),"kg CO2e/2022 USD, purchaser price",111
+454110,Electronic Shopping and Mail-Order Houses,"kg CO2e/2022 USD, purchaser price",94
+454210,Vending Machine Operators,"kg CO2e/2022 USD, purchaser price",94
+454310,Fuel Dealers,"kg CO2e/2022 USD, purchaser price",94
+454390,Other Direct Selling Establishments,"kg CO2e/2022 USD, purchaser price",94
+481111,Scheduled Passenger Air Transportation,"kg CO2e/2022 USD, purchaser price",644
+481112,Scheduled Freight Air Transportation,"kg CO2e/2022 USD, purchaser price",644
+481211,Nonscheduled Chartered Passenger Air Transportation,"kg CO2e/2022 USD, purchaser price",644
+481212,Nonscheduled Chartered Freight Air Transportation,"kg CO2e/2022 USD, purchaser price",644
+481219,Other Nonscheduled Air Transportation,"kg CO2e/2022 USD, purchaser price",644
+482111,Line-Haul Railroads,"kg CO2e/2022 USD, purchaser price",466
+482112,Short Line Railroads,"kg CO2e/2022 USD, purchaser price",466
+483111,Deep Sea Freight Transportation,"kg CO2e/2022 USD, purchaser price",816
+483112,Deep Sea Passenger Transportation,"kg CO2e/2022 USD, purchaser price",816
+483113,Coastal and Great Lakes Freight Transportation,"kg CO2e/2022 USD, purchaser price",816
+483114,Coastal and Great Lakes Passenger Transportation,"kg CO2e/2022 USD, purchaser price",816
+483211,Inland Water Freight Transportation,"kg CO2e/2022 USD, purchaser price",816
+483212,Inland Water Passenger Transportation,"kg CO2e/2022 USD, purchaser price",816
+484110,"General Freight Trucking, Local","kg CO2e/2022 USD, purchaser price",595
+484121,"General Freight Trucking, Long-Distance, Truckload","kg CO2e/2022 USD, purchaser price",595
+484122,"General Freight Trucking, Long-Distance, Less Than Truckload","kg CO2e/2022 USD, purchaser price",595
+484210,Used Household and Office Goods Moving,"kg CO2e/2022 USD, purchaser price",595
+484220,"Specialized Freight (except Used Goods) Trucking, Local","kg CO2e/2022 USD, purchaser price",595
+484230,"Specialized Freight (except Used Goods) Trucking, Long-Distance","kg CO2e/2022 USD, purchaser price",595
+485111,Mixed Mode Transit Systems,"kg CO2e/2022 USD, purchaser price",566
+485112,Commuter Rail Systems,"kg CO2e/2022 USD, purchaser price",566
+485113,Bus and Other Motor Vehicle Transit Systems,"kg CO2e/2022 USD, purchaser price",566
+485119,Other Urban Transit Systems,"kg CO2e/2022 USD, purchaser price",566
+485210,Interurban and Rural Bus Transportation,"kg CO2e/2022 USD, purchaser price",566
+485310,Taxi Service,"kg CO2e/2022 USD, purchaser price",566
+485320,Limousine Service,"kg CO2e/2022 USD, purchaser price",566
+485410,School and Employee Bus Transportation,"kg CO2e/2022 USD, purchaser price",566
+485510,Charter Bus Industry,"kg CO2e/2022 USD, purchaser price",566
+485991,Special Needs Transportation,"kg CO2e/2022 USD, purchaser price",566
+485999,All Other Transit and Ground Passenger Transportation,"kg CO2e/2022 USD, purchaser price",566
+486110,Pipeline Transportation of Crude Oil,"kg CO2e/2022 USD, purchaser price",1619
+486210,Pipeline Transportation of Natural Gas,"kg CO2e/2022 USD, purchaser price",1619
+486910,Pipeline Transportation of Refined Petroleum Products,"kg CO2e/2022 USD, purchaser price",1619
+486990,All Other Pipeline Transportation,"kg CO2e/2022 USD, purchaser price",1619
+487110,"Scenic and Sightseeing Transportation, Land","kg CO2e/2022 USD, purchaser price",162
+487210,"Scenic and Sightseeing Transportation, Water","kg CO2e/2022 USD, purchaser price",162
+487990,"Scenic and Sightseeing Transportation, Other","kg CO2e/2022 USD, purchaser price",162
+488111,Air Traffic Control,"kg CO2e/2022 USD, purchaser price",162
+488119,Other Airport Operations,"kg CO2e/2022 USD, purchaser price",162
+488190,Other Support Activities for Air Transportation,"kg CO2e/2022 USD, purchaser price",162
+488210,Support Activities for Rail Transportation,"kg CO2e/2022 USD, purchaser price",162
+488310,Port and Harbor Operations,"kg CO2e/2022 USD, purchaser price",162
+488320,Marine Cargo Handling,"kg CO2e/2022 USD, purchaser price",162
+488330,Navigational Services to Shipping,"kg CO2e/2022 USD, purchaser price",162
+488390,Other Support Activities for Water Transportation,"kg CO2e/2022 USD, purchaser price",162
+488410,Motor Vehicle Towing,"kg CO2e/2022 USD, purchaser price",162
+488490,Other Support Activities for Road Transportation,"kg CO2e/2022 USD, purchaser price",162
+488510,Freight Transportation Arrangement,"kg CO2e/2022 USD, purchaser price",162
+488991,Packing and Crating,"kg CO2e/2022 USD, purchaser price",162
+488999,All Other Support Activities for Transportation,"kg CO2e/2022 USD, purchaser price",162
+491110,Postal Service,"kg CO2e/2022 USD, purchaser price",74
+492110,Couriers and Express Delivery Services,"kg CO2e/2022 USD, purchaser price",303
+492210,Local Messengers and Local Delivery,"kg CO2e/2022 USD, purchaser price",303
+493110,General Warehousing and Storage,"kg CO2e/2022 USD, purchaser price",244
+493120,Refrigerated Warehousing and Storage,"kg CO2e/2022 USD, purchaser price",244
+493130,Farm Product Warehousing and Storage,"kg CO2e/2022 USD, purchaser price",244
+493190,Other Warehousing and Storage,"kg CO2e/2022 USD, purchaser price",244
+511110,Newspaper Publishers,"kg CO2e/2022 USD, purchaser price",82
+511120,Periodical Publishers,"kg CO2e/2022 USD, purchaser price",103
+511130,Book Publishers,"kg CO2e/2022 USD, purchaser price",107
+511140,Directory and Mailing List Publishers,"kg CO2e/2022 USD, purchaser price",108
+511191,Greeting Card Publishers,"kg CO2e/2022 USD, purchaser price",108
+511199,All Other Publishers,"kg CO2e/2022 USD, purchaser price",108
+511210,Software Publishers,"kg CO2e/2022 USD, purchaser price",80
+512110,Motion Picture and Video Production,"kg CO2e/2022 USD, purchaser price",52
+512120,Motion Picture and Video Distribution,"kg CO2e/2022 USD, purchaser price",52
+512131,Motion Picture Theaters (except Drive-Ins),"kg CO2e/2022 USD, purchaser price",52
+512132,Drive-In Motion Picture Theaters,"kg CO2e/2022 USD, purchaser price",52
+512191,Teleproduction and Other Postproduction Services,"kg CO2e/2022 USD, purchaser price",52
+512199,Other Motion Picture and Video Industries,"kg CO2e/2022 USD, purchaser price",52
+512230,Music Publishers,"kg CO2e/2022 USD, purchaser price",44
+512240,Sound Recording Studios,"kg CO2e/2022 USD, purchaser price",44
+512250,Record Production and Distribution,"kg CO2e/2022 USD, purchaser price",44
+512290,Other Sound Recording Industries,"kg CO2e/2022 USD, purchaser price",44
+515111,Radio Networks,"kg CO2e/2022 USD, purchaser price",79
+515112,Radio Stations,"kg CO2e/2022 USD, purchaser price",79
+515120,Television Broadcasting,"kg CO2e/2022 USD, purchaser price",79
+515210,Cable and Other Subscription Programming,"kg CO2e/2022 USD, purchaser price",94
+517311,Wired Telecommunications Carriers,"kg CO2e/2022 USD, purchaser price",75
+517312,Wireless Telecommunications Carriers (except Satellite),"kg CO2e/2022 USD, purchaser price",96
+517410,Satellite Telecommunications,"kg CO2e/2022 USD, purchaser price",78
+517911,Telecommunications Resellers,"kg CO2e/2022 USD, purchaser price",78
+517919,All Other Telecommunications,"kg CO2e/2022 USD, purchaser price",78
+518210,"Data Processing, Hosting, and Related Services","kg CO2e/2022 USD, purchaser price",93
+519110,News Syndicates,"kg CO2e/2022 USD, purchaser price",64
+519120,Libraries and Archives,"kg CO2e/2022 USD, purchaser price",64
+519130,Internet Publishing and Broadcasting and Web Search Portals,"kg CO2e/2022 USD, purchaser price",67
+519190,All Other Information Services,"kg CO2e/2022 USD, purchaser price",64
+521110,Monetary Authorities-Central Bank,"kg CO2e/2022 USD, purchaser price",59
+522110,Commercial Banking,"kg CO2e/2022 USD, purchaser price",59
+522120,Savings Institutions,"kg CO2e/2022 USD, purchaser price",59
+522130,Credit Unions,"kg CO2e/2022 USD, purchaser price",59
+522190,Other Depository Credit Intermediation,"kg CO2e/2022 USD, purchaser price",59
+522210,Credit Card Issuing,"kg CO2e/2022 USD, purchaser price",72
+522220,Sales Financing,"kg CO2e/2022 USD, purchaser price",72
+522291,Consumer Lending,"kg CO2e/2022 USD, purchaser price",72
+522292,Real Estate Credit,"kg CO2e/2022 USD, purchaser price",72
+522293,International Trade Financing,"kg CO2e/2022 USD, purchaser price",72
+522294,Secondary Market Financing,"kg CO2e/2022 USD, purchaser price",72
+522298,All Other Nondepository Credit Intermediation,"kg CO2e/2022 USD, purchaser price",72
+522310,Mortgage and Nonmortgage Loan Brokers,"kg CO2e/2022 USD, purchaser price",72
+522320,"Financial Transactions Processing, Reserve, and Clearinghouse Activities","kg CO2e/2022 USD, purchaser price",72
+522390,Other Activities Related to Credit Intermediation,"kg CO2e/2022 USD, purchaser price",72
+523110,Investment Banking and Securities Dealing,"kg CO2e/2022 USD, purchaser price",43
+523120,Securities Brokerage,"kg CO2e/2022 USD, purchaser price",43
+523130,Commodity Contracts Dealing,"kg CO2e/2022 USD, purchaser price",43
+523140,Commodity Contracts Brokerage,"kg CO2e/2022 USD, purchaser price",43
+523210,Securities and Commodity Exchanges,"kg CO2e/2022 USD, purchaser price",43
+523910,Miscellaneous Intermediation,"kg CO2e/2022 USD, purchaser price",66
+523920,Portfolio Management,"kg CO2e/2022 USD, purchaser price",66
+523930,Investment Advice,"kg CO2e/2022 USD, purchaser price",66
+523991,"Trust, Fiduciary, and Custody Activities","kg CO2e/2022 USD, purchaser price",66
+523999,Miscellaneous Financial Investment Activities,"kg CO2e/2022 USD, purchaser price",66
+524113,Direct Life Insurance Carriers,"kg CO2e/2022 USD, purchaser price",51
+524114,Direct Health and Medical Insurance Carriers,"kg CO2e/2022 USD, purchaser price",33
+524126,Direct Property and Casualty Insurance Carriers,"kg CO2e/2022 USD, purchaser price",33
+524127,Direct Title Insurance Carriers,"kg CO2e/2022 USD, purchaser price",33
+524128,"Other Direct Insurance (except Life, Health, and Medical) Carriers","kg CO2e/2022 USD, purchaser price",33
+524130,Reinsurance Carriers,"kg CO2e/2022 USD, purchaser price",33
+524210,Insurance Agencies and Brokerages,"kg CO2e/2022 USD, purchaser price",29
+524291,Claims Adjusting,"kg CO2e/2022 USD, purchaser price",29
+524292,Third Party Administration of Insurance and Pension Funds,"kg CO2e/2022 USD, purchaser price",29
+524298,All Other Insurance Related Activities,"kg CO2e/2022 USD, purchaser price",29
+525110,Pension Funds,"kg CO2e/2022 USD, purchaser price",218
+525120,Health and Welfare Funds,"kg CO2e/2022 USD, purchaser price",218
+525190,Other Insurance Funds,"kg CO2e/2022 USD, purchaser price",218
+525910,Open-End Investment Funds,"kg CO2e/2022 USD, purchaser price",218
+525920,"Trusts, Estates, and Agency Accounts","kg CO2e/2022 USD, purchaser price",218
+525990,Other Financial Vehicles,"kg CO2e/2022 USD, purchaser price",218
+531110,Lessors of Residential Buildings and Dwellings,"kg CO2e/2022 USD, purchaser price",33
+531120,Lessors of Nonresidential Buildings (excpet Miniwarehouses),"kg CO2e/2022 USD, purchaser price",246
+531130,Lessors of Miniwarehouses and Self-Storage Units,"kg CO2e/2022 USD, purchaser price",246
+531190,Lessors of Other Real Estate Property,"kg CO2e/2022 USD, purchaser price",246
+531210,Offices of Real Estate Agents and Brokers,"kg CO2e/2022 USD, purchaser price",246
+531311,Residential Property Managers,"kg CO2e/2022 USD, purchaser price",246
+531312,Nonresidential Property Managers,"kg CO2e/2022 USD, purchaser price",246
+531320,Offices of Real Estate Appraisers,"kg CO2e/2022 USD, purchaser price",246
+531390,Other Activities Related to Real Estate,"kg CO2e/2022 USD, purchaser price",246
+532111,Passenger Car Rental,"kg CO2e/2022 USD, purchaser price",110
+532112,Passenger Car Leasing,"kg CO2e/2022 USD, purchaser price",110
+532120,"Truck, Utility Trailer, and RV (Recreational Vehicle) Rental and Leasing","kg CO2e/2022 USD, purchaser price",110
+532210,Consumer Electronics and Appliances Rental,"kg CO2e/2022 USD, purchaser price",102
+532281,Formal Wear and Costume Rental,"kg CO2e/2022 USD, purchaser price",102
+532282,Video Tape and Disc Rental,"kg CO2e/2022 USD, purchaser price",102
+532283,Home Health Equipment Rental,"kg CO2e/2022 USD, purchaser price",102
+532284,Recreational Goods Rental,"kg CO2e/2022 USD, purchaser price",102
+532289,All Other Consumer Goods Rental,"kg CO2e/2022 USD, purchaser price",102
+532310,General Rental Centers,"kg CO2e/2022 USD, purchaser price",102
+532411,"Commercial Air, Rail, and Water Transportation Equipment Rental and Leasing","kg CO2e/2022 USD, purchaser price",106
+532412,"Construction, Mining, and Forestry Machinery and Equipment Rental and Leasing","kg CO2e/2022 USD, purchaser price",106
+532420,Office Machinery and Equipment Rental and Leasing,"kg CO2e/2022 USD, purchaser price",106
+532490,Other Commercial and Industrial Machinery and Equipment Rental and Leasing,"kg CO2e/2022 USD, purchaser price",106
+533110,Lessors of Nonfinancial Intangible Assets (except Copyrighted Works),"kg CO2e/2022 USD, purchaser price",52
+541110,Offices of Lawyers,"kg CO2e/2022 USD, purchaser price",41
+541120,Offices of Notaries,"kg CO2e/2022 USD, purchaser price",41
+541191,Title Abstract and Settlement Offices,"kg CO2e/2022 USD, purchaser price",41
+541199,All Other Legal Services,"kg CO2e/2022 USD, purchaser price",41
+541211,Offices of Certified Public Accountants,"kg CO2e/2022 USD, purchaser price",54
+541213,Tax Preparation Services,"kg CO2e/2022 USD, purchaser price",54
+541214,Payroll Services,"kg CO2e/2022 USD, purchaser price",54
+541219,Other Accounting Services,"kg CO2e/2022 USD, purchaser price",54
+541310,Architectural Services,"kg CO2e/2022 USD, purchaser price",103
+541320,Landscape Architectural Services,"kg CO2e/2022 USD, purchaser price",103
+541330,Engineering Services,"kg CO2e/2022 USD, purchaser price",103
+541340,Drafting Services,"kg CO2e/2022 USD, purchaser price",103
+541350,Building Inspection Services,"kg CO2e/2022 USD, purchaser price",103
+541360,Geophysical Surveying and Mapping Services,"kg CO2e/2022 USD, purchaser price",103
+541370,Surveying and Mapping (except Geophysical) Services,"kg CO2e/2022 USD, purchaser price",103
+541380,Testing Laboratories,"kg CO2e/2022 USD, purchaser price",103
+541410,Interior Design Services,"kg CO2e/2022 USD, purchaser price",94
+541420,Industrial Design Services,"kg CO2e/2022 USD, purchaser price",94
+541430,Graphic Design Services,"kg CO2e/2022 USD, purchaser price",94
+541490,Other Specialized Design Services,"kg CO2e/2022 USD, purchaser price",94
+541511,Custom Computer Programming Services,"kg CO2e/2022 USD, purchaser price",84
+541512,Computer Systems Design Services,"kg CO2e/2022 USD, purchaser price",89
+541513,Computer Facilities Management Services,"kg CO2e/2022 USD, purchaser price",80
+541519,Other Computer Related Services,"kg CO2e/2022 USD, purchaser price",80
+541611,Administrative Management and General Management Consulting Services,"kg CO2e/2022 USD, purchaser price",78
+541612,Human Resources Consulting Services,"kg CO2e/2022 USD, purchaser price",78
+541613,Marketing Consulting Services,"kg CO2e/2022 USD, purchaser price",78
+541614,"Process, Physical Distribution, and Logistics Consulting Services","kg CO2e/2022 USD, purchaser price",78
+541618,Other Management Consulting Services,"kg CO2e/2022 USD, purchaser price",78
+541620,Environmental Consulting Services,"kg CO2e/2022 USD, purchaser price",90
+541690,Other Scientific and Technical Consulting Services,"kg CO2e/2022 USD, purchaser price",90
+541713,Research and Development in Nanotechnology,"kg CO2e/2022 USD, purchaser price",156
+541714,Research and Development in Biotechnology (except Nanobiotechnology),"kg CO2e/2022 USD, purchaser price",156
+541715,"Research and Development in the Physical, Engineering, and Life Sciences (except Nanotechnology and Biotechnology)","kg CO2e/2022 USD, purchaser price",156
+541720,Research and Development in the Social Sciences and Humanities,"kg CO2e/2022 USD, purchaser price",156
+541810,Advertising Agencies,"kg CO2e/2022 USD, purchaser price",85
+541820,Public Relations Agencies,"kg CO2e/2022 USD, purchaser price",85
+541830,Media Buying Agencies,"kg CO2e/2022 USD, purchaser price",85
+541840,Media Representatives,"kg CO2e/2022 USD, purchaser price",85
+541850,Outdoor Advertising,"kg CO2e/2022 USD, purchaser price",85
+541860,Direct Mail Advertising,"kg CO2e/2022 USD, purchaser price",85
+541870,Advertising Material Distribution Services,"kg CO2e/2022 USD, purchaser price",85
+541890,Other Services Related to Advertising,"kg CO2e/2022 USD, purchaser price",85
+541910,Marketing Research and Public Opinion Polling,"kg CO2e/2022 USD, purchaser price",80
+541921,"Photography Studios, Portrait","kg CO2e/2022 USD, purchaser price",125
+541922,Commercial Photography,"kg CO2e/2022 USD, purchaser price",125
+541930,Translation and Interpretation Services,"kg CO2e/2022 USD, purchaser price",80
+541940,Veterinary Services,"kg CO2e/2022 USD, purchaser price",127
+541990,"All Other Professional, Scientific, and Technical Services","kg CO2e/2022 USD, purchaser price",80
+551111,Offices of Bank Holding Companies,"kg CO2e/2022 USD, purchaser price",84
+551112,Offices of Other Holding Companies,"kg CO2e/2022 USD, purchaser price",84
+551114,"Corporate, Subsidiary, and Regional Managing Offices","kg CO2e/2022 USD, purchaser price",84
+561110,Office Administrative Services,"kg CO2e/2022 USD, purchaser price",100
+561210,Facilities Support Services,"kg CO2e/2022 USD, purchaser price",199
+561311,Employment Placement Agencies,"kg CO2e/2022 USD, purchaser price",51
+561312,Executive Search Services,"kg CO2e/2022 USD, purchaser price",51
+561320,Temporary Help Services,"kg CO2e/2022 USD, purchaser price",51
+561330,Professional Employer Organizations,"kg CO2e/2022 USD, purchaser price",51
+561410,Document Preparation Services,"kg CO2e/2022 USD, purchaser price",111
+561421,Telephone Answering Services,"kg CO2e/2022 USD, purchaser price",111
+561422,Telemarketing Bureaus and Other Contact Centers,"kg CO2e/2022 USD, purchaser price",111
+561431,Private Mail Centers,"kg CO2e/2022 USD, purchaser price",111
+561439,Other Business Service Centers (including Copy Shops),"kg CO2e/2022 USD, purchaser price",111
+561440,Collection Agencies,"kg CO2e/2022 USD, purchaser price",111
+561450,Credit Bureaus,"kg CO2e/2022 USD, purchaser price",111
+561491,Repossession Services,"kg CO2e/2022 USD, purchaser price",111
+561492,Court Reporting and Stenotype Services,"kg CO2e/2022 USD, purchaser price",111
+561499,All Other Business Support Services,"kg CO2e/2022 USD, purchaser price",111
+561510,Travel Agencies,"kg CO2e/2022 USD, purchaser price",88
+561520,Tour Operators,"kg CO2e/2022 USD, purchaser price",88
+561591,Convention and Visitors Bureaus,"kg CO2e/2022 USD, purchaser price",88
+561599,All Other Travel Arrangement and Reservation Services,"kg CO2e/2022 USD, purchaser price",88
+561611,Investigation Services,"kg CO2e/2022 USD, purchaser price",74
+561612,Security Guards and Patrol Services,"kg CO2e/2022 USD, purchaser price",74
+561613,Armored Car Services,"kg CO2e/2022 USD, purchaser price",74
+561621,Security Systems Services (except Locksmiths),"kg CO2e/2022 USD, purchaser price",74
+561622,Locksmiths,"kg CO2e/2022 USD, purchaser price",74
+561710,Exterminating and Pest Control Services,"kg CO2e/2022 USD, purchaser price",214
+561720,Janitorial Services,"kg CO2e/2022 USD, purchaser price",214
+561730,Landscaping Services,"kg CO2e/2022 USD, purchaser price",214
+561740,Carpet and Upholstery Cleaning Services,"kg CO2e/2022 USD, purchaser price",214
+561790,Other Services to Buildings and Dwellings,"kg CO2e/2022 USD, purchaser price",214
+561910,Packaging and Labeling Services,"kg CO2e/2022 USD, purchaser price",127
+561920,Convention and Trade Show Organizers,"kg CO2e/2022 USD, purchaser price",127
+561990,All Other Support Services,"kg CO2e/2022 USD, purchaser price",127
+562111,Solid Waste Collection,"kg CO2e/2022 USD, purchaser price",988
+562112,Hazardous Waste Collection,"kg CO2e/2022 USD, purchaser price",988
+562119,Other Waste Collection,"kg CO2e/2022 USD, purchaser price",988
+562211,Hazardous Waste Treatment and Disposal,"kg CO2e/2022 USD, purchaser price",988
+562212,Solid Waste Landfill,"kg CO2e/2022 USD, purchaser price",988
+562213,Solid Waste Combustors and Incinerators,"kg CO2e/2022 USD, purchaser price",988
+562219,Other Nonhazardous Waste Treatment and Disposal,"kg CO2e/2022 USD, purchaser price",988
+562910,Remediation Services,"kg CO2e/2022 USD, purchaser price",988
+562920,Materials Recovery Facilities,"kg CO2e/2022 USD, purchaser price",988
+562991,Septic Tank and Related Services,"kg CO2e/2022 USD, purchaser price",988
+562998,All Other Miscellaneous Waste Management Services,"kg CO2e/2022 USD, purchaser price",988
+611110,Elementary and Secondary Schools,"kg CO2e/2022 USD, purchaser price",186
+611210,Junior Colleges,"kg CO2e/2022 USD, purchaser price",140
+611310,"Colleges, Universities, and Professional Schools","kg CO2e/2022 USD, purchaser price",140
+611410,Business and Secretarial Schools,"kg CO2e/2022 USD, purchaser price",108
+611420,Computer Training,"kg CO2e/2022 USD, purchaser price",108
+611430,Professional and Management Development Training,"kg CO2e/2022 USD, purchaser price",108
+611511,Cosmetology and Barber Schools,"kg CO2e/2022 USD, purchaser price",108
+611512,Flight Training,"kg CO2e/2022 USD, purchaser price",108
+611513,Apprenticeship Training,"kg CO2e/2022 USD, purchaser price",108
+611519,Other Technical and Trade Schools,"kg CO2e/2022 USD, purchaser price",108
+611610,Fine Arts Schools,"kg CO2e/2022 USD, purchaser price",108
+611620,Sports and Recreation Instruction,"kg CO2e/2022 USD, purchaser price",108
+611630,Language Schools,"kg CO2e/2022 USD, purchaser price",108
+611691,Exam Preparation and Tutoring,"kg CO2e/2022 USD, purchaser price",108
+611692,Automobile Driving Schools,"kg CO2e/2022 USD, purchaser price",108
+611699,All Other Miscellaneous Schools and Instruction,"kg CO2e/2022 USD, purchaser price",108
+611710,Educational Support Services,"kg CO2e/2022 USD, purchaser price",108
+621111,Offices of Physicians (except Mental Health Specialists),"kg CO2e/2022 USD, purchaser price",83
+621112,"Offices of Physicians, Mental Health Specialists","kg CO2e/2022 USD, purchaser price",83
+621210,Offices of Dentists,"kg CO2e/2022 USD, purchaser price",56
+621310,Offices of Chiropractors,"kg CO2e/2022 USD, purchaser price",105
+621320,Offices of Optometrists,"kg CO2e/2022 USD, purchaser price",105
+621330,Offices of Mental Health Practitioners (except Physicians),"kg CO2e/2022 USD, purchaser price",105
+621340,"Offices of Physical, Occupational and Speech Therapists, and Audiologists","kg CO2e/2022 USD, purchaser price",105
+621391,Offices of Podiatrists,"kg CO2e/2022 USD, purchaser price",105
+621399,Offices of All Other Miscellaneous Health Practitioners,"kg CO2e/2022 USD, purchaser price",105
+621410,Family Planning Centers,"kg CO2e/2022 USD, purchaser price",96
+621420,Outpatient Mental Health and Substance Abuse Centers,"kg CO2e/2022 USD, purchaser price",96
+621491,HMO Medical Centers,"kg CO2e/2022 USD, purchaser price",96
+621492,Kidney Dialysis Centers,"kg CO2e/2022 USD, purchaser price",96
+621493,Freestanding Ambulatory Surgical and Emergency Centers,"kg CO2e/2022 USD, purchaser price",96
+621498,All Other Outpatient Care Centers,"kg CO2e/2022 USD, purchaser price",96
+621511,Medical Laboratories,"kg CO2e/2022 USD, purchaser price",92
+621512,Diagnostic Imaging Centers,"kg CO2e/2022 USD, purchaser price",92
+621610,Home Health Care Services,"kg CO2e/2022 USD, purchaser price",104
+621910,Ambulance Services,"kg CO2e/2022 USD, purchaser price",180
+621991,Blood and Organ Banks,"kg CO2e/2022 USD, purchaser price",180
+621999,All Other Miscellaneous Ambulatory Health Care Services,"kg CO2e/2022 USD, purchaser price",180
+622110,General Medical and Surgical Hospitals,"kg CO2e/2022 USD, purchaser price",145
+622210,Psychiatric and Substance Abuse Hospitals,"kg CO2e/2022 USD, purchaser price",145
+622310,Specialty (except Psychiatric and Substance Abuse) Hospitals,"kg CO2e/2022 USD, purchaser price",145
+623110,Nursing Care Facilities (Skilled Nursing Facilities),"kg CO2e/2022 USD, purchaser price",159
+623210,Residential Intellectual and Developmental Disability Facilities,"kg CO2e/2022 USD, purchaser price",129
+623220,Residential Mental Health and Substance Abuse Facilities,"kg CO2e/2022 USD, purchaser price",129
+623311,Continuing Care Retirement Communities,"kg CO2e/2022 USD, purchaser price",159
+623312,Assisted Living Facilities for the Elderly,"kg CO2e/2022 USD, purchaser price",159
+623990,Other Residential Care Facilities,"kg CO2e/2022 USD, purchaser price",129
+624110,Child and Youth Services,"kg CO2e/2022 USD, purchaser price",118
+624120,Services for the Elderly and Persons with Disabilities,"kg CO2e/2022 USD, purchaser price",118
+624190,Other Individual and Family Services,"kg CO2e/2022 USD, purchaser price",118
+624210,Community Food Services,"kg CO2e/2022 USD, purchaser price",217
+624221,Temporary Shelters,"kg CO2e/2022 USD, purchaser price",217
+624229,Other Community Housing Services,"kg CO2e/2022 USD, purchaser price",217
+624230,Emergency and Other Relief Services,"kg CO2e/2022 USD, purchaser price",217
+624310,Vocational Rehabilitation Services,"kg CO2e/2022 USD, purchaser price",217
+624410,Child Day Care Services,"kg CO2e/2022 USD, purchaser price",215
+711110,Theater Companies and Dinner Theaters,"kg CO2e/2022 USD, purchaser price",86
+711120,Dance Companies,"kg CO2e/2022 USD, purchaser price",86
+711130,Musical Groups and Artists,"kg CO2e/2022 USD, purchaser price",86
+711190,Other Performing Arts Companies,"kg CO2e/2022 USD, purchaser price",86
+711211,Sports Teams and Clubs,"kg CO2e/2022 USD, purchaser price",67
+711212,Racetracks,"kg CO2e/2022 USD, purchaser price",67
+711219,Other Spectator Sports,"kg CO2e/2022 USD, purchaser price",67
+711310,"Promoters of Performing Arts, Sports, and Similar Events with Facilities","kg CO2e/2022 USD, purchaser price",93
+711320,"Promoters of Performing Arts, Sports, and Similar Events without Facilities","kg CO2e/2022 USD, purchaser price",93
+711410,"Agents and Managers for Artists, Athletes, Entertainers, and Other Public Figures","kg CO2e/2022 USD, purchaser price",93
+711510,"Independent Artists, Writers, and Performers","kg CO2e/2022 USD, purchaser price",33
+712110,Museums,"kg CO2e/2022 USD, purchaser price",136
+712120,Historical Sites,"kg CO2e/2022 USD, purchaser price",136
+712130,Zoos and Botanical Gardens,"kg CO2e/2022 USD, purchaser price",136
+712190,Nature Parks and Other Similar Institutions,"kg CO2e/2022 USD, purchaser price",136
+713110,Amusement and Theme Parks,"kg CO2e/2022 USD, purchaser price",167
+713120,Amusement Arcades,"kg CO2e/2022 USD, purchaser price",167
+713210,Casinos (except Casino Hotels),"kg CO2e/2022 USD, purchaser price",174
+713290,Other Gambling Industries,"kg CO2e/2022 USD, purchaser price",174
+713910,Golf Courses and Country Clubs,"kg CO2e/2022 USD, purchaser price",235
+713920,Skiing Facilities,"kg CO2e/2022 USD, purchaser price",235
+713930,Marinas,"kg CO2e/2022 USD, purchaser price",235
+713940,Fitness and Recreational Sports Centers,"kg CO2e/2022 USD, purchaser price",235
+713950,Bowling Centers,"kg CO2e/2022 USD, purchaser price",235
+713990,All Other Amusement and Recreation Industries,"kg CO2e/2022 USD, purchaser price",235
+721110,Hotels (except Casino Hotels) and Motels,"kg CO2e/2022 USD, purchaser price",145
+721120,Casino Hotels,"kg CO2e/2022 USD, purchaser price",145
+721191,Bed-and-Breakfast Inns,"kg CO2e/2022 USD, purchaser price",145
+721199,All Other Traveler Accommodation,"kg CO2e/2022 USD, purchaser price",145
+721211,RV (Recreational Vehicle) Parks and Campgrounds,"kg CO2e/2022 USD, purchaser price",145
+721214,Recreational and Vacation Camps (except Campgrounds),"kg CO2e/2022 USD, purchaser price",145
+721310,"Rooming and Boarding Houses, Dormitories, and Workers' Camps","kg CO2e/2022 USD, purchaser price",145
+722310,Food Service Contractors,"kg CO2e/2022 USD, purchaser price",132
+722320,Caterers,"kg CO2e/2022 USD, purchaser price",132
+722330,Mobile Food Services,"kg CO2e/2022 USD, purchaser price",132
+722410,Drinking Places (Alcoholic Beverages),"kg CO2e/2022 USD, purchaser price",132
+722511,Full-Service Restaurants,"kg CO2e/2022 USD, purchaser price",194
+722513,Limited-Service Restaurants,"kg CO2e/2022 USD, purchaser price",255
+722514,"Cafeterias, Grill Buffets, and Buffets","kg CO2e/2022 USD, purchaser price",132
+722515,Snack and Nonalcoholic Beverage Bars,"kg CO2e/2022 USD, purchaser price",132
+811111,General Automotive Repair,"kg CO2e/2022 USD, purchaser price",103
+811112,Automotive Exhaust System Repair,"kg CO2e/2022 USD, purchaser price",103
+811113,Automotive Transmission Repair,"kg CO2e/2022 USD, purchaser price",103
+811118,Other Automotive Mechanical and Electrical Repair and Maintenance,"kg CO2e/2022 USD, purchaser price",103
+811121,"Automotive Body, Paint, and Interior Repair and Maintenance","kg CO2e/2022 USD, purchaser price",103
+811122,Automotive Glass Replacement Shops,"kg CO2e/2022 USD, purchaser price",103
+811191,Automotive Oil Change and Lubrication Shops,"kg CO2e/2022 USD, purchaser price",103
+811192,Car Washes,"kg CO2e/2022 USD, purchaser price",103
+811198,All Other Automotive Repair and Maintenance,"kg CO2e/2022 USD, purchaser price",103
+811211,Consumer Electronics Repair and Maintenance,"kg CO2e/2022 USD, purchaser price",76
+811212,Computer and Office Machine Repair and Maintenance,"kg CO2e/2022 USD, purchaser price",76
+811213,Communication Equipment Repair and Maintenance,"kg CO2e/2022 USD, purchaser price",76
+811219,Other Electronic and Precision Equipment Repair and Maintenance,"kg CO2e/2022 USD, purchaser price",76
+811310,Commercial and Industrial Machinery and Equipment (except Automotive and Electronic) Repair and Maintenance,"kg CO2e/2022 USD, purchaser price",136
+811411,Home and Garden Equipment Repair and Maintenance,"kg CO2e/2022 USD, purchaser price",113
+811412,Appliance Repair and Maintenance,"kg CO2e/2022 USD, purchaser price",113
+811420,Reupholstery and Furniture Repair,"kg CO2e/2022 USD, purchaser price",113
+811430,Footwear and Leather Goods Repair,"kg CO2e/2022 USD, purchaser price",113
+811490,Other Personal and Household Goods Repair and Maintenance,"kg CO2e/2022 USD, purchaser price",113
+812111,Barber Shops,"kg CO2e/2022 USD, purchaser price",125
+812112,Beauty Salons,"kg CO2e/2022 USD, purchaser price",125
+812113,Nail Salons,"kg CO2e/2022 USD, purchaser price",125
+812191,Diet and Weight Reducing Centers,"kg CO2e/2022 USD, purchaser price",125
+812199,Other Personal Care Services,"kg CO2e/2022 USD, purchaser price",125
+812210,Funeral Homes and Funeral Services,"kg CO2e/2022 USD, purchaser price",47
+812220,Cemeteries and Crematories,"kg CO2e/2022 USD, purchaser price",47
+812310,Coin-Operated Laundries and Drycleaners,"kg CO2e/2022 USD, purchaser price",158
+812320,Drycleaning and Laundry Services (except Coin-Operated),"kg CO2e/2022 USD, purchaser price",158
+812331,Linen Supply,"kg CO2e/2022 USD, purchaser price",158
+812332,Industrial Launderers,"kg CO2e/2022 USD, purchaser price",158
+812910,Pet Care (except Veterinary) Services,"kg CO2e/2022 USD, purchaser price",111
+812921,Photofinishing Laboratories (except One-Hour),"kg CO2e/2022 USD, purchaser price",111
+812922,One-Hour Photofinishing,"kg CO2e/2022 USD, purchaser price",111
+812930,Parking Lots and Garages,"kg CO2e/2022 USD, purchaser price",111
+812990,All Other Personal Services,"kg CO2e/2022 USD, purchaser price",111
+813110,Religious Organizations,"kg CO2e/2022 USD, purchaser price",76
+813211,Grantmaking Foundations,"kg CO2e/2022 USD, purchaser price",59
+813212,Voluntary Health Organizations,"kg CO2e/2022 USD, purchaser price",59
+813219,Other Grantmaking and Giving Services,"kg CO2e/2022 USD, purchaser price",59
+813311,Human Rights Organizations,"kg CO2e/2022 USD, purchaser price",59
+813312,"Environment, Conservation and Wildlife Organizations","kg CO2e/2022 USD, purchaser price",59
+813319,Other Social Advocacy Organizations,"kg CO2e/2022 USD, purchaser price",59
+813410,Civic and Social Organizations,"kg CO2e/2022 USD, purchaser price",128
+813910,Business Associations,"kg CO2e/2022 USD, purchaser price",128
+813920,Professional Organizations,"kg CO2e/2022 USD, purchaser price",128
+813930,Labor Unions and Similar Labor Organizations,"kg CO2e/2022 USD, purchaser price",128
+813940,Political Organizations,"kg CO2e/2022 USD, purchaser price",128
+813990,"Other Similar Organizations (except Business, Professional, Labor, and Political Organizations)","kg CO2e/2022 USD, purchaser price",128
