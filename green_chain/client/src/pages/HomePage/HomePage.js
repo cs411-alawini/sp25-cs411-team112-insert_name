@@ -14,12 +14,17 @@ function HomePage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [suggestions, setSuggestions] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
   
-  // Load suggestions when component mounts
+  // Load suggestions when search term changes
   useEffect(() => {
     const fetchSuggestions = async () => {
       try {
-        const response = await fetch(`${API_BASE_URL}/suggestions`);
+        const url = searchTerm 
+          ? `${API_BASE_URL}/suggestions?query=${encodeURIComponent(searchTerm)}`
+          : `${API_BASE_URL}/suggestions`;
+          
+        const response = await fetch(url);
         if (response.ok) {
           const data = await response.json();
           setSuggestions(data);
@@ -30,7 +35,7 @@ function HomePage() {
     };
     
     fetchSuggestions();
-  }, []);
+  }, [searchTerm]);
   
   // No debouncing here - we want the search to happen only on explicit user action
   const handleSearch = useCallback(async (category) => {
@@ -78,7 +83,8 @@ function HomePage() {
         <SearchBar 
           onSearch={handleSearch} 
           isLoading={isLoading} 
-          suggestions={suggestions} 
+          suggestions={suggestions}
+          onSearchTermChange={setSearchTerm}
         />
         
         <div className="results-container">
@@ -97,7 +103,7 @@ function HomePage() {
           
           {!isLoading && !error && notFound && (
             <NotFound suggestions={suggestions} onSuggestionClick={(suggestion) => {
-              // Just set the suggestion but don't trigger search automatically
+              setSearchTerm(suggestion);
             }} />
           )}
         </div>

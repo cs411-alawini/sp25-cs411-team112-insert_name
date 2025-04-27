@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import './SearchBar.css';
 
-function SearchBar({ onSearch, isLoading, suggestions = [] }) {
+function SearchBar({ onSearch, isLoading, suggestions = [], onSearchTermChange }) {
   const [searchTerm, setSearchTerm] = useState('');
   const [isFocused, setIsFocused] = useState(false);
   const inputRef = useRef(null);
@@ -16,12 +16,12 @@ function SearchBar({ onSearch, isLoading, suggestions = [] }) {
   const handleChange = (e) => {
     const value = e.target.value;
     setSearchTerm(value);
-    // No auto-search here - we'll only search when the button is clicked
+    onSearchTermChange(value);
   };
   
   const handleSuggestionClick = (suggestion) => {
     setSearchTerm(suggestion);
-    // We don't auto-search here either
+    onSearchTermChange(suggestion);
     setIsFocused(false);
   };
   
