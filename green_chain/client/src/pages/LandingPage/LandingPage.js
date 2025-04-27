@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import SearchBar from '../../components/SearchBar/SearchBar';
 import Header from '../../components/Header/Header';
+import ScenarioPlanner from '../ScenarioPlanner/ScenerioPlanner';
 import './LandingPage.css';
 
 const API_BASE_URL = 'http://localhost:3007/api';
@@ -12,6 +13,7 @@ const LandingPage = () => {
   const [suggestions, setSuggestions] = useState([]);
   const [categoryData, setCategoryData] = useState([]);
   const [highRiskCategories, setHighRiskCategories] = useState(0);
+  const [showScenarioPlanner, setShowScenarioPlanner] = useState(false);
   
   // Load emissions data for the chart
   useEffect(() => {
@@ -81,10 +83,25 @@ const LandingPage = () => {
     }
   };
 
+  // Toggle scenario planner view
+  const handleExploreFootprint = () => {
+    setShowScenarioPlanner(true);
+  };
+
+  const handleBackToDashboard = () => {
+    setShowScenarioPlanner(false);
+  };
+
+  // If showing scenario planner, render that instead
+  if (showScenarioPlanner) {
+    return <ScenarioPlanner onBack={handleBackToDashboard} />;
+  }
+
   return (
-    <div className="landing-page">
-      <div className="landing-container">
-        <Header />
+    <div className="fullscreen-landing-page">
+      <div className="fullscreen-header">
+        <h1>Find out your carbon footprint</h1>
+        <p className="subtitle">Search for a category of items to see its greenhouse gas emissions data</p>
         
         <div className="search-section">
           <SearchBar 
@@ -94,64 +111,71 @@ const LandingPage = () => {
             onSearchTermChange={setSearchTerm}
           />
         </div>
-        
-        <div className="dashboard-section">
-          <div className="dashboard-row">
-            <div className="dashboard-card total-emission">
-              <h3>Total Emission</h3>
-              <div className="card-content">
-                <div className="metric">{Math.round(categoryData.reduce((sum, cat) => sum + cat.emissions, 0))}</div>
-                <div className="trend-icon">↗</div>
-              </div>
-            </div>
-            
-            <div className="dashboard-card high-risk">
-              <h3>High Risk Categories</h3>
-              <div className="card-content">
-                <div className="metric">{highRiskCategories}</div>
-                <div className="warning-icon">⚠</div>
-              </div>
+      </div>
+      
+      <div className="fullscreen-dashboard">
+        <div className="metrics-column">
+          <div className="dashboard-card total-emission">
+            <h3>Total Emission</h3>
+            <div className="card-content">
+              <div className="metric">{Math.round(categoryData.reduce((sum, cat) => sum + cat.emissions, 0))}</div>
+              <div className="trend-icon">↗</div>
             </div>
           </div>
           
-          <div className="data-visualization-section">
-            <div className="chart-container">
-              <h3>Emissions by Category</h3>
-              <ResponsiveContainer width="100%" height={250}>
-                <BarChart data={categoryData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="category" />
-                  <YAxis />
-                  <Tooltip />
-                  <Bar dataKey="emissions" fill="#27ae60" />
-                </BarChart>
-              </ResponsiveContainer>
+          <div className="dashboard-card high-risk">
+            <h3>High Risk Categories</h3>
+            <div className="card-content">
+              <div className="metric">{highRiskCategories}</div>
+              <div className="warning-icon">⚠</div>
             </div>
-            
-            <div className="risk-overview-container">
-              <h3>Category Risk Overview</h3>
-              <div className="risk-table">
-                <div className="risk-header">
-                  <div className="risk-cell">Category</div>
-                  <div className="risk-cell">Emissions</div>
-                  <div className="risk-cell">Risk Level</div>
-                </div>
-                {categoryData.map((cat, index) => (
-                  <div className="risk-row" key={index}>
-                    <div className="risk-cell">{cat.category}</div>
-                    <div className="risk-cell">{cat.emissions}</div>
-                    <div className="risk-cell">{cat.riskLevel}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
+          </div>
+          
+          <div className="action-button-container">
+            <button 
+              className="carbon-footprint-btn large"
+              onClick={handleExploreFootprint}
+            >
+              Explore Your Carbon Footprint
+            </button>
           </div>
         </div>
         
-        <div className="action-section">
-          <button className="carbon-footprint-btn">
-            Example Carbon Footprint
-          </button>
+        <div className="visualization-column">
+          <div className="chart-container">
+            <h3>Emissions by Category</h3>
+            <ResponsiveContainer width="100%" height={250}>
+              <BarChart data={categoryData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="category" />
+                <YAxis />
+                <Tooltip />
+                <Bar dataKey="emissions" fill="#27ae60" />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+          
+          <div className="risk-overview-container">
+            <h3>Category Risk Overview</h3>
+            <div className="risk-table">
+              <div className="risk-header">
+                <div className="risk-cell">Category</div>
+                <div className="risk-cell">Emissions</div>
+                <div className="risk-cell">Risk Level</div>
+              </div>
+              {categoryData.map((cat, index) => (
+                <div className="risk-row" key={index}>
+                  <div className="risk-cell">{cat.category}</div>
+                  <div className="risk-cell">{cat.emissions}</div>
+                  <div className="risk-cell">
+                    <span className={`risk-level ${cat.riskLevel}`}>
+                      {cat.riskLevel}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </div>
