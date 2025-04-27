@@ -32,6 +32,30 @@
   margin: 0 auto;
 }
 
+/* Search Results Container */
+.search-results-container {
+  width: 100%;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.back-to-dashboard {
+  background-color: transparent;
+  border: 1px solid #4CAF50;
+  color: #4CAF50;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  margin-bottom: 2rem;
+  transition: all 0.2s;
+}
+
+.back-to-dashboard:hover {
+  background-color: #e8f5e9;
+}
+
 /* Dashboard layout */
 .fullscreen-dashboard {
   display: flex;
@@ -238,5 +262,9 @@
   
   .visualization-column {
     gap: 1rem;
+  }
+  
+  .search-results-container {
+    padding: 1rem;
   }
 }
