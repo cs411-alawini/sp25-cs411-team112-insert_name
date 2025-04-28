@@ -53,34 +53,36 @@ app.get('/api/', (req, res) => {
 // Get all categories (paginated)
 app.get('/api/categories', async (req, res) => {
   try {
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 20;
-    const offset = (page - 1) * limit;
-    
+    let sql = 'SELECT * FROM Category ORDER BY Category_Name';
+    const rawPage = parseInt(req.query.page, 10);
+    const rawLimit = parseInt(req.query.limit, 10);
+    const page = Number.isNaN(rawPage) ? 1 : rawPage;
+    const limit = Number.isNaN(rawLimit) ? null : rawLimit;
+
+    if (limit) {
+      const offset = (page - 1) * limit;
+      sql += ` LIMIT ${limit} OFFSET ${offset}`;
+    }
+
     const connection = await pool.getConnection();
     try {
       // Get total count
       const [countResult] = await connection.execute('SELECT COUNT(*) as total FROM Category');
       const total = countResult[0].total;
-      
-      // Get paginated results
-      const [categories] = await connection.execute(
-        'SELECT * FROM Category ORDER BY Category_Name LIMIT ? OFFSET ?',
-        [limit, offset]
-      );
-      
-      const results = {
+
+      // Get (possibly paginated) results
+      const [categories] = await connection.query(sql);
+
+      res.json({
         total,
-        page,
-        limit,
+        page: limit ? page : 1,
+        limit: limit || total,
         data: categories.map(cat => ({
           Category_ID: cat.Category_ID,
           Category_Name: cat.Category_Name,
           NAICS_Code: cat.NAICS_Code
-        }))
-      };
-      
-      res.json(results);
+        })),
+      });
     } finally {
       connection.release();
     }
@@ -796,6 +798,7 @@ app.post('/api/users/:id/bulk-transaction', express.json(), async (req, res) => 
 app.get('/api/users/:id/carbon-insights', async (req, res) => {
   try {
     const userId = req.params.id;
+    console.log('Fetching carbon insights for user:', userId);
     
     const connection = await pool.getConnection();
     try {
