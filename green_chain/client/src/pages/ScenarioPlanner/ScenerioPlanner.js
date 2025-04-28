@@ -20,6 +20,8 @@ const ScenarioPlanner = ({ onBack }) => {
   const [emissionsByPrice, setEmissionsByPrice] = useState([]);
   const [emissionsByCategory, setEmissionsByCategory] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [editingTransaction, setEditingTransaction] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
   
   // Load initial data
   useEffect(() => {
@@ -174,60 +176,108 @@ const ScenarioPlanner = ({ onBack }) => {
     setEmissionsByCategory(updatedCategoryData);
   };
   
-  // NEW FUNCTION: Handle bulk submission of transactions
-  const handleBulkSubmit = async () => {
-    if (transactions.length === 0) {
-      alert('Please add at least one transaction first');
+  // Handle edit button click
+  const handleEditClick = (transaction) => {
+    setEditingTransaction(transaction);
+    setNewTransaction({
+      category: transaction.category,
+      amount: transaction.amount,
+      date: transaction.date
+    });
+    setIsEditing(true);
+  };
+
+  // Handle update transaction
+  const handleUpdateTransaction = () => {
+    if (!editingTransaction) return;
+    
+    if (!newTransaction.category || !newTransaction.amount) {
+      alert('Please select a category and enter an amount');
       return;
     }
     
-    setIsLoading(true);
+    const category = categories.find(c => c.name === newTransaction.category);
+    if (!category) return;
     
-    try {
-      // Format transactions for the API
-      const formattedTransactions = transactions.map(tx => {
-        // Find category ID from name
-        const category = categories.find(c => c.name === tx.category);
-        return {
-          category_id: category ? category.id : null,
-          amount: tx.amount,
-          date: tx.date
-        };
-      }).filter(tx => tx.category_id !== null);
-      
-      if (formattedTransactions.length === 0) {
-        alert('No valid transactions to submit');
-        setIsLoading(false);
-        return;
+    const emissions = Math.round(newTransaction.amount * category.emissionFactor);
+    
+    // Create updated transaction object
+    const updatedTransaction = {
+      ...editingTransaction,
+      category: newTransaction.category,
+      amount: parseFloat(newTransaction.amount),
+      date: newTransaction.date,
+      emissions: emissions
+    };
+    
+    // Update in local state
+    const updatedTransactions = transactions.map(t => 
+      t.id === editingTransaction.id ? updatedTransaction : t
+    );
+    setTransactions(updatedTransactions);
+    
+    // Recalculate total emissions
+    const oldEmissions = editingTransaction.emissions;
+    const emissionsDifference = emissions - oldEmissions;
+    setTotalEmissions(totalEmissions + emissionsDifference);
+    
+    // Update emissions by category chart
+    const updatedCategoryData = [...emissionsByCategory];
+    
+    // If category changed, handle both old and new categories
+    if (editingTransaction.category !== updatedTransaction.category) {
+      // Reduce from old category
+      const oldCategoryIndex = updatedCategoryData.findIndex(c => c.category === editingTransaction.category);
+      if (oldCategoryIndex !== -1) {
+        updatedCategoryData[oldCategoryIndex].emissions -= oldEmissions;
+        if (updatedCategoryData[oldCategoryIndex].emissions <= 0) {
+          updatedCategoryData.splice(oldCategoryIndex, 1);
+        }
       }
       
-      // Call the transaction API endpoint
-      const response = await fetch(`${API_BASE_URL}/users/${DEFAULT_USER_ID}/bulk-transaction`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ transactions: formattedTransactions })
-      });
-      
-      if (!response.ok) {
-        throw new Error('Failed to submit transactions');
+      // Add to new category
+      const newCategoryIndex = updatedCategoryData.findIndex(c => c.category === updatedTransaction.category);
+      if (newCategoryIndex !== -1) {
+        updatedCategoryData[newCategoryIndex].emissions += emissions;
+      } else {
+        updatedCategoryData.push({
+          category: updatedTransaction.category,
+          emissions: emissions
+        });
       }
-      
-      const result = await response.json();
-      alert(`Successfully submitted ${result.transactions.length} transactions!`);
-      
-      // Show insights after successful submission
-      setShowInsights(true);
-    } catch (error) {
-      console.error('Error submitting transactions:', error);
-      alert('Error submitting transactions: ' + error.message);
-    } finally {
-      setIsLoading(false);
+    } else {
+      // Just update emissions amount for the same category
+      const categoryIndex = updatedCategoryData.findIndex(c => c.category === updatedTransaction.category);
+      if (categoryIndex !== -1) {
+        updatedCategoryData[categoryIndex].emissions = 
+          updatedCategoryData[categoryIndex].emissions - oldEmissions + emissions;
+      }
     }
+    
+    setEmissionsByCategory(updatedCategoryData);
+    
+    // Reset form and editing state
+    setNewTransaction({
+      category: '',
+      amount: '',
+      date: new Date().toISOString().split('T')[0]
+    });
+    setEditingTransaction(null);
+    setIsEditing(false);
+  };
+
+  // Cancel editing
+  const handleCancelEdit = () => {
+    setEditingTransaction(null);
+    setIsEditing(false);
+    setNewTransaction({
+      category: '',
+      amount: '',
+      date: new Date().toISOString().split('T')[0]
+    });
   };
   
-  // NEW FUNCTION: Toggle insights view
+  // Toggle insights view
   const toggleInsights = () => {
     setShowInsights(!showInsights);
   };
@@ -283,6 +333,12 @@ const ScenarioPlanner = ({ onBack }) => {
                         <div className="table-cell">{transaction.emissions}</div>
                         <div className="table-cell">
                           <button 
+                            className="edit-btn"
+                            onClick={() => handleEditClick(transaction)}
+                          >
+                            Edit
+                          </button>
+                          <button 
                             className="delete-btn"
                             onClick={() => handleDeleteTransaction(transaction.id)}
                           >
@@ -321,24 +377,32 @@ const ScenarioPlanner = ({ onBack }) => {
                       onChange={(e) => setNewTransaction({...newTransaction, date: e.target.value})}
                     />
                     
-                    <button 
-                      className="add-btn"
-                      onClick={handleAddTransaction}
-                    >
-                      Add Transaction
-                    </button>
+                    {isEditing ? (
+                      <>
+                        <button 
+                          className="add-btn update-btn"
+                          onClick={handleUpdateTransaction}
+                        >
+                          Update Transaction
+                        </button>
+                        <button 
+                          className="add-btn cancel-btn"
+                          onClick={handleCancelEdit}
+                        >
+                          Cancel
+                        </button>
+                      </>
+                    ) : (
+                      <button 
+                        className="add-btn"
+                        onClick={handleAddTransaction}
+                      >
+                        Add Transaction
+                      </button>
+                    )}
                   </div>
                   
-                  {/* NEW: Database operation buttons */}
                   <div style={{ marginTop: '20px' }}>
-                    <button 
-                      className="add-btn"
-                      onClick={handleBulkSubmit}
-                      style={{ width: '100%', marginTop: '10px', backgroundColor: '#2980b9' }}
-                    >
-                      Submit All Transactions
-                    </button>
-                    
                     <button 
                       className="add-btn"
                       onClick={toggleInsights}
