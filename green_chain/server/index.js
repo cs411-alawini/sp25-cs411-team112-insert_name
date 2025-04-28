@@ -474,73 +474,6 @@ app.delete('/api/users/:userId/transactions/:transactionId', async (req, res) =>
   }
 });
 
-// 1. Create database tables with constraints
-async function createTables() {
-  const connection = await pool.getConnection();
-  try {
-    // Users Table with constraints
-    await connection.query(`
-      CREATE TABLE IF NOT EXISTS Users (
-        User_ID INT AUTO_INCREMENT PRIMARY KEY,
-        Username VARCHAR(50) NOT NULL UNIQUE,
-        Email VARCHAR(100) NOT NULL UNIQUE,
-        Password_Hash VARCHAR(255) NOT NULL,
-        Created_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        Monthly_Emissions DECIMAL(10,2) DEFAULT 0,
-        Total_Emissions DECIMAL(10,2) DEFAULT 0,
-        CHECK (LENGTH(Username) >= 3),
-        CHECK (Email LIKE '%@%.%')
-      )
-    `);
-
-    // Industries Table with constraints
-    await connection.query(`
-      CREATE TABLE IF NOT EXISTS Industries (
-        NAICS_Code VARCHAR(10) NOT NULL PRIMARY KEY,
-        Title VARCHAR(255) NOT NULL,
-        Description TEXT,
-        Emissions DECIMAL(10,2),
-        Created_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        CHECK (Emissions >= 0)
-      )
-    `);
-
-    // Category Table with constraints (including foreign key)
-    await connection.query(`
-      CREATE TABLE IF NOT EXISTS Category (
-        Category_ID INT AUTO_INCREMENT PRIMARY KEY,
-        Category_Name VARCHAR(100) NOT NULL,
-        NAICS_Code VARCHAR(10) NOT NULL,
-        Created_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (NAICS_Code) REFERENCES Industries(NAICS_Code),
-        UNIQUE (Category_Name, NAICS_Code)
-      )
-    `);
-
-    // Orders Table with constraints
-    await connection.query(`
-      CREATE TABLE IF NOT EXISTS Orders (
-        Order_ID INT AUTO_INCREMENT PRIMARY KEY,
-        Customer_ID INT NOT NULL,
-        Category_ID INT NOT NULL,
-        Order_Date DATE NOT NULL,
-        Quantity INT NOT NULL DEFAULT 1,
-        Total DECIMAL(10,2) NOT NULL,
-        Created_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (Customer_ID) REFERENCES Users(User_ID) ON DELETE CASCADE,
-        FOREIGN KEY (Category_ID) REFERENCES Category(Category_ID),
-        CHECK (Quantity > 0),
-        CHECK (Total > 0)
-      )
-    `);
-
-    console.log('Database tables created successfully');
-  } catch (err) {
-    console.error('Error creating database tables:', err);
-  } finally {
-    connection.release();
-  }
-}
 
 // 2. Create database triggers
 async function createTriggers() {
@@ -831,7 +764,6 @@ app.get('/api/users/:id/carbon-insights', async (req, res) => {
 // 6. Update the initialization section
 initializeDatabase()
   .then(async () => {
-    await createTables();
     await createTriggers();
     await createStoredProcedures();
     app.listen(PORT, () => {
@@ -886,14 +818,19 @@ initializeDatabase()
           // const hashedPassword = await bcrypt.hash(password, 10);
           const hashedPassword = password; // For demo only
           
+          // Find the current max User_ID
+          const [rows] = await connection.execute('SELECT MAX(User_ID) AS maxId FROM Users');
+          const maxId = rows[0].maxId || 0;
+          const newUserId = maxId + 1;
+
           // Create the user
           const [result] = await connection.execute(
-            'INSERT INTO Users (Username, Email, Password_Hash) VALUES (?, ?, ?)',
-            [username, email, hashedPassword]
+            'INSERT INTO Users (User_ID, Username, Email, Password) VALUES (?, ?, ?, ?)',
+            [newUserId, username, email, hashedPassword]
           );
-          
+
           return res.status(201).json({
-            id: result.insertId,
+            id: newUserId,
             username,
             email,
             message: 'User created successfully'
