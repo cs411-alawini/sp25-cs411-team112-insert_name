@@ -84,7 +84,6 @@ const ResultCard = memo(({ result }) => {
           </div>
         )}
         
-        <button className="explore-btn">Explore More Details</button>
       </div>
     </div>
   );

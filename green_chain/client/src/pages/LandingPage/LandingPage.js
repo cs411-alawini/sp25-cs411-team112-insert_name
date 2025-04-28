@@ -21,28 +21,28 @@ const LandingPage = () => {
   const [highRiskCategories, setHighRiskCategories] = useState(0);
   const [showScenarioPlanner, setShowScenarioPlanner] = useState(false);
   
-  // Load emissions data for the chart
+  // Load real emissions data for the chart
   useEffect(() => {
     const fetchEmissionsData = async () => {
       try {
-        // In a real implementation, you would fetch this data from your API
-        // For now, we'll use mock data that matches your sketch
-        const mockCategories = [
-          { category: 'a', emissions: 340, riskLevel: 'high' },
-          { category: 'b', emissions: 580, riskLevel: 'low' },
-          { category: 'c', emissions: 420, riskLevel: 'medium' },
-          { category: 'd', emissions: 490, riskLevel: 'low' },
-          { category: 'e', emissions: 380, riskLevel: 'medium' },
-          { category: 'f', emissions: 520, riskLevel: 'high' }
-        ];
+        // Replace mock data with API call to get real data
+        setIsLoading(true);
+        const response = await fetch(`${API_BASE_URL}/dashboard/emissions`);
         
-        setCategoryData(mockCategories);
-        
-        // Count high risk categories
-        const highRiskCount = mockCategories.filter(cat => cat.riskLevel === 'high').length;
-        setHighRiskCategories(highRiskCount);
+        if (response.ok) {
+          const data = await response.json();
+          setCategoryData(data);
+          
+          // Count high risk categories from real data
+          const highRiskCount = data.filter(cat => cat.riskLevel === 'high').length;
+          setHighRiskCategories(highRiskCount);
+        } else {
+          console.error('Error fetching emissions data:', await response.text());
+        }
+        setIsLoading(false);
       } catch (err) {
         console.error('Error fetching emissions data:', err);
+        setIsLoading(false);
       }
     };
     
@@ -156,7 +156,7 @@ const LandingPage = () => {
             <CategoryResults results={searchResults} />
           ) : (
             <NotFound 
-              suggestions={['Sporting Goods', 'Electronics', 'Footwear', 'Clothing']} 
+              suggestions={suggestions.slice(0, 5)} 
               onSuggestionClick={handleSuggestionClick}
             />
           )}
@@ -166,69 +166,75 @@ const LandingPage = () => {
       {/* Dashboard */}
       {showDashboard && (
         <div className="fullscreen-dashboard">
-          <div className="metrics-column">
-            <div className="dashboard-card total-emission">
-              <h3>Total Emission</h3>
-              <div className="card-content">
-                <div className="metric">{Math.round(categoryData.reduce((sum, cat) => sum + cat.emissions, 0))}</div>
-                <div className="trend-icon">↗</div>
-              </div>
-            </div>
-            
-            <div className="dashboard-card high-risk">
-              <h3>High Risk Categories</h3>
-              <div className="card-content">
-                <div className="metric">{highRiskCategories}</div>
-                <div className="warning-icon">⚠</div>
-              </div>
-            </div>
-            
-            <div className="action-button-container">
-              <button 
-                className="carbon-footprint-btn large"
-                onClick={handleExploreFootprint}
-              >
-                Explore Your Carbon Footprint
-              </button>
-            </div>
-          </div>
-          
-          <div className="visualization-column">
-            <div className="chart-container">
-              <h3>Emissions by Category</h3>
-              <ResponsiveContainer width="100%" height={250}>
-                <BarChart data={categoryData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="category" />
-                  <YAxis />
-                  <Tooltip />
-                  <Bar dataKey="emissions" fill="#27ae60" />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-            
-            <div className="risk-overview-container">
-              <h3>Category Risk Overview</h3>
-              <div className="risk-table">
-                <div className="risk-header">
-                  <div className="risk-cell">Category</div>
-                  <div className="risk-cell">Emissions</div>
-                  <div className="risk-cell">Risk Level</div>
-                </div>
-                {categoryData.map((cat, index) => (
-                  <div className="risk-row" key={index}>
-                    <div className="risk-cell">{cat.category}</div>
-                    <div className="risk-cell">{cat.emissions}</div>
-                    <div className="risk-cell">
-                      <span className={`risk-level ${cat.riskLevel}`}>
-                        {cat.riskLevel}
-                      </span>
-                    </div>
+          {isLoading ? (
+            <LoadingSpinner message="Loading dashboard data..." />
+          ) : (
+            <>
+              <div className="metrics-column">
+                <div className="dashboard-card total-emission">
+                  <h3>Total Emission</h3>
+                  <div className="card-content">
+                    <div className="metric">{Math.round(categoryData.reduce((sum, cat) => sum + cat.emissions, 0))}</div>
+                    <div className="trend-icon">↗</div>
                   </div>
-                ))}
+                </div>
+                
+                <div className="dashboard-card high-risk">
+                  <h3>High Risk Categories</h3>
+                  <div className="card-content">
+                    <div className="metric">{highRiskCategories}</div>
+                    <div className="warning-icon">⚠</div>
+                  </div>
+                </div>
+                
+                <div className="action-button-container">
+                  <button 
+                    className="carbon-footprint-btn large"
+                    onClick={handleExploreFootprint}
+                  >
+                    Explore Your Carbon Footprint
+                  </button>
+                </div>
               </div>
-            </div>
-          </div>
+              
+              <div className="visualization-column">
+                <div className="chart-container">
+                  <h3>Emissions by Category</h3>
+                  <ResponsiveContainer width="100%" height={250}>
+                    <BarChart data={categoryData}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="category" />
+                      <YAxis />
+                      <Tooltip />
+                      <Bar dataKey="emissions" fill="#27ae60" />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+                
+                <div className="risk-overview-container">
+                  <h3>Category Risk Overview</h3>
+                  <div className="risk-table">
+                    <div className="risk-header">
+                      <div className="risk-cell">Category</div>
+                      <div className="risk-cell">Emissions</div>
+                      <div className="risk-cell">Risk Level</div>
+                    </div>
+                    {categoryData.map((cat, index) => (
+                      <div className="risk-row" key={index}>
+                        <div className="risk-cell">{cat.category}</div>
+                        <div className="risk-cell">{cat.emissions}</div>
+                        <div className="risk-cell">
+                          <span className={`risk-level ${cat.riskLevel}`}>
+                            {cat.riskLevel}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
         </div>
       )}
     </div>

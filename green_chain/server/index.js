@@ -232,6 +232,246 @@ app.get('/api/suggestions', async (req, res) => {
   }
 });
 
+// NEW ENDPOINT: Get dashboard emissions data
+app.get('/api/dashboard/emissions', async (req, res) => {
+  try {
+    const connection = await pool.getConnection();
+    try {
+      // Query to get emissions by category with calculated risk levels
+      const [results] = await connection.execute(`
+        SELECT 
+          c.Category_Name as category,
+          i.Emissions as emissions,
+          CASE 
+            WHEN i.Emissions >= 500 THEN 'high'
+            WHEN i.Emissions >= 300 THEN 'medium'
+            WHEN i.Emissions IS NOT NULL THEN 'low'
+            ELSE 'unknown'
+          END as riskLevel
+        FROM 
+          Category c
+        JOIN 
+          Industries i ON c.NAICS_Code = i.NAICS_Code
+        WHERE
+          i.Emissions IS NOT NULL
+        ORDER BY 
+          i.Emissions DESC
+        LIMIT 10
+      `);
+      
+      res.json(results);
+    } finally {
+      connection.release();
+    }
+  } catch (err) {
+    console.error('Error retrieving dashboard emissions:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// NEW ENDPOINT: Get user by ID
+app.get('/api/users/:id', async (req, res) => {
+  try {
+    const connection = await pool.getConnection();
+    try {
+      const [users] = await connection.execute(
+        'SELECT * FROM Users WHERE User_ID = ?',
+        [req.params.id]
+      );
+      
+      if (users.length === 0) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+      
+      const user = users[0];
+      res.json({
+        User_ID: user.User_ID,
+        Username: user.Username,
+        Email: user.Email
+      });
+    } finally {
+      connection.release();
+    }
+  } catch (err) {
+    console.error('Error retrieving user:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// NEW ENDPOINT: Get user transactions
+app.get('/api/users/:id/transactions', async (req, res) => {
+  try {
+    const connection = await pool.getConnection();
+    try {
+      // Join with Categories to get category names and Industries to get emission data
+      const [transactions] = await connection.execute(`
+        SELECT 
+          o.Order_ID as id,
+          c.Category_Name as category,
+          o.Total as amount,
+          o.Order_Date as date,
+          (o.Total * i.Emissions / 100) as emissions
+        FROM 
+          Orders o
+        JOIN 
+          Category c ON o.Category_ID = c.Category_ID
+        JOIN 
+          Industries i ON c.NAICS_Code = i.NAICS_Code
+        WHERE 
+          o.Customer_ID = ?
+        ORDER BY 
+          o.Order_Date DESC
+      `, [req.params.id]);
+      
+      res.json(transactions);
+    } finally {
+      connection.release();
+    }
+  } catch (err) {
+    console.error('Error retrieving user transactions:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// NEW ENDPOINT: Add a new transaction
+app.post('/api/users/:id/transactions', express.json(), async (req, res) => {
+  try {
+    const { category_id, amount, date } = req.body;
+    
+    if (!category_id || !amount) {
+      return res.status(400).json({ error: 'Category ID and amount are required' });
+    }
+    
+    const connection = await pool.getConnection();
+    try {
+      // Get the emission factor for this category
+      const [categories] = await connection.execute(`
+        SELECT c.Category_Name, i.Emissions 
+        FROM Category c
+        JOIN Industries i ON c.NAICS_Code = i.NAICS_Code
+        WHERE c.Category_ID = ?
+      `, [category_id]);
+      
+      if (categories.length === 0) {
+        return res.status(404).json({ error: 'Category not found' });
+      }
+      
+      const category = categories[0];
+      const emissions = (amount * category.Emissions / 100);
+      
+      // Insert the transaction
+      const [result] = await connection.execute(`
+        INSERT INTO Orders 
+        (Customer_ID, Category_ID, Order_Date, Quantity, Total) 
+        VALUES (?, ?, ?, ?, ?)
+      `, [req.params.id, category_id, date, 1, amount]);
+      
+      res.status(201).json({
+        id: result.insertId,
+        category: category.Category_Name,
+        amount,
+        date,
+        emissions
+      });
+    } finally {
+      connection.release();
+    }
+  } catch (err) {
+    console.error('Error adding transaction:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// NEW ENDPOINT: Update a transaction
+app.put('/api/users/:userId/transactions/:transactionId', express.json(), async (req, res) => {
+  try {
+    const { amount, date } = req.body;
+    
+    if (!amount) {
+      return res.status(400).json({ error: 'Amount is required' });
+    }
+    
+    const connection = await pool.getConnection();
+    try {
+      // Verify the transaction belongs to this user
+      const [transactions] = await connection.execute(
+        'SELECT Order_ID FROM Orders WHERE Order_ID = ? AND Customer_ID = ?',
+        [req.params.transactionId, req.params.userId]
+      );
+      
+      if (transactions.length === 0) {
+        return res.status(404).json({ error: 'Transaction not found or does not belong to this user' });
+      }
+      
+      // Update the transaction
+      await connection.execute(
+        'UPDATE Orders SET Total = ?, Order_Date = ? WHERE Order_ID = ?',
+        [amount, date, req.params.transactionId]
+      );
+      
+      // Get the updated transaction data
+      const [updatedTransaction] = await connection.execute(`
+        SELECT 
+          o.Order_ID as id,
+          c.Category_Name as category,
+          o.Total as amount,
+          o.Order_Date as date,
+          (o.Total * i.Emissions / 100) as emissions
+        FROM 
+          Orders o
+        JOIN 
+          Category c ON o.Category_ID = c.Category_ID
+        JOIN 
+          Industries i ON c.NAICS_Code = i.NAICS_Code
+        WHERE 
+          o.Order_ID = ?
+      `, [req.params.transactionId]);
+      
+      if (updatedTransaction.length === 0) {
+        return res.status(404).json({ error: 'Transaction not found after update' });
+      }
+      
+      res.json(updatedTransaction[0]);
+    } finally {
+      connection.release();
+    }
+  } catch (err) {
+    console.error('Error updating transaction:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// NEW ENDPOINT: Delete a transaction
+app.delete('/api/users/:userId/transactions/:transactionId', async (req, res) => {
+  try {
+    const connection = await pool.getConnection();
+    try {
+      // Verify the transaction belongs to this user
+      const [transactions] = await connection.execute(
+        'SELECT Order_ID FROM Orders WHERE Order_ID = ? AND Customer_ID = ?',
+        [req.params.transactionId, req.params.userId]
+      );
+      
+      if (transactions.length === 0) {
+        return res.status(404).json({ error: 'Transaction not found or does not belong to this user' });
+      }
+      
+      // Delete the transaction
+      await connection.execute(
+        'DELETE FROM Orders WHERE Order_ID = ?',
+        [req.params.transactionId]
+      );
+      
+      res.status(204).send();
+    } finally {
+      connection.release();
+    }
+  } catch (err) {
+    console.error('Error deleting transaction:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 // Initialize database and start server
 initializeDatabase()
   .then(() => {

@@ -1,2 +1,2 @@
-import ScenarioPlanner from './ScenarioPlanner';
+import ScenarioPlanner from './ScenerioPlanner';
 export default ScenarioPlanner;
