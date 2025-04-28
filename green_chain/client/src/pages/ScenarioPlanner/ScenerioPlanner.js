@@ -1,3 +1,4 @@
+// src/pages/ScenarioPlanner/ScenerioPlanner.js
 import React, { useState, useEffect } from 'react';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import CarbonInsights from '../../components/CarbonInsights/CarbonInsights';
@@ -5,9 +6,8 @@ import './ScenarioPlanner.css';
 import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
 
 const API_BASE_URL = 'http://localhost:3007/api';
-const DEFAULT_USER_ID = 1;
 
-const ScenarioPlanner = ({ onBack }) => {
+const ScenarioPlanner = ({ onBack, user, onLogout }) => {
   const [transactions, setTransactions] = useState([]);
   const [totalEmissions, setTotalEmissions] = useState(0);
   const [categories, setCategories] = useState([]);
@@ -22,6 +22,10 @@ const ScenarioPlanner = ({ onBack }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [editingTransaction, setEditingTransaction] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
+  
+  // Use the user's ID from props
+  const DEFAULT_USER_ID = 1; // Fallback if no user
+const userId = user?.id || user?.User_ID || DEFAULT_USER_ID;
   
   // Load initial data
   useEffect(() => {
@@ -60,46 +64,80 @@ const ScenarioPlanner = ({ onBack }) => {
         // Keep using default categories on error
       });
 
-    // Mock transactions - these would typically come from the API
-    const mockTransactions = [
-      { id: 1, category: 'Electronics', amount: 500, date: '2023-01-15', emissions: 55 },
-      { id: 2, category: 'Clothing', amount: 200, date: '2023-02-10', emissions: 28 },
-      { id: 3, category: 'Sporting Goods', amount: 150, date: '2023-03-05', emissions: 25 },
-      { id: 4, category: 'Footwear', amount: 120, date: '2023-04-20', emissions: 34 },
-      { id: 5, category: 'Electronics', amount: 300, date: '2023-05-18', emissions: 33 }
-    ];
-    
-    setTransactions(mockTransactions);
-    
-    // Calculate total emissions
-    const total = mockTransactions.reduce((sum, transaction) => sum + transaction.emissions, 0);
-    setTotalEmissions(total);
-    
-    // Prepare chart data for Emissions by Price
-    const priceData = [
-      { name: 'Jan', value: 55 },
-      { name: 'Feb', value: 32 },
-      { name: 'Mar', value: 48 },
-      { name: 'Apr', value: 25 },
-      { name: 'May', value: 38 },
-      { name: 'Jun', value: 65 }
-    ];
-    
-    setEmissionsByPrice(priceData);
-    
-    // Prepare chart data for Emissions by Category
-    const categoryData = [
-      { category: 'Electronics', emissions: 88 },
-      { category: 'Clothing', emissions: 28 },
-      { category: 'Sporting Goods', emissions: 25 },
-      { category: 'Footwear', emissions: 34 }
-    ];
-    
-    setEmissionsByCategory(categoryData);
-  }, []);
+    // Fetch user transactions
+    fetchUserTransactions();
+  }, [userId]);
+
+  // Fetch user transactions from API
+  const fetchUserTransactions = async () => {
+    try {
+      setIsLoading(true);
+      const response = await fetch(`${API_BASE_URL}/users/${userId}/transactions`);
+      
+      if (response.ok) {
+        const data = await response.json();
+        setTransactions(data);
+        
+        // Calculate total emissions
+        const total = data.reduce((sum, transaction) => sum + transaction.emissions, 0);
+        setTotalEmissions(total);
+        
+        // Prepare chart data for Emissions by Category
+        const categoryMap = new Map();
+        data.forEach(transaction => {
+          const existing = categoryMap.get(transaction.category) || 0;
+          categoryMap.set(transaction.category, existing + transaction.emissions);
+        });
+        
+        const categoryData = Array.from(categoryMap).map(([category, emissions]) => ({
+          category,
+          emissions
+        }));
+        
+        setEmissionsByCategory(categoryData);
+        
+        // Prepare chart data for Emissions by Month
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        const monthData = Array(12).fill(0);
+        
+        data.forEach(transaction => {
+          const date = new Date(transaction.date);
+          const monthIndex = date.getMonth();
+          monthData[monthIndex] += transaction.emissions;
+        });
+        
+        const priceData = months.map((name, index) => ({
+          name,
+          value: monthData[index]
+        }));
+        
+        setEmissionsByPrice(priceData);
+      } else {
+        // If no transactions found or error, use empty arrays
+        setTransactions([]);
+        setTotalEmissions(0);
+        setEmissionsByCategory([]);
+        setEmissionsByPrice([
+          { name: 'Jan', value: 0 },
+          { name: 'Feb', value: 0 },
+          { name: 'Mar', value: 0 },
+          { name: 'Apr', value: 0 },
+          { name: 'May', value: 0 },
+          { name: 'Jun', value: 0 }
+        ]);
+      }
+    } catch (err) {
+      console.error('Error fetching user transactions:', err);
+      // Set default empty state
+      setTransactions([]);
+      setTotalEmissions(0);
+    } finally {
+      setIsLoading(false);
+    }
+  };
   
   // Add a new transaction
-  const handleAddTransaction = () => {
+  const handleAddTransaction = async () => {
     if (!newTransaction.category || !newTransaction.amount) {
       alert('Please select a category and enter an amount');
       return;
@@ -108,72 +146,110 @@ const ScenarioPlanner = ({ onBack }) => {
     const category = categories.find(c => c.name === newTransaction.category);
     if (!category) return;
     
-    const emissions = Math.round(newTransaction.amount * category.emissionFactor);
+    setIsLoading(true);
     
-    const transaction = {
-      id: transactions.length + 1,
-      category: newTransaction.category,
-      amount: parseFloat(newTransaction.amount),
-      date: newTransaction.date,
-      emissions: emissions
-    };
-    
-    // Add to transactions
-    const updatedTransactions = [...transactions, transaction];
-    setTransactions(updatedTransactions);
-    
-    // Update total emissions
-    setTotalEmissions(totalEmissions + emissions);
-    
-    // Update emissions by category chart
-    const updatedCategoryData = [...emissionsByCategory];
-    const existingCategory = updatedCategoryData.find(c => c.category === transaction.category);
-    
-    if (existingCategory) {
-      existingCategory.emissions += emissions;
-    } else {
-      updatedCategoryData.push({
-        category: transaction.category,
-        emissions: emissions
+    try {
+      // Find category_id
+      const categoryId = category.id;
+      
+      // Send request to API
+      const response = await fetch(`${API_BASE_URL}/users/${userId}/transactions`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          category_id: categoryId,
+          amount: parseFloat(newTransaction.amount),
+          date: newTransaction.date
+        }),
       });
+      
+      if (!response.ok) {
+        throw new Error('Failed to add transaction');
+      }
+      
+      const addedTransaction = await response.json();
+      
+      // Update local state
+      setTransactions([...transactions, addedTransaction]);
+      
+      // Update total emissions
+      setTotalEmissions(totalEmissions + addedTransaction.emissions);
+      
+      // Update emissions by category chart
+      const updatedCategoryData = [...emissionsByCategory];
+      const existingCategory = updatedCategoryData.find(c => c.category === addedTransaction.category);
+      
+      if (existingCategory) {
+        existingCategory.emissions += addedTransaction.emissions;
+      } else {
+        updatedCategoryData.push({
+          category: addedTransaction.category,
+          emissions: addedTransaction.emissions
+        });
+      }
+      
+      setEmissionsByCategory(updatedCategoryData);
+      
+      // Reset form
+      setNewTransaction({
+        category: '',
+        amount: '',
+        date: new Date().toISOString().split('T')[0]
+      });
+    } catch (err) {
+      console.error('Error adding transaction:', err);
+      alert('Failed to add transaction. Please try again.');
+    } finally {
+      setIsLoading(false);
     }
-    
-    setEmissionsByCategory(updatedCategoryData);
-    
-    // Reset form
-    setNewTransaction({
-      category: '',
-      amount: '',
-      date: new Date().toISOString().split('T')[0]
-    });
   };
   
   // Delete a transaction
-  const handleDeleteTransaction = (id) => {
+  const handleDeleteTransaction = async (id) => {
     const transactionToDelete = transactions.find(t => t.id === id);
     if (!transactionToDelete) return;
     
-    // Remove from transactions
-    const updatedTransactions = transactions.filter(t => t.id !== id);
-    setTransactions(updatedTransactions);
+    setIsLoading(true);
     
-    // Update total emissions
-    setTotalEmissions(totalEmissions - transactionToDelete.emissions);
-    
-    // Update emissions by category chart
-    const updatedCategoryData = [...emissionsByCategory];
-    const categoryIndex = updatedCategoryData.findIndex(c => c.category === transactionToDelete.category);
-    
-    if (categoryIndex !== -1) {
-      updatedCategoryData[categoryIndex].emissions -= transactionToDelete.emissions;
+    try {
+      // Send delete request to API
+      const response = await fetch(`${API_BASE_URL}/users/${userId}/transactions/${id}`, {
+        method: 'DELETE'
+      });
       
-      // Remove category if emissions are now 0
-      if (updatedCategoryData[categoryIndex].emissions <= 0) {
-        updatedCategoryData.splice(categoryIndex, 1);
+      if (!response.ok) {
+        throw new Error('Failed to delete transaction');
       }
+      
+      // Remove from transactions
+      const updatedTransactions = transactions.filter(t => t.id !== id);
+      setTransactions(updatedTransactions);
+      
+      // Update total emissions
+      setTotalEmissions(totalEmissions - transactionToDelete.emissions);
+      
+      // Update emissions by category chart
+      const updatedCategoryData = [...emissionsByCategory];
+      const categoryIndex = updatedCategoryData.findIndex(c => c.category === transactionToDelete.category);
+      
+      if (categoryIndex !== -1) {
+        updatedCategoryData[categoryIndex].emissions -= transactionToDelete.emissions;
+        
+        // Remove category if emissions are now 0
+        if (updatedCategoryData[categoryIndex].emissions <= 0) {
+          updatedCategoryData.splice(categoryIndex, 1);
+        }
+      }
+      
+      setEmissionsByCategory(updatedCategoryData);
+    } catch (err) {
+      console.error('Error deleting transaction:', err);
+      alert('Failed to delete transaction. Please try again.');
+    } finally {
+      setIsLoading(false);
     }
-    
-    setEmissionsByCategory(updatedCategoryData);
   };
   
   // Handle edit button click
@@ -188,7 +264,7 @@ const ScenarioPlanner = ({ onBack }) => {
   };
 
   // Handle update transaction
-  const handleUpdateTransaction = () => {
+  const handleUpdateTransaction = async () => {
     if (!editingTransaction) return;
     
     if (!newTransaction.category || !newTransaction.amount) {
@@ -196,74 +272,91 @@ const ScenarioPlanner = ({ onBack }) => {
       return;
     }
     
-    const category = categories.find(c => c.name === newTransaction.category);
-    if (!category) return;
+    setIsLoading(true);
     
-    const emissions = Math.round(newTransaction.amount * category.emissionFactor);
-    
-    // Create updated transaction object
-    const updatedTransaction = {
-      ...editingTransaction,
-      category: newTransaction.category,
-      amount: parseFloat(newTransaction.amount),
-      date: newTransaction.date,
-      emissions: emissions
-    };
-    
-    // Update in local state
-    const updatedTransactions = transactions.map(t => 
-      t.id === editingTransaction.id ? updatedTransaction : t
-    );
-    setTransactions(updatedTransactions);
-    
-    // Recalculate total emissions
-    const oldEmissions = editingTransaction.emissions;
-    const emissionsDifference = emissions - oldEmissions;
-    setTotalEmissions(totalEmissions + emissionsDifference);
-    
-    // Update emissions by category chart
-    const updatedCategoryData = [...emissionsByCategory];
-    
-    // If category changed, handle both old and new categories
-    if (editingTransaction.category !== updatedTransaction.category) {
-      // Reduce from old category
-      const oldCategoryIndex = updatedCategoryData.findIndex(c => c.category === editingTransaction.category);
-      if (oldCategoryIndex !== -1) {
-        updatedCategoryData[oldCategoryIndex].emissions -= oldEmissions;
-        if (updatedCategoryData[oldCategoryIndex].emissions <= 0) {
-          updatedCategoryData.splice(oldCategoryIndex, 1);
+    try {
+      // Find category
+      const category = categories.find(c => c.name === newTransaction.category);
+      if (!category) throw new Error('Category not found');
+      
+      // Send update request to API
+      const response = await fetch(`${API_BASE_URL}/users/${userId}/transactions/${editingTransaction.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          amount: parseFloat(newTransaction.amount),
+          date: newTransaction.date
+        }),
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to update transaction');
+      }
+      
+      const updatedTransaction = await response.json();
+      
+      // Update in local state
+      const updatedTransactions = transactions.map(t => 
+        t.id === editingTransaction.id ? updatedTransaction : t
+      );
+      setTransactions(updatedTransactions);
+      
+      // Recalculate total emissions
+      const oldEmissions = editingTransaction.emissions;
+      const emissionsDifference = updatedTransaction.emissions - oldEmissions;
+      setTotalEmissions(totalEmissions + emissionsDifference);
+      
+      // Update emissions by category chart
+      const updatedCategoryData = [...emissionsByCategory];
+      
+      // If category changed, handle both old and new categories
+      if (editingTransaction.category !== updatedTransaction.category) {
+        // Reduce from old category
+        const oldCategoryIndex = updatedCategoryData.findIndex(c => c.category === editingTransaction.category);
+        if (oldCategoryIndex !== -1) {
+          updatedCategoryData[oldCategoryIndex].emissions -= oldEmissions;
+          if (updatedCategoryData[oldCategoryIndex].emissions <= 0) {
+            updatedCategoryData.splice(oldCategoryIndex, 1);
+          }
+        }
+        
+        // Add to new category
+        const newCategoryIndex = updatedCategoryData.findIndex(c => c.category === updatedTransaction.category);
+        if (newCategoryIndex !== -1) {
+          updatedCategoryData[newCategoryIndex].emissions += updatedTransaction.emissions;
+        } else {
+          updatedCategoryData.push({
+            category: updatedTransaction.category,
+            emissions: updatedTransaction.emissions
+          });
+        }
+      } else {
+        // Just update emissions amount for the same category
+        const categoryIndex = updatedCategoryData.findIndex(c => c.category === updatedTransaction.category);
+        if (categoryIndex !== -1) {
+          updatedCategoryData[categoryIndex].emissions = 
+            updatedCategoryData[categoryIndex].emissions - oldEmissions + updatedTransaction.emissions;
         }
       }
       
-      // Add to new category
-      const newCategoryIndex = updatedCategoryData.findIndex(c => c.category === updatedTransaction.category);
-      if (newCategoryIndex !== -1) {
-        updatedCategoryData[newCategoryIndex].emissions += emissions;
-      } else {
-        updatedCategoryData.push({
-          category: updatedTransaction.category,
-          emissions: emissions
-        });
-      }
-    } else {
-      // Just update emissions amount for the same category
-      const categoryIndex = updatedCategoryData.findIndex(c => c.category === updatedTransaction.category);
-      if (categoryIndex !== -1) {
-        updatedCategoryData[categoryIndex].emissions = 
-          updatedCategoryData[categoryIndex].emissions - oldEmissions + emissions;
-      }
+      setEmissionsByCategory(updatedCategoryData);
+      
+      // Reset form and editing state
+      setNewTransaction({
+        category: '',
+        amount: '',
+        date: new Date().toISOString().split('T')[0]
+      });
+      setEditingTransaction(null);
+      setIsEditing(false);
+    } catch (err) {
+      console.error('Error updating transaction:', err);
+      alert('Failed to update transaction. Please try again.');
+    } finally {
+      setIsLoading(false);
     }
-    
-    setEmissionsByCategory(updatedCategoryData);
-    
-    // Reset form and editing state
-    setNewTransaction({
-      category: '',
-      amount: '',
-      date: new Date().toISOString().split('T')[0]
-    });
-    setEditingTransaction(null);
-    setIsEditing(false);
   };
 
   // Cancel editing
@@ -281,7 +374,7 @@ const ScenarioPlanner = ({ onBack }) => {
   const toggleInsights = () => {
     setShowInsights(!showInsights);
   };
-  
+
   return (
     <div className="scenario-planner">
       <div className="planner-header">
@@ -289,6 +382,17 @@ const ScenarioPlanner = ({ onBack }) => {
           &larr; Back to Dashboard
         </button>
         <h1>Explore Your Carbon Footprint</h1>
+        
+        {user && (
+          <div className="user-controls">
+            <div className="user-info">
+              <span className="username">{user.username}</span>
+            </div>
+            <button className="logout-button" onClick={onLogout}>
+              Logout
+            </button>
+          </div>
+        )}
       </div>
       
       {isLoading ? (
@@ -299,7 +403,7 @@ const ScenarioPlanner = ({ onBack }) => {
         <div className="planner-content">
           {showInsights ? (
             <>
-              <CarbonInsights />
+              <CarbonInsights user={user} />
               <div style={{ textAlign: 'center', marginTop: '20px' }}>
                 <button 
                   className="back-button" 

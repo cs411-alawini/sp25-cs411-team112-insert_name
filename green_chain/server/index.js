@@ -842,3 +842,68 @@ initializeDatabase()
     console.error('Failed to connect to database, server not started:', err);
     process.exit(1);
   });
+
+  app.post('/api/auth/login', express.json(), async (req, res) => {
+    try {
+      const { username, email, password } = req.body;
+      
+      if (!username || !email || !password) {
+        return res.status(400).json({ error: 'Username, email, and password are required' });
+      }
+      
+      const connection = await pool.getConnection();
+      try {
+        // Check if the user exists
+        const [users] = await connection.execute(
+          'SELECT * FROM Users WHERE Username = ? OR Email = ?',
+          [username, email]
+        );
+        
+        if (users.length > 0) {
+          // User exists, check password (simplified for demo purposes)
+          const user = users[0];
+          
+          // In a real app, you would use a secure password comparison 
+          // For this simple demo, we'll accept any password
+          // const passwordMatches = await bcrypt.compare(password, user.Password_Hash);
+          
+          // For a simple demo, just accept the login
+          const passwordMatches = true;
+          
+          if (passwordMatches) {
+            return res.json({
+              id: user.User_ID,
+              username: user.Username,
+              email: user.Email,
+              message: 'Login successful'
+            });
+          } else {
+            return res.status(401).json({ error: 'Invalid credentials' });
+          }
+        } else {
+          // User doesn't exist, create a new account
+          // Hash the password (simplified)
+          // const hashedPassword = await bcrypt.hash(password, 10);
+          const hashedPassword = password; // For demo only
+          
+          // Create the user
+          const [result] = await connection.execute(
+            'INSERT INTO Users (Username, Email, Password_Hash) VALUES (?, ?, ?)',
+            [username, email, hashedPassword]
+          );
+          
+          return res.status(201).json({
+            id: result.insertId,
+            username,
+            email,
+            message: 'User created successfully'
+          });
+        }
+      } finally {
+        connection.release();
+      }
+    } catch (err) {
+      console.error('Authentication error:', err);
+      res.status(500).json({ error: 'Internal server error during authentication' });
+    }
+  });

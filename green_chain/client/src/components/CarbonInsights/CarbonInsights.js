@@ -1,11 +1,14 @@
+// src/components/CarbonInsights/CarbonInsights.js
 import React, { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import './CarbonInsights.css';
 
 const API_BASE_URL = 'http://localhost:3007/api';
-const DEFAULT_USER_ID = 1; // Default user ID for demo
 
-const CarbonInsights = () => {
+const CarbonInsights = ({ user }) => {
+  const DEFAULT_USER_ID = 1; // Default user ID for demo
+  const userId = user?.id || user?.User_ID || DEFAULT_USER_ID;
+  
   const [insights, setInsights] = useState({
     categoryInsights: [],
     monthlyInsights: []
@@ -17,7 +20,7 @@ const CarbonInsights = () => {
     const fetchInsights = async () => {
       try {
         setIsLoading(true);
-        const response = await fetch(`${API_BASE_URL}/users/${DEFAULT_USER_ID}/carbon-insights`);
+        const response = await fetch(`${API_BASE_URL}/users/${userId}/carbon-insights`);
         
         if (!response.ok) {
           throw new Error('Failed to fetch carbon insights');
@@ -38,7 +41,7 @@ const CarbonInsights = () => {
     };
     
     fetchInsights();
-  }, []);
+  }, [userId]);
   
   if (isLoading) {
     return <div>Loading carbon insights...</div>;
@@ -50,7 +53,7 @@ const CarbonInsights = () => {
   
   return (
     <div className="carbon-insights">
-      <h2>Carbon Footprint Analysis</h2>
+      <h2>Carbon Footprint Analysis for {user ? user.username : 'Guest'}</h2>
       
       <div className="insights-section">
         <h3>Emissions by Category</h3>

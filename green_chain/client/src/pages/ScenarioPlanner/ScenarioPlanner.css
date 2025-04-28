@@ -256,3 +256,127 @@ h3 {
     grid-template-columns: 1fr;
   }
 }
+
+
+/* Add these styles to your existing LandingPage.css file */
+
+.auth-container {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.welcome-message {
+  font-size: 0.9rem;
+  color: #333;
+  font-weight: 500;
+}
+
+.auth-button {
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+  font-size: 0.9rem;
+}
+
+.auth-button.login {
+  background-color: #27ae60;
+  color: white;
+}
+
+.auth-button.login:hover {
+  background-color: #219653;
+}
+
+.auth-button.logout {
+  background-color: transparent;
+  border: 1px solid #e74c3c;
+  color: #e74c3c;
+}
+
+.auth-button.logout:hover {
+  background-color: #ffebee;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .auth-container {
+    position: relative;
+    top: 0;
+    right: 0;
+    width: 100%;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+  }
+  
+  .welcome-message {
+    font-size: 0.8rem;
+  }
+  
+  .auth-button {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
+}
+
+
+/* Add these styles to your ScenarioPlanner.css file */
+
+.user-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  background-color: #e8f5e9;
+  padding: 6px 12px;
+  border-radius: 20px;
+}
+
+.username {
+  font-weight: 600;
+  color: #27ae60;
+}
+
+.logout-button {
+  background-color: transparent;
+  border: 1px solid #e74c3c;
+  color: #e74c3c;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.logout-button:hover {
+  background-color: #ffebee;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .planner-header {
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  
+  .user-controls {
+    align-self: flex-end;
+  }
+}

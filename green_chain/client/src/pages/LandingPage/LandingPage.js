@@ -1,3 +1,4 @@
+// src/pages/LandingPage/LandingPage.js
 import React, { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import SearchBar from '../../components/SearchBar/SearchBar';
@@ -5,12 +6,11 @@ import Header from '../../components/Header/Header';
 import CategoryResults from '../../components/CategoryResults/CategoryResults';
 import NotFound from '../../components/NotFound/NotFound';
 import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
-import ScenarioPlanner from '../ScenarioPlanner/ScenerioPlanner';
 import './LandingPage.css';
 
 const API_BASE_URL = 'http://localhost:3007/api';
 
-const LandingPage = () => {
+const LandingPage = ({ user, onLogin, onLogout, onExploreFootprint }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
@@ -19,7 +19,6 @@ const LandingPage = () => {
   const [showDashboard, setShowDashboard] = useState(true);
   const [categoryData, setCategoryData] = useState([]);
   const [highRiskCategories, setHighRiskCategories] = useState(0);
-  const [showScenarioPlanner, setShowScenarioPlanner] = useState(false);
   
   // Load real emissions data for the chart
   useEffect(() => {
@@ -108,13 +107,6 @@ const LandingPage = () => {
     setSearchResults(null);
     setHasSearched(false);
     setShowDashboard(true);
-    setShowScenarioPlanner(false);
-  };
-
-  // Toggle scenario planner view
-  const handleExploreFootprint = () => {
-    setShowScenarioPlanner(true);
-    setShowDashboard(false);
   };
   
   // Handle search term changes
@@ -122,14 +114,20 @@ const LandingPage = () => {
     setSearchTerm(term);
   };
 
-  // If showing scenario planner, render that instead
-  if (showScenarioPlanner) {
-    return <ScenarioPlanner onBack={handleBackToDashboard} />;
-  }
-
   return (
     <div className="fullscreen-landing-page">
       <div className="fullscreen-header">
+        <div className="auth-container">
+          {user ? (
+            <div className="user-info">
+              <span className="welcome-message">Welcome, {user.username}</span>
+              <button className="auth-button logout" onClick={onLogout}>Logout</button>
+            </div>
+          ) : (
+            <button className="auth-button login" onClick={onLogin}>Login</button>
+          )}
+        </div>
+        
         <h1>Find out your carbon footprint</h1>
         <p className="subtitle">Search for a category of items to see its greenhouse gas emissions data</p>
         
@@ -190,9 +188,9 @@ const LandingPage = () => {
                 <div className="action-button-container">
                   <button 
                     className="carbon-footprint-btn large"
-                    onClick={handleExploreFootprint}
+                    onClick={onExploreFootprint}
                   >
-                    Explore Your Carbon Footprint
+                    {user ? "Explore Your Carbon Footprint" : "Login to Explore Your Carbon Footprint"}
                   </button>
                 </div>
               </div>
