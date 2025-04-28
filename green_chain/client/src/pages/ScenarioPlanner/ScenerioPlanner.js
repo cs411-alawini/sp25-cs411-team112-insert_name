@@ -7,6 +7,30 @@ import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
 
 const API_BASE_URL = 'http://localhost:3007/api';
 
+// New Empty State component 
+const EmptyState = () => {
+  return (
+    <div style={{
+      textAlign: 'center',
+      padding: '40px 20px',
+      background: '#f8fffa',
+      borderRadius: '8px',
+      border: '1px dashed #27ae60',
+      maxWidth: '600px',
+      margin: '20px auto'
+    }}>
+      <div style={{ fontSize: '48px', marginBottom: '16px' }}>📊</div>
+      <h3 style={{ color: '#2c3e50', marginBottom: '12px' }}>No Transactions Yet</h3>
+      <p style={{ color: '#7f8c8d', marginBottom: '24px', maxWidth: '400px', margin: '0 auto 24px' }}>
+        Add your first transaction to start tracking your carbon footprint. Each purchase you record will help you understand your environmental impact.
+      </p>
+      <p style={{ fontSize: '14px', color: '#95a5a6' }}>
+        Use the form below to add your first transaction.
+      </p>
+    </div>
+  );
+};
+
 const ScenarioPlanner = ({ onBack, user, onLogout }) => {
   const [transactions, setTransactions] = useState([]);
   const [totalEmissions, setTotalEmissions] = useState(0);
@@ -117,6 +141,22 @@ const ScenarioPlanner = ({ onBack, user, onLogout }) => {
       
       if (response.ok) {
         const data = await response.json();
+        
+        // Check if data is empty array or not
+        if (Array.isArray(data) && data.length === 0) {
+          // Initialize with empty state for first-time users
+          setTransactions([]);
+          setTotalEmissions(0);
+          setEmissionsByCategory([]);
+          
+          const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+          setEmissionsByPrice(months.map(name => ({ name, value: 0 })));
+          
+          setIsLoading(false);
+          return;
+        }
+        
+        // Otherwise process the data normally
         setTransactions(data);
         
         // Calculate total emissions properly
@@ -457,18 +497,18 @@ const ScenarioPlanner = ({ onBack, user, onLogout }) => {
               <div className="transactions-section">
                 <h2>Customer Purchase History</h2>
                 
-                <div className="transactions-table">
-                  <div className="table-header">
-                    <div className="table-cell">Category</div>
-                    <div className="table-cell">Amount ($)</div>
-                    <div className="table-cell">Date</div>
-                    <div className="table-cell">Emissions (kg CO₂e)</div>
-                    <div className="table-cell">Actions</div>
-                  </div>
-                  
-                  <div className="table-body">
-                    {transactions.length > 0 ? (
-                      transactions.map((transaction) => (
+                {transactions.length > 0 ? (
+                  <div className="transactions-table">
+                    <div className="table-header">
+                      <div className="table-cell">Category</div>
+                      <div className="table-cell">Amount ($)</div>
+                      <div className="table-cell">Date</div>
+                      <div className="table-cell">Emissions (kg CO₂e)</div>
+                      <div className="table-cell">Actions</div>
+                    </div>
+                    
+                    <div className="table-body">
+                      {transactions.map((transaction) => (
                         <div className="table-row" key={transaction.id}>
                           <div className="table-cell">{transaction.category}</div>
                           <div className="table-cell">${Number(transaction.amount).toFixed(2)}</div>
@@ -489,14 +529,12 @@ const ScenarioPlanner = ({ onBack, user, onLogout }) => {
                             </button>
                           </div>
                         </div>
-                      ))
-                    ) : (
-                      <div className="table-row" style={{ justifyContent: 'center', padding: '20px' }}>
-                        <div>No transactions yet. Add your first transaction below.</div>
-                      </div>
-                    )}
+                      ))}
+                    </div>
                   </div>
-                </div>
+                ) : (
+                  <EmptyState />
+                )}
                 
                 <div className="transaction-actions">
                   <div className="add-transaction">

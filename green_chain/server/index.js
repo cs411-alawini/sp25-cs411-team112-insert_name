@@ -301,10 +301,33 @@ app.get('/api/users/:id', async (req, res) => {
 });
 
 // NEW ENDPOINT: Get user transactions
+// Replace the existing GET /api/users/:id/transactions endpoint with this updated version
 app.get('/api/users/:id/transactions', async (req, res) => {
   try {
     const connection = await pool.getConnection();
     try {
+      // First check if the user exists before returning any transactions
+      const [users] = await connection.execute(
+        'SELECT User_ID FROM Users WHERE User_ID = ?',
+        [req.params.id]
+      );
+      
+      // If user doesn't exist, return an empty array
+      if (users.length === 0) {
+        return res.json([]);
+      }
+      
+      // Check if the user has any orders
+      const [orderCount] = await connection.execute(
+        'SELECT COUNT(*) as count FROM Orders WHERE Customer_ID = ?',
+        [req.params.id]
+      );
+      
+      // If user has no orders, return an empty array
+      if (orderCount[0].count === 0) {
+        return res.json([]);
+      }
+      
       // Join with Categories to get category names and Industries to get emission data
       const [transactions] = await connection.execute(`
         SELECT 
@@ -336,9 +359,11 @@ app.get('/api/users/:id/transactions', async (req, res) => {
 });
 
 // NEW ENDPOINT: Add a new transaction
+// Replace the existing POST /api/users/:id/transactions endpoint with this updated version
 app.post('/api/users/:id/transactions', express.json(), async (req, res) => {
   try {
     const { category_id, amount, date } = req.body;
+    const userId = parseInt(req.params.id);
     
     if (!category_id || !amount) {
       return res.status(400).json({ error: 'Category ID and amount are required' });
@@ -346,18 +371,14 @@ app.post('/api/users/:id/transactions', express.json(), async (req, res) => {
     
     const connection = await pool.getConnection();
     try {
-      // First check if the user exists, create if not
+      // First check if the user exists
       const [users] = await connection.execute(
         'SELECT User_ID FROM Users WHERE User_ID = ?',
-        [req.params.id]
+        [userId]
       );
       
       if (users.length === 0) {
-        // Create a new user record if it doesn't exist
-        await connection.execute(
-          'INSERT INTO Users (User_ID, Username, Email, Password) VALUES (?, ?, ?, ?)',
-          [req.params.id, `User${req.params.id}`, `user${req.params.id}@example.com`, 'password']
-        );
+        return res.status(404).json({ error: 'User not found' });
       }
       
       // Get the emission factor for this category
@@ -380,12 +401,12 @@ app.post('/api/users/:id/transactions', express.json(), async (req, res) => {
       const maxOrderId = orderRows[0].maxOrderId || 0;
       const newOrderId = maxOrderId + 1;
       
-      // Insert the transaction
+      // Insert the transaction - IMPORTANT: Use the user's ID as Customer_ID
       const [result] = await connection.execute(`
         INSERT INTO Orders 
         (Order_ID, Customer_ID, Category_ID, Order_Date, Quantity, Total) 
         VALUES (?, ?, ?, ?, ?, ?)
-      `, [newOrderId, req.params.id, category_id, date, 1, amount]);
+      `, [newOrderId, userId, category_id, date, 1, amount]);
       
       res.status(201).json({
         id: newOrderId,
@@ -404,9 +425,46 @@ app.post('/api/users/:id/transactions', express.json(), async (req, res) => {
 });
 
 // Update a transaction
+// Replace the existing DELETE transaction endpoint
+app.delete('/api/users/:userId/transactions/:transactionId', async (req, res) => {
+  try {
+    const userId = parseInt(req.params.userId);
+    const transactionId = parseInt(req.params.transactionId);
+    
+    const connection = await pool.getConnection();
+    try {
+      // Verify the transaction belongs to this user
+      const [transactions] = await connection.execute(
+        'SELECT Order_ID FROM Orders WHERE Order_ID = ? AND Customer_ID = ?',
+        [transactionId, userId]
+      );
+      
+      if (transactions.length === 0) {
+        return res.status(404).json({ error: 'Transaction not found or does not belong to this user' });
+      }
+      
+      // Delete the transaction
+      await connection.execute(
+        'DELETE FROM Orders WHERE Order_ID = ? AND Customer_ID = ?',
+        [transactionId, userId]
+      );
+      
+      res.status(204).send();
+    } finally {
+      connection.release();
+    }
+  } catch (err) {
+    console.error('Error deleting transaction:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Replace the existing UPDATE transaction endpoint
 app.put('/api/users/:userId/transactions/:transactionId', express.json(), async (req, res) => {
   try {
     const { category_id, amount, date } = req.body;
+    const userId = parseInt(req.params.userId);
+    const transactionId = parseInt(req.params.transactionId);
     
     if (!amount) {
       return res.status(400).json({ error: 'Amount is required' });
@@ -417,7 +475,7 @@ app.put('/api/users/:userId/transactions/:transactionId', express.json(), async 
       // Verify the transaction belongs to this user
       const [transactions] = await connection.execute(
         'SELECT Order_ID FROM Orders WHERE Order_ID = ? AND Customer_ID = ?',
-        [req.params.transactionId, req.params.userId]
+        [transactionId, userId]
       );
       
       if (transactions.length === 0) {
@@ -428,14 +486,14 @@ app.put('/api/users/:userId/transactions/:transactionId', express.json(), async 
       if (category_id) {
         // If category_id is provided, update it along with amount and date
         await connection.execute(
-          'UPDATE Orders SET Category_ID = ?, Total = ?, Order_Date = ? WHERE Order_ID = ?',
-          [category_id, amount, date, req.params.transactionId]
+          'UPDATE Orders SET Category_ID = ?, Total = ?, Order_Date = ? WHERE Order_ID = ? AND Customer_ID = ?',
+          [category_id, amount, date, transactionId, userId]
         );
       } else {
         // Otherwise just update amount and date
         await connection.execute(
-          'UPDATE Orders SET Total = ?, Order_Date = ? WHERE Order_ID = ?',
-          [amount, date, req.params.transactionId]
+          'UPDATE Orders SET Total = ?, Order_Date = ? WHERE Order_ID = ? AND Customer_ID = ?',
+          [amount, date, transactionId, userId]
         );
       }
       
@@ -454,8 +512,8 @@ app.put('/api/users/:userId/transactions/:transactionId', express.json(), async 
         JOIN 
           Industries i ON c.NAICS_Code = i.NAICS_Code
         WHERE 
-          o.Order_ID = ?
-      `, [req.params.transactionId]);
+          o.Order_ID = ? AND o.Customer_ID = ?
+      `, [transactionId, userId]);
       
       if (updatedTransaction.length === 0) {
         return res.status(404).json({ error: 'Transaction not found after update' });
@@ -467,37 +525,6 @@ app.put('/api/users/:userId/transactions/:transactionId', express.json(), async 
     }
   } catch (err) {
     console.error('Error updating transaction:', err);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
-
-// NEW ENDPOINT: Delete a transaction
-app.delete('/api/users/:userId/transactions/:transactionId', async (req, res) => {
-  try {
-    const connection = await pool.getConnection();
-    try {
-      // Verify the transaction belongs to this user
-      const [transactions] = await connection.execute(
-        'SELECT Order_ID FROM Orders WHERE Order_ID = ? AND Customer_ID = ?',
-        [req.params.transactionId, req.params.userId]
-      );
-      
-      if (transactions.length === 0) {
-        return res.status(404).json({ error: 'Transaction not found or does not belong to this user' });
-      }
-      
-      // Delete the transaction
-      await connection.execute(
-        'DELETE FROM Orders WHERE Order_ID = ?',
-        [req.params.transactionId]
-      );
-      
-      res.status(204).send();
-    } finally {
-      connection.release();
-    }
-  } catch (err) {
-    console.error('Error deleting transaction:', err);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
@@ -867,7 +894,39 @@ app.get('/api/users/:id/carbon-insights', async (req, res) => {
     
     const connection = await pool.getConnection();
     try {
-      // Call the stored procedure
+      // First check if the user exists
+      const [users] = await connection.execute(
+        'SELECT User_ID FROM Users WHERE User_ID = ?',
+        [userId]
+      );
+      
+      // If the user doesn't exist, return empty data
+      if (users.length === 0) {
+        console.log('User not found, returning empty insights data');
+        return res.json({
+          userId,
+          categoryInsights: [],
+          monthlyInsights: []
+        });
+      }
+      
+      // Check if the user has any orders before calling the stored procedure
+      const [orderCount] = await connection.execute(
+        'SELECT COUNT(*) as count FROM Orders WHERE Customer_ID = ?',
+        [userId]
+      );
+      
+      // If the user has no orders, return empty data
+      if (orderCount[0].count === 0) {
+        console.log('User has no orders, returning empty insights data');
+        return res.json({
+          userId,
+          categoryInsights: [],
+          monthlyInsights: []
+        });
+      }
+      
+      // User exists and has orders, call the stored procedure
       const [results] = await connection.query('CALL GetUserCarbonInsights(?)', [userId]);
       
       // The procedure returns multiple result sets
@@ -878,6 +937,7 @@ app.get('/api/users/:id/carbon-insights', async (req, res) => {
           monthlyInsights: results[1] || []
         });
       } else {
+        // Procedure returned no data
         res.json({
           userId,
           categoryInsights: [],
@@ -907,72 +967,80 @@ initializeDatabase()
     process.exit(1);
   });
 
-  app.post('/api/auth/login', express.json(), async (req, res) => {
-    try {
-      const { username, email, password } = req.body;
-      
-      if (!username || !email || !password) {
-        return res.status(400).json({ error: 'Username, email, and password are required' });
-      }
-      
-      const connection = await pool.getConnection();
-      try {
-        // Check if the user exists
-        const [users] = await connection.execute(
-          'SELECT * FROM Users WHERE Username = ? OR Email = ?',
-          [username, email]
-        );
-        
-        if (users.length > 0) {
-          // User exists, check password (simplified for demo purposes)
-          const user = users[0];
-          
-          // In a real app, you would use a secure password comparison 
-          // For this simple demo, we'll accept any password
-          // const passwordMatches = await bcrypt.compare(password, user.Password_Hash);
-          
-          // For a simple demo, just accept the login
-          const passwordMatches = true;
-          
-          if (passwordMatches) {
-            return res.json({
-              id: user.User_ID,
-              username: user.Username,
-              email: user.Email,
-              message: 'Login successful'
-            });
-          } else {
-            return res.status(401).json({ error: 'Invalid credentials' });
-          }
-        } else {
-          // User doesn't exist, create a new account
-          // Hash the password (simplified)
-          // const hashedPassword = await bcrypt.hash(password, 10);
-          const hashedPassword = password; // For demo only
-          
-          // Find the current max User_ID
-          const [rows] = await connection.execute('SELECT MAX(User_ID) AS maxId FROM Users');
-          const maxId = rows[0].maxId || 0;
-          const newUserId = maxId + 1;
-  
-          // Create the user
-          const [result] = await connection.execute(
-            'INSERT INTO Users (User_ID, Username, Email, Password) VALUES (?, ?, ?, ?)',
-            [newUserId, username, email, hashedPassword]
-          );
-  
-          return res.status(201).json({
-            id: newUserId,
-            username,
-            email,
-            message: 'User created successfully'
-          });
-        }
-      } finally {
-        connection.release();
-      }
-    } catch (err) {
-      console.error('Authentication error:', err);
-      res.status(500).json({ error: 'Internal server error during authentication' });
+ // Replace the existing login endpoint with this improved version
+app.post('/api/auth/login', express.json(), async (req, res) => {
+  try {
+    const { username, email, password } = req.body;
+    
+    if (!username || !email || !password) {
+      return res.status(400).json({ error: 'Username, email, and password are required' });
     }
-  });
+    
+    const connection = await pool.getConnection();
+    try {
+      // Check if the user exists
+      const [users] = await connection.execute(
+        'SELECT * FROM Users WHERE Username = ? OR Email = ?',
+        [username, email]
+      );
+      
+      if (users.length > 0) {
+        // User exists, check password (simplified for demo purposes)
+        const user = users[0];
+        
+        // In a real app, you would use a secure password comparison 
+        // For this simple demo, we'll accept any password
+        // const passwordMatches = await bcrypt.compare(password, user.Password_Hash);
+        
+        // For a simple demo, just accept the login
+        const passwordMatches = true;
+        
+        if (passwordMatches) {
+          return res.json({
+            id: user.User_ID,
+            username: user.Username,
+            email: user.Email,
+            message: 'Login successful'
+          });
+        } else {
+          return res.status(401).json({ error: 'Invalid credentials' });
+        }
+      } else {
+        // User doesn't exist, create a new account
+        
+        // Find the current max Customer_ID from Orders table
+        const [customerRows] = await connection.execute('SELECT MAX(Customer_ID) AS maxCustomerId FROM Orders');
+        const maxCustomerId = customerRows[0].maxCustomerId || 0;
+        
+        // Find the current max User_ID
+        const [userRows] = await connection.execute('SELECT MAX(User_ID) AS maxUserId FROM Users');
+        const maxUserId = userRows[0].maxUserId || 0;
+        
+        // Use the higher of these values + 1 to ensure uniqueness across both tables
+        const newId = Math.max(maxCustomerId, maxUserId) + 1;
+  
+        // Hash the password (simplified)
+        // const hashedPassword = await bcrypt.hash(password, 10);
+        const hashedPassword = password; // For demo only
+  
+        // Create the user with the new ID
+        const [result] = await connection.execute(
+          'INSERT INTO Users (User_ID, Username, Email, Password) VALUES (?, ?, ?, ?)',
+          [newId, username, email, hashedPassword]
+        );
+  
+        return res.status(201).json({
+          id: newId,
+          username,
+          email,
+          message: 'User created successfully'
+        });
+      }
+    } finally {
+      connection.release();
+    }
+  } catch (err) {
+    console.error('Authentication error:', err);
+    res.status(500).json({ error: 'Internal server error during authentication' });
+  }
+});

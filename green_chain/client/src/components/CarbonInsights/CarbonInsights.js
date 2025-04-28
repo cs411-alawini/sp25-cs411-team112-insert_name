@@ -5,6 +5,29 @@ import './CarbonInsights.css';
 
 const API_BASE_URL = 'http://localhost:3007/api';
 
+const EmptyInsightsState = () => {
+  return (
+    <div style={{
+      textAlign: 'center',
+      padding: '40px 20px',
+      background: '#f8fffa',
+      borderRadius: '8px',
+      border: '1px dashed #27ae60',
+      maxWidth: '600px',
+      margin: '20px auto'
+    }}>
+      <div style={{ fontSize: '48px', marginBottom: '16px' }}>🌱</div>
+      <h3 style={{ color: '#2c3e50', marginBottom: '12px' }}>No Carbon Data Yet</h3>
+      <p style={{ color: '#7f8c8d', marginBottom: '24px', maxWidth: '450px', margin: '0 auto 24px' }}>
+        You haven't recorded any transactions yet. Add purchases in the Transaction section to see your carbon footprint insights.
+      </p>
+      <p style={{ fontSize: '14px', color: '#95a5a6' }}>
+        Your data will appear here once you've added some transactions.
+      </p>
+    </div>
+  );
+};
+
 const CarbonInsights = ({ user }) => {
   const DEFAULT_USER_ID = 1; // Default user ID for demo
   const userId = user?.id || user?.User_ID || DEFAULT_USER_ID;
@@ -27,6 +50,13 @@ const CarbonInsights = ({ user }) => {
         }
         
         const data = await response.json();
+        
+        // Check if data is actually empty despite getting a 200 response
+        const isEmpty = 
+          (!data.categoryInsights || data.categoryInsights.length === 0) && 
+          (!data.monthlyInsights || data.monthlyInsights.length === 0);
+
+        // Set the data, handling empty values properly
         setInsights({
           categoryInsights: data.categoryInsights || [],
           monthlyInsights: data.monthlyInsights || []
@@ -36,6 +66,11 @@ const CarbonInsights = ({ user }) => {
       } catch (err) {
         console.error('Error fetching carbon insights:', err);
         setError(err.message);
+        // Set empty state on error
+        setInsights({
+          categoryInsights: [],
+          monthlyInsights: []
+        });
         setIsLoading(false);
       }
     };
@@ -49,6 +84,14 @@ const CarbonInsights = ({ user }) => {
   
   if (error) {
     return <div>Error loading insights: {error}</div>;
+  }
+  
+  // Check for empty data in both arrays
+  if (
+    (!insights.categoryInsights || insights.categoryInsights.length === 0) &&
+    (!insights.monthlyInsights || insights.monthlyInsights.length === 0)
+  ) {
+    return <EmptyInsightsState />;
   }
   
   return (
