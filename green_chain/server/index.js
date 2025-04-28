@@ -375,15 +375,20 @@ app.post('/api/users/:id/transactions', express.json(), async (req, res) => {
       const category = categories[0];
       const emissions = (amount * category.Emissions / 100);
       
+      // Find the current max Order_ID
+      const [orderRows] = await connection.execute('SELECT MAX(Order_ID) AS maxOrderId FROM Orders');
+      const maxOrderId = orderRows[0].maxOrderId || 0;
+      const newOrderId = maxOrderId + 1;
+      
       // Insert the transaction
       const [result] = await connection.execute(`
         INSERT INTO Orders 
-        (Customer_ID, Category_ID, Order_Date, Quantity, Total) 
-        VALUES (?, ?, ?, ?, ?)
-      `, [req.params.id, category_id, date, 1, amount]);
+        (Order_ID, Customer_ID, Category_ID, Order_Date, Quantity, Total) 
+        VALUES (?, ?, ?, ?, ?, ?)
+      `, [newOrderId, req.params.id, category_id, date, 1, amount]);
       
       res.status(201).json({
-        id: result.insertId,
+        id: newOrderId,
         category: category.Category_Name,
         amount,
         date,
@@ -800,12 +805,17 @@ app.post('/api/users/:id/bulk-transaction', express.json(), async (req, res) => 
       const category = categories[0];
       const emissions = (amount * category.Emissions / 100);
       
+      // Find the current max Order_ID
+      const [orderRows] = await connection.execute('SELECT MAX(Order_ID) AS maxOrderId FROM Orders');
+      const maxOrderId = orderRows[0].maxOrderId || 0;
+      const newOrderId = maxOrderId + 1;
+      
       // Insert the transaction
       const [result] = await connection.execute(`
         INSERT INTO Orders 
-        (Customer_ID, Category_ID, Order_Date, Quantity, Total) 
-        VALUES (?, ?, ?, ?, ?)
-      `, [userId, category_id, date, 1, amount]);
+        (Order_ID, Customer_ID, Category_ID, Order_Date, Quantity, Total) 
+        VALUES (?, ?, ?, ?, ?, ?)
+      `, [newOrderId, userId, category_id, date, 1, amount]);
       
       // ADVANCED QUERY 2: Subquery with aggregation
       await connection.execute(`
@@ -824,7 +834,7 @@ app.post('/api/users/:id/bulk-transaction', express.json(), async (req, res) => 
       `, [userId, userId]);
       
       results.push({
-        id: result.insertId,
+        id: newOrderId,
         category: category.Category_Name,
         amount,
         date,

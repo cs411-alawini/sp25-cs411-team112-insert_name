@@ -513,9 +513,9 @@ const ScenarioPlanner = ({ onBack, user, onLogout }) => {
                       transactions.map((transaction) => (
                         <div className="table-row" key={transaction.id}>
                           <div className="table-cell">{transaction.category}</div>
-                          <div className="table-cell">${transaction.amount.toFixed(2)}</div>
+                          <div className="table-cell">${Number(transaction.amount).toFixed(2)}</div>
                           <div className="table-cell">{transaction.date}</div>
-                          <div className="table-cell">{transaction.emissions.toFixed(2)}</div>
+                          <div className="table-cell">{Number(transaction.emissions).toFixed(2)}</div>
                           <div className="table-cell">
                             <button 
                               className="edit-btn"
@@ -607,7 +607,7 @@ const ScenarioPlanner = ({ onBack, user, onLogout }) => {
               <div className="emissions-section">
                 <div className="emissions-card">
                   <h3>Total Emissions</h3>
-                  <div className="emissions-value">{totalEmissions.toFixed(2)}</div>
+                  <div className="emissions-value">{Number(totalEmissions).toFixed(2)}</div>
                   <div className="emissions-unit">kg CO₂e</div>
                 </div>
                 
