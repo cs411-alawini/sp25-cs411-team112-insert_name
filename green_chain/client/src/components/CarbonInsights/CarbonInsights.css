@@ -1,0 +1,64 @@
+.carbon-insights {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  }
+  
+  .carbon-insights h2 {
+    color: #2c3e50;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .insights-section {
+    margin-bottom: 30px;
+  }
+  
+  .insights-section h3 {
+    color: #27ae60;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+  }
+  
+  .insights-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  
+  .insights-table th,
+  .insights-table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .insights-table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #2c3e50;
+  }
+  
+  .impact-level {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: bold;
+  }
+  
+  .impact-level.high {
+    background-color: #ffebee;
+    color: #e74c3c;
+  }
+  
+  .impact-level.low {
+    background-color: #e8f5e9;
+    color: #27ae60;
+  }

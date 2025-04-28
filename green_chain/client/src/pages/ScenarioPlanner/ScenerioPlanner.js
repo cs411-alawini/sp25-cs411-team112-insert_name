@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import CarbonInsights from '../../components/CarbonInsights/CarbonInsights';
 import './ScenarioPlanner.css';
 import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
 
@@ -10,6 +11,7 @@ const ScenarioPlanner = ({ onBack }) => {
   const [transactions, setTransactions] = useState([]);
   const [totalEmissions, setTotalEmissions] = useState(0);
   const [categories, setCategories] = useState([]);
+  const [showInsights, setShowInsights] = useState(false);
   const [newTransaction, setNewTransaction] = useState({
     category: '',
     amount: '',
@@ -33,7 +35,7 @@ const ScenarioPlanner = ({ onBack }) => {
     setCategories(defaultCategories);
     
     // Try to fetch categories from API
-    fetch(`${API_BASE_URL}/categories?limit=20`)
+    fetch(`${API_BASE_URL}/categories?limit=20?offset=0`)
       .then(response => {
         if (response.ok) {
           return response.json();
@@ -172,6 +174,64 @@ const ScenarioPlanner = ({ onBack }) => {
     setEmissionsByCategory(updatedCategoryData);
   };
   
+  // NEW FUNCTION: Handle bulk submission of transactions
+  const handleBulkSubmit = async () => {
+    if (transactions.length === 0) {
+      alert('Please add at least one transaction first');
+      return;
+    }
+    
+    setIsLoading(true);
+    
+    try {
+      // Format transactions for the API
+      const formattedTransactions = transactions.map(tx => {
+        // Find category ID from name
+        const category = categories.find(c => c.name === tx.category);
+        return {
+          category_id: category ? category.id : null,
+          amount: tx.amount,
+          date: tx.date
+        };
+      }).filter(tx => tx.category_id !== null);
+      
+      if (formattedTransactions.length === 0) {
+        alert('No valid transactions to submit');
+        setIsLoading(false);
+        return;
+      }
+      
+      // Call the transaction API endpoint
+      const response = await fetch(`${API_BASE_URL}/users/${DEFAULT_USER_ID}/bulk-transaction`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ transactions: formattedTransactions })
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to submit transactions');
+      }
+      
+      const result = await response.json();
+      alert(`Successfully submitted ${result.transactions.length} transactions!`);
+      
+      // Show insights after successful submission
+      setShowInsights(true);
+    } catch (error) {
+      console.error('Error submitting transactions:', error);
+      alert('Error submitting transactions: ' + error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
+  // NEW FUNCTION: Toggle insights view
+  const toggleInsights = () => {
+    setShowInsights(!showInsights);
+  };
+  
   return (
     <div className="scenario-planner">
       <div className="planner-header">
@@ -187,108 +247,144 @@ const ScenarioPlanner = ({ onBack }) => {
         </div>
       ) : (
         <div className="planner-content">
-          <div className="transactions-section">
-            <h2>Customer Purchase History</h2>
-            
-            <div className="transactions-table">
-              <div className="table-header">
-                <div className="table-cell">Category</div>
-                <div className="table-cell">Amount ($)</div>
-                <div className="table-cell">Date</div>
-                <div className="table-cell">Emissions (kg CO₂e)</div>
-                <div className="table-cell">Actions</div>
-              </div>
-              
-              <div className="table-body">
-                {transactions.map((transaction) => (
-                  <div className="table-row" key={transaction.id}>
-                    <div className="table-cell">{transaction.category}</div>
-                    <div className="table-cell">${transaction.amount.toFixed(2)}</div>
-                    <div className="table-cell">{transaction.date}</div>
-                    <div className="table-cell">{transaction.emissions}</div>
-                    <div className="table-cell">
-                      <button 
-                        className="delete-btn"
-                        onClick={() => handleDeleteTransaction(transaction.id)}
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-            
-            <div className="transaction-actions">
-              <div className="add-transaction">
-                <select 
-                  value={newTransaction.category}
-                  onChange={(e) => setNewTransaction({...newTransaction, category: e.target.value})}
-                >
-                  <option value="">Select Category</option>
-                  {categories.map(category => (
-                    <option key={category.id} value={category.name}>
-                      {category.name}
-                    </option>
-                  ))}
-                </select>
-                
-                <input
-                  type="number"
-                  placeholder="Amount ($)"
-                  value={newTransaction.amount}
-                  onChange={(e) => setNewTransaction({...newTransaction, amount: e.target.value})}
-                />
-                
-                <input
-                  type="date"
-                  value={newTransaction.date}
-                  onChange={(e) => setNewTransaction({...newTransaction, date: e.target.value})}
-                />
-                
+          {showInsights ? (
+            <>
+              <CarbonInsights />
+              <div style={{ textAlign: 'center', marginTop: '20px' }}>
                 <button 
-                  className="add-btn"
-                  onClick={handleAddTransaction}
+                  className="back-button" 
+                  onClick={toggleInsights}
+                  style={{ margin: '0 auto' }}
                 >
-                  Add Transaction
+                  Back to Transactions
                 </button>
               </div>
-            </div>
-          </div>
-          
-          <div className="emissions-section">
-            <div className="emissions-card">
-              <h3>Total Emissions</h3>
-              <div className="emissions-value">{totalEmissions}</div>
-              <div className="emissions-unit">kg CO₂e</div>
-            </div>
-            
-            <div className="chart-container">
-              <h3>Emissions by Month</h3>
-              <ResponsiveContainer width="100%" height={200}>
-                <LineChart data={emissionsByPrice}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" />
-                  <YAxis />
-                  <Tooltip />
-                  <Line type="monotone" dataKey="value" stroke="#4CAF50" />
-                </LineChart>
-              </ResponsiveContainer>
-            </div>
-            
-            <div className="chart-container">
-              <h3>Emissions by Category</h3>
-              <ResponsiveContainer width="100%" height={200}>
-                <BarChart data={emissionsByCategory}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="category" />
-                  <YAxis />
-                  <Tooltip />
-                  <Bar dataKey="emissions" fill="#4CAF50" />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
+            </>
+          ) : (
+            <>
+              <div className="transactions-section">
+                <h2>Customer Purchase History</h2>
+                
+                <div className="transactions-table">
+                  <div className="table-header">
+                    <div className="table-cell">Category</div>
+                    <div className="table-cell">Amount ($)</div>
+                    <div className="table-cell">Date</div>
+                    <div className="table-cell">Emissions (kg CO₂e)</div>
+                    <div className="table-cell">Actions</div>
+                  </div>
+                  
+                  <div className="table-body">
+                    {transactions.map((transaction) => (
+                      <div className="table-row" key={transaction.id}>
+                        <div className="table-cell">{transaction.category}</div>
+                        <div className="table-cell">${transaction.amount.toFixed(2)}</div>
+                        <div className="table-cell">{transaction.date}</div>
+                        <div className="table-cell">{transaction.emissions}</div>
+                        <div className="table-cell">
+                          <button 
+                            className="delete-btn"
+                            onClick={() => handleDeleteTransaction(transaction.id)}
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                
+                <div className="transaction-actions">
+                  <div className="add-transaction">
+                    <select 
+                      value={newTransaction.category}
+                      onChange={(e) => setNewTransaction({...newTransaction, category: e.target.value})}
+                    >
+                      <option value="">Select Category</option>
+                      {categories.map(category => (
+                        <option key={category.id} value={category.name}>
+                          {category.name}
+                        </option>
+                      ))}
+                    </select>
+                    
+                    <input
+                      type="number"
+                      placeholder="Amount ($)"
+                      value={newTransaction.amount}
+                      onChange={(e) => setNewTransaction({...newTransaction, amount: e.target.value})}
+                    />
+                    
+                    <input
+                      type="date"
+                      value={newTransaction.date}
+                      onChange={(e) => setNewTransaction({...newTransaction, date: e.target.value})}
+                    />
+                    
+                    <button 
+                      className="add-btn"
+                      onClick={handleAddTransaction}
+                    >
+                      Add Transaction
+                    </button>
+                  </div>
+                  
+                  {/* NEW: Database operation buttons */}
+                  <div style={{ marginTop: '20px' }}>
+                    <button 
+                      className="add-btn"
+                      onClick={handleBulkSubmit}
+                      style={{ width: '100%', marginTop: '10px', backgroundColor: '#2980b9' }}
+                    >
+                      Submit All Transactions
+                    </button>
+                    
+                    <button 
+                      className="add-btn"
+                      onClick={toggleInsights}
+                      style={{ width: '100%', marginTop: '10px', backgroundColor: '#27ae60' }}
+                    >
+                      View Carbon Insights
+                    </button>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="emissions-section">
+                <div className="emissions-card">
+                  <h3>Total Emissions</h3>
+                  <div className="emissions-value">{totalEmissions}</div>
+                  <div className="emissions-unit">kg CO₂e</div>
+                </div>
+                
+                <div className="chart-container">
+                  <h3>Emissions by Month</h3>
+                  <ResponsiveContainer width="100%" height={200}>
+                    <LineChart data={emissionsByPrice}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="name" />
+                      <YAxis />
+                      <Tooltip />
+                      <Line type="monotone" dataKey="value" stroke="#4CAF50" />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
+                
+                <div className="chart-container">
+                  <h3>Emissions by Category</h3>
+                  <ResponsiveContainer width="100%" height={200}>
+                    <BarChart data={emissionsByCategory}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="category" />
+                      <YAxis />
+                      <Tooltip />
+                      <Bar dataKey="emissions" fill="#4CAF50" />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+            </>
+          )}
         </div>
       )}
     </div>

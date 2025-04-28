@@ -472,9 +472,365 @@ app.delete('/api/users/:userId/transactions/:transactionId', async (req, res) =>
   }
 });
 
-// Initialize database and start server
+// 1. Create database tables with constraints
+async function createTables() {
+  const connection = await pool.getConnection();
+  try {
+    // Users Table with constraints
+    await connection.query(`
+      CREATE TABLE IF NOT EXISTS Users (
+        User_ID INT AUTO_INCREMENT PRIMARY KEY,
+        Username VARCHAR(50) NOT NULL UNIQUE,
+        Email VARCHAR(100) NOT NULL UNIQUE,
+        Password_Hash VARCHAR(255) NOT NULL,
+        Created_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        Monthly_Emissions DECIMAL(10,2) DEFAULT 0,
+        Total_Emissions DECIMAL(10,2) DEFAULT 0,
+        CHECK (LENGTH(Username) >= 3),
+        CHECK (Email LIKE '%@%.%')
+      )
+    `);
+
+    // Industries Table with constraints
+    await connection.query(`
+      CREATE TABLE IF NOT EXISTS Industries (
+        NAICS_Code VARCHAR(10) NOT NULL PRIMARY KEY,
+        Title VARCHAR(255) NOT NULL,
+        Description TEXT,
+        Emissions DECIMAL(10,2),
+        Created_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        CHECK (Emissions >= 0)
+      )
+    `);
+
+    // Category Table with constraints (including foreign key)
+    await connection.query(`
+      CREATE TABLE IF NOT EXISTS Category (
+        Category_ID INT AUTO_INCREMENT PRIMARY KEY,
+        Category_Name VARCHAR(100) NOT NULL,
+        NAICS_Code VARCHAR(10) NOT NULL,
+        Created_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (NAICS_Code) REFERENCES Industries(NAICS_Code),
+        UNIQUE (Category_Name, NAICS_Code)
+      )
+    `);
+
+    // Orders Table with constraints
+    await connection.query(`
+      CREATE TABLE IF NOT EXISTS Orders (
+        Order_ID INT AUTO_INCREMENT PRIMARY KEY,
+        Customer_ID INT NOT NULL,
+        Category_ID INT NOT NULL,
+        Order_Date DATE NOT NULL,
+        Quantity INT NOT NULL DEFAULT 1,
+        Total DECIMAL(10,2) NOT NULL,
+        Created_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (Customer_ID) REFERENCES Users(User_ID) ON DELETE CASCADE,
+        FOREIGN KEY (Category_ID) REFERENCES Category(Category_ID),
+        CHECK (Quantity > 0),
+        CHECK (Total > 0)
+      )
+    `);
+
+    console.log('Database tables created successfully');
+  } catch (err) {
+    console.error('Error creating database tables:', err);
+  } finally {
+    connection.release();
+  }
+}
+
+// 2. Create database triggers
+async function createTriggers() {
+  const connection = await pool.getConnection();
+  try {
+    // Drop existing triggers if they exist
+    await connection.query(`DROP TRIGGER IF EXISTS after_order_insert`);
+    await connection.query(`DROP TRIGGER IF EXISTS after_order_delete`);
+    
+    // Create trigger that fires after inserting a new order
+    await connection.query(`
+      CREATE TRIGGER after_order_insert
+      AFTER INSERT ON Orders
+      FOR EACH ROW
+      BEGIN
+        DECLARE emission_factor DECIMAL(10,2);
+        DECLARE order_emissions DECIMAL(10,2);
+        
+        -- Get the emission factor for this category
+        SELECT i.Emissions INTO emission_factor
+        FROM Category c
+        JOIN Industries i ON c.NAICS_Code = i.NAICS_Code
+        WHERE c.Category_ID = NEW.Category_ID;
+        
+        -- Only proceed if we found a valid emission factor
+        IF emission_factor IS NOT NULL THEN
+          -- Calculate emissions for this order
+          SET order_emissions = (NEW.Total * emission_factor / 100);
+          
+          -- Update user's total emissions
+          UPDATE Users
+          SET 
+            Total_Emissions = IFNULL(Total_Emissions, 0) + order_emissions
+          WHERE User_ID = NEW.Customer_ID;
+          
+          -- Update monthly emissions if the order is from the current month
+          IF YEAR(NEW.Order_Date) = YEAR(CURRENT_DATE()) AND MONTH(NEW.Order_Date) = MONTH(CURRENT_DATE()) THEN
+            UPDATE Users
+            SET Monthly_Emissions = IFNULL(Monthly_Emissions, 0) + order_emissions
+            WHERE User_ID = NEW.Customer_ID;
+          END IF;
+        END IF;
+      END
+    `);
+    
+    // Create trigger that fires after deleting an order
+    await connection.query(`
+      CREATE TRIGGER after_order_delete
+      AFTER DELETE ON Orders
+      FOR EACH ROW
+      BEGIN
+        DECLARE emission_factor DECIMAL(10,2);
+        DECLARE order_emissions DECIMAL(10,2);
+        
+        -- Get the emission factor for this category
+        SELECT i.Emissions INTO emission_factor
+        FROM Category c
+        JOIN Industries i ON c.NAICS_Code = i.NAICS_Code
+        WHERE c.Category_ID = OLD.Category_ID;
+        
+        -- Only proceed if we found a valid emission factor
+        IF emission_factor IS NOT NULL THEN
+          -- Calculate emissions for this order
+          SET order_emissions = (OLD.Total * emission_factor / 100);
+          
+          -- Update user's total emissions
+          UPDATE Users
+          SET 
+            Total_Emissions = GREATEST(0, IFNULL(Total_Emissions, 0) - order_emissions)
+          WHERE User_ID = OLD.Customer_ID;
+          
+          -- Update monthly emissions if the order was from the current month
+          IF YEAR(OLD.Order_Date) = YEAR(CURRENT_DATE()) AND MONTH(OLD.Order_Date) = MONTH(CURRENT_DATE()) THEN
+            UPDATE Users
+            SET Monthly_Emissions = GREATEST(0, IFNULL(Monthly_Emissions, 0) - order_emissions)
+            WHERE User_ID = OLD.Customer_ID;
+          END IF;
+        END IF;
+      END
+    `);
+    
+    console.log('Database triggers created successfully');
+  } catch (err) {
+    console.error('Error creating database triggers:', err);
+  } finally {
+    connection.release();
+  }
+}
+
+// 3. Create stored procedures
+async function createStoredProcedures() {
+  const connection = await pool.getConnection();
+  try {
+    // Create stored procedure for carbon insights
+    await connection.query(`
+      DROP PROCEDURE IF EXISTS GetUserCarbonInsights;
+    `);
+    
+    await connection.query(`
+      CREATE PROCEDURE GetUserCarbonInsights(IN userId INT)
+      BEGIN
+        -- Declare variables
+        DECLARE total_emissions DECIMAL(10,2);
+        
+        -- Calculate total emissions for user (control structure)
+        SELECT SUM(o.Total * i.Emissions / 100) INTO total_emissions
+        FROM Orders o
+        JOIN Category c ON o.Category_ID = c.Category_ID
+        JOIN Industries i ON c.NAICS_Code = i.NAICS_Code
+        WHERE o.Customer_ID = userId;
+        
+        -- ADVANCED QUERY 1: Multiple joins with GROUP BY aggregation
+        SELECT 
+          c.Category_Name AS category,
+          SUM(o.Total) AS total_spent,
+          SUM(o.Total * i.Emissions / 100) AS category_emissions,
+          COUNT(o.Order_ID) AS order_count,
+          -- Control structure with IF condition
+          IF(SUM(o.Total * i.Emissions / 100) > 100, 'High', 'Low') AS impact_level
+        FROM 
+          Orders o
+        JOIN 
+          Category c ON o.Category_ID = c.Category_ID
+        JOIN 
+          Industries i ON c.NAICS_Code = i.NAICS_Code
+        WHERE 
+          o.Customer_ID = userId
+        GROUP BY 
+          c.Category_Name
+        ORDER BY 
+          category_emissions DESC;
+          
+        -- ADVANCED QUERY 2: Temporal grouping with multiple joins
+        SELECT 
+          DATE_FORMAT(o.Order_Date, '%Y-%m') AS month,
+          SUM(o.Total) AS monthly_spent,
+          SUM(o.Total * i.Emissions / 100) AS monthly_emissions
+        FROM 
+          Orders o
+        JOIN 
+          Category c ON o.Category_ID = c.Category_ID
+        JOIN 
+          Industries i ON c.NAICS_Code = i.NAICS_Code
+        WHERE 
+          o.Customer_ID = userId
+        GROUP BY 
+          DATE_FORMAT(o.Order_Date, '%Y-%m')
+        ORDER BY 
+          month DESC;
+      END
+    `);
+    
+    console.log('Stored procedures created successfully');
+  } catch (err) {
+    console.error('Error creating stored procedures:', err);
+  } finally {
+    connection.release();
+  }
+}
+
+// 4. Transaction endpoint with advanced queries
+app.post('/api/users/:id/bulk-transaction', express.json(), async (req, res) => {
+  const connection = await pool.getConnection();
+  
+  try {
+    // Begin transaction with SERIALIZABLE isolation level
+    await connection.execute('SET TRANSACTION ISOLATION LEVEL SERIALIZABLE');
+    await connection.beginTransaction();
+    
+    const { transactions } = req.body;
+    const userId = req.params.id;
+    
+    if (!transactions || !Array.isArray(transactions) || transactions.length === 0) {
+      await connection.rollback();
+      return res.status(400).json({ error: 'Valid transactions array is required' });
+    }
+    
+    const results = [];
+    
+    // Process each transaction
+    for (const tx of transactions) {
+      const { category_id, amount, date } = tx;
+      
+      if (!category_id || !amount) {
+        await connection.rollback();
+        return res.status(400).json({ error: 'Category ID and amount are required for each transaction' });
+      }
+      
+      // ADVANCED QUERY 1: JOIN multiple relations
+      const [categories] = await connection.execute(`
+        SELECT c.Category_Name, i.Emissions 
+        FROM Category c
+        JOIN Industries i ON c.NAICS_Code = i.NAICS_Code
+        WHERE c.Category_ID = ?
+      `, [category_id]);
+      
+      if (categories.length === 0) {
+        await connection.rollback();
+        return res.status(404).json({ error: `Category with ID ${category_id} not found` });
+      }
+      
+      const category = categories[0];
+      const emissions = (amount * category.Emissions / 100);
+      
+      // Insert the transaction
+      const [result] = await connection.execute(`
+        INSERT INTO Orders 
+        (Customer_ID, Category_ID, Order_Date, Quantity, Total) 
+        VALUES (?, ?, ?, ?, ?)
+      `, [userId, category_id, date, 1, amount]);
+      
+      // ADVANCED QUERY 2: Subquery with aggregation
+      await connection.execute(`
+        UPDATE Users 
+        SET Monthly_Emissions = (
+          SELECT SUM(o.Total * i.Emissions / 100)
+          FROM Orders o
+          JOIN Category c ON o.Category_ID = c.Category_ID
+          JOIN Industries i ON c.NAICS_Code = i.NAICS_Code
+          WHERE o.Customer_ID = ?
+            AND YEAR(o.Order_Date) = YEAR(CURRENT_DATE())
+            AND MONTH(o.Order_Date) = MONTH(CURRENT_DATE())
+          GROUP BY o.Customer_ID
+        )
+        WHERE User_ID = ?
+      `, [userId, userId]);
+      
+      results.push({
+        id: result.insertId,
+        category: category.Category_Name,
+        amount,
+        date,
+        emissions
+      });
+    }
+    
+    // Commit the transaction
+    await connection.commit();
+    
+    res.status(201).json({
+      userId,
+      transactions: results
+    });
+    
+  } catch (err) {
+    await connection.rollback();
+    console.error('Error in bulk transaction:', err);
+    res.status(500).json({ error: 'Internal server error during transaction' });
+  } finally {
+    connection.release();
+  }
+});
+
+// 5. API endpoint for stored procedure
+app.get('/api/users/:id/carbon-insights', async (req, res) => {
+  try {
+    const userId = req.params.id;
+    
+    const connection = await pool.getConnection();
+    try {
+      // Call the stored procedure
+      const [results] = await connection.query('CALL GetUserCarbonInsights(?)', [userId]);
+      
+      // The procedure returns multiple result sets
+      if (results && results.length > 0) {
+        res.json({
+          userId,
+          categoryInsights: results[0] || [],
+          monthlyInsights: results[1] || []
+        });
+      } else {
+        res.json({
+          userId,
+          categoryInsights: [],
+          monthlyInsights: []
+        });
+      }
+    } finally {
+      connection.release();
+    }
+  } catch (err) {
+    console.error('Error retrieving carbon insights:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// 6. Update the initialization section
 initializeDatabase()
-  .then(() => {
+  .then(async () => {
+    await createTables();
+    await createTriggers();
+    await createStoredProcedures();
     app.listen(PORT, () => {
       console.log(`Server is running on http://localhost:${PORT}`);
     });
