@@ -346,6 +346,20 @@ app.post('/api/users/:id/transactions', express.json(), async (req, res) => {
     
     const connection = await pool.getConnection();
     try {
+      // First check if the user exists, create if not
+      const [users] = await connection.execute(
+        'SELECT User_ID FROM Users WHERE User_ID = ?',
+        [req.params.id]
+      );
+      
+      if (users.length === 0) {
+        // Create a new user record if it doesn't exist
+        await connection.execute(
+          'INSERT INTO Users (User_ID, Username, Email, Password) VALUES (?, ?, ?, ?)',
+          [req.params.id, `User${req.params.id}`, `user${req.params.id}@example.com`, 'password']
+        );
+      }
+      
       // Get the emission factor for this category
       const [categories] = await connection.execute(`
         SELECT c.Category_Name, i.Emissions 
@@ -384,10 +398,10 @@ app.post('/api/users/:id/transactions', express.json(), async (req, res) => {
   }
 });
 
-// NEW ENDPOINT: Update a transaction
+// Update a transaction
 app.put('/api/users/:userId/transactions/:transactionId', express.json(), async (req, res) => {
   try {
-    const { amount, date } = req.body;
+    const { category_id, amount, date } = req.body;
     
     if (!amount) {
       return res.status(400).json({ error: 'Amount is required' });
@@ -406,10 +420,19 @@ app.put('/api/users/:userId/transactions/:transactionId', express.json(), async 
       }
       
       // Update the transaction
-      await connection.execute(
-        'UPDATE Orders SET Total = ?, Order_Date = ? WHERE Order_ID = ?',
-        [amount, date, req.params.transactionId]
-      );
+      if (category_id) {
+        // If category_id is provided, update it along with amount and date
+        await connection.execute(
+          'UPDATE Orders SET Category_ID = ?, Total = ?, Order_Date = ? WHERE Order_ID = ?',
+          [category_id, amount, date, req.params.transactionId]
+        );
+      } else {
+        // Otherwise just update amount and date
+        await connection.execute(
+          'UPDATE Orders SET Total = ?, Order_Date = ? WHERE Order_ID = ?',
+          [amount, date, req.params.transactionId]
+        );
+      }
       
       // Get the updated transaction data
       const [updatedTransaction] = await connection.execute(`
@@ -475,13 +498,57 @@ app.delete('/api/users/:userId/transactions/:transactionId', async (req, res) =>
 });
 
 
-// 2. Create database triggers
+// Update the trigger creation to handle missing fields
 async function createTriggers() {
   const connection = await pool.getConnection();
   try {
     // Drop existing triggers if they exist
     await connection.query(`DROP TRIGGER IF EXISTS after_order_insert`);
+    await connection.query(`DROP TRIGGER IF EXISTS after_order_update`);
     await connection.query(`DROP TRIGGER IF EXISTS after_order_delete`);
+    
+    // First, check if the Users table exists
+    const [tables] = await connection.query(`
+      SHOW TABLES LIKE 'Users'
+    `);
+    
+    // If Users table doesn't exist, create it
+    if (tables.length === 0) {
+      await connection.query(`
+        CREATE TABLE Users (
+          User_ID INT PRIMARY KEY,
+          Username VARCHAR(50) NOT NULL,
+          Email VARCHAR(100) NOT NULL,
+          Password VARCHAR(100) NOT NULL,
+          Total_Emissions DECIMAL(10,2) DEFAULT 0,
+          Monthly_Emissions DECIMAL(10,2) DEFAULT 0
+        )
+      `);
+      console.log('Created Users table');
+    } else {
+      // Check if the Users table has the necessary columns
+      const [userColumns] = await connection.query(`
+        SHOW COLUMNS FROM Users
+      `);
+      
+      const hasEmissionsField = userColumns.some(col => col.Field === 'Total_Emissions');
+      const hasMonthlyField = userColumns.some(col => col.Field === 'Monthly_Emissions');
+      
+      // If fields don't exist, add them
+      if (!hasEmissionsField) {
+        await connection.query(`
+          ALTER TABLE Users ADD COLUMN Total_Emissions DECIMAL(10,2) DEFAULT 0
+        `);
+        console.log('Added Total_Emissions column to Users table');
+      }
+      
+      if (!hasMonthlyField) {
+        await connection.query(`
+          ALTER TABLE Users ADD COLUMN Monthly_Emissions DECIMAL(10,2) DEFAULT 0
+        `);
+        console.log('Added Monthly_Emissions column to Users table');
+      }
+    }
     
     // Create trigger that fires after inserting a new order
     await connection.query(`
@@ -515,6 +582,61 @@ async function createTriggers() {
             SET Monthly_Emissions = IFNULL(Monthly_Emissions, 0) + order_emissions
             WHERE User_ID = NEW.Customer_ID;
           END IF;
+        END IF;
+      END
+    `);
+    
+    // Create trigger that fires after updating an order
+    await connection.query(`
+      CREATE TRIGGER after_order_update
+      AFTER UPDATE ON Orders
+      FOR EACH ROW
+      BEGIN
+        DECLARE old_emission_factor DECIMAL(10,2);
+        DECLARE new_emission_factor DECIMAL(10,2);
+        DECLARE old_emissions DECIMAL(10,2);
+        DECLARE new_emissions DECIMAL(10,2);
+        
+        -- Get the emission factors
+        SELECT i.Emissions INTO old_emission_factor
+        FROM Category c
+        JOIN Industries i ON c.NAICS_Code = i.NAICS_Code
+        WHERE c.Category_ID = OLD.Category_ID;
+        
+        SELECT i.Emissions INTO new_emission_factor
+        FROM Category c
+        JOIN Industries i ON c.NAICS_Code = i.NAICS_Code
+        WHERE c.Category_ID = NEW.Category_ID;
+        
+        -- Calculate emissions
+        IF old_emission_factor IS NOT NULL THEN
+          SET old_emissions = (OLD.Total * old_emission_factor / 100);
+        ELSE
+          SET old_emissions = 0;
+        END IF;
+        
+        IF new_emission_factor IS NOT NULL THEN
+          SET new_emissions = (NEW.Total * new_emission_factor / 100);
+        ELSE
+          SET new_emissions = 0;
+        END IF;
+        
+        -- Update total emissions
+        UPDATE Users
+        SET Total_Emissions = GREATEST(0, IFNULL(Total_Emissions, 0) - old_emissions + new_emissions)
+        WHERE User_ID = NEW.Customer_ID;
+        
+        -- Update monthly emissions if needed
+        IF YEAR(OLD.Order_Date) = YEAR(CURRENT_DATE()) AND MONTH(OLD.Order_Date) = MONTH(CURRENT_DATE()) THEN
+          UPDATE Users
+          SET Monthly_Emissions = GREATEST(0, IFNULL(Monthly_Emissions, 0) - old_emissions)
+          WHERE User_ID = NEW.Customer_ID;
+        END IF;
+        
+        IF YEAR(NEW.Order_Date) = YEAR(CURRENT_DATE()) AND MONTH(NEW.Order_Date) = MONTH(CURRENT_DATE()) THEN
+          UPDATE Users
+          SET Monthly_Emissions = IFNULL(Monthly_Emissions, 0) + new_emissions
+          WHERE User_ID = NEW.Customer_ID;
         END IF;
       END
     `);
@@ -822,13 +944,13 @@ initializeDatabase()
           const [rows] = await connection.execute('SELECT MAX(User_ID) AS maxId FROM Users');
           const maxId = rows[0].maxId || 0;
           const newUserId = maxId + 1;
-
+  
           // Create the user
           const [result] = await connection.execute(
             'INSERT INTO Users (User_ID, Username, Email, Password) VALUES (?, ?, ?, ?)',
             [newUserId, username, email, hashedPassword]
           );
-
+  
           return res.status(201).json({
             id: newUserId,
             username,

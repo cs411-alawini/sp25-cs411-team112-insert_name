@@ -22,10 +22,11 @@ const ScenarioPlanner = ({ onBack, user, onLogout }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [editingTransaction, setEditingTransaction] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
+  const [error, setError] = useState(null);
   
   // Use the user's ID from props
   const DEFAULT_USER_ID = 1; // Fallback if no user
-const userId = user?.id || user?.User_ID || DEFAULT_USER_ID;
+  const userId = user?.id || user?.User_ID || DEFAULT_USER_ID;
   
   // Load initial data
   useEffect(() => {
@@ -61,6 +62,7 @@ const userId = user?.id || user?.User_ID || DEFAULT_USER_ID;
       })
       .catch(error => {
         console.error('Error fetching categories:', error);
+        setError('Error loading categories. Using default categories instead.');
         // Keep using default categories on error
       });
 
@@ -72,6 +74,8 @@ const userId = user?.id || user?.User_ID || DEFAULT_USER_ID;
   const fetchUserTransactions = async () => {
     try {
       setIsLoading(true);
+      setError(null);
+      
       const response = await fetch(`${API_BASE_URL}/users/${userId}/transactions`);
       
       if (response.ok) {
@@ -112,25 +116,27 @@ const userId = user?.id || user?.User_ID || DEFAULT_USER_ID;
         }));
         
         setEmissionsByPrice(priceData);
-      } else {
-        // If no transactions found or error, use empty arrays
+      } else if (response.status === 404) {
+        // If no transactions found, use empty arrays
         setTransactions([]);
         setTotalEmissions(0);
         setEmissionsByCategory([]);
-        setEmissionsByPrice([
-          { name: 'Jan', value: 0 },
-          { name: 'Feb', value: 0 },
-          { name: 'Mar', value: 0 },
-          { name: 'Apr', value: 0 },
-          { name: 'May', value: 0 },
-          { name: 'Jun', value: 0 }
-        ]);
+        
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        setEmissionsByPrice(months.map(name => ({ name, value: 0 })));
+      } else {
+        throw new Error(`Failed to fetch transactions: ${response.statusText}`);
       }
     } catch (err) {
       console.error('Error fetching user transactions:', err);
+      setError('Error loading transactions. Please try again later.');
       // Set default empty state
       setTransactions([]);
       setTotalEmissions(0);
+      setEmissionsByCategory([]);
+      
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      setEmissionsByPrice(months.map(name => ({ name, value: 0 })));
     } finally {
       setIsLoading(false);
     }
@@ -139,14 +145,18 @@ const userId = user?.id || user?.User_ID || DEFAULT_USER_ID;
   // Add a new transaction
   const handleAddTransaction = async () => {
     if (!newTransaction.category || !newTransaction.amount) {
-      alert('Please select a category and enter an amount');
+      setError('Please select a category and enter an amount');
       return;
     }
     
     const category = categories.find(c => c.name === newTransaction.category);
-    if (!category) return;
+    if (!category) {
+      setError('Selected category not found');
+      return;
+    }
     
     setIsLoading(true);
+    setError(null);
     
     try {
       // Find category_id
@@ -166,10 +176,12 @@ const userId = user?.id || user?.User_ID || DEFAULT_USER_ID;
       });
       
       if (!response.ok) {
-        throw new Error('Failed to add transaction');
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to add transaction');
       }
       
       const addedTransaction = await response.json();
+      console.log('Transaction added successfully:', addedTransaction);
       
       // Update local state
       setTransactions([...transactions, addedTransaction]);
@@ -192,6 +204,13 @@ const userId = user?.id || user?.User_ID || DEFAULT_USER_ID;
       
       setEmissionsByCategory(updatedCategoryData);
       
+      // Update emissions by month chart
+      const date = new Date(addedTransaction.date);
+      const monthIndex = date.getMonth();
+      const updatedEmissionsByPrice = [...emissionsByPrice];
+      updatedEmissionsByPrice[monthIndex].value += addedTransaction.emissions;
+      setEmissionsByPrice(updatedEmissionsByPrice);
+      
       // Reset form
       setNewTransaction({
         category: '',
@@ -200,7 +219,7 @@ const userId = user?.id || user?.User_ID || DEFAULT_USER_ID;
       });
     } catch (err) {
       console.error('Error adding transaction:', err);
-      alert('Failed to add transaction. Please try again.');
+      setError(`Failed to add transaction: ${err.message}`);
     } finally {
       setIsLoading(false);
     }
@@ -209,9 +228,13 @@ const userId = user?.id || user?.User_ID || DEFAULT_USER_ID;
   // Delete a transaction
   const handleDeleteTransaction = async (id) => {
     const transactionToDelete = transactions.find(t => t.id === id);
-    if (!transactionToDelete) return;
+    if (!transactionToDelete) {
+      setError('Transaction not found');
+      return;
+    }
     
     setIsLoading(true);
+    setError(null);
     
     try {
       // Send delete request to API
@@ -244,9 +267,16 @@ const userId = user?.id || user?.User_ID || DEFAULT_USER_ID;
       }
       
       setEmissionsByCategory(updatedCategoryData);
+      
+      // Update emissions by month chart
+      const date = new Date(transactionToDelete.date);
+      const monthIndex = date.getMonth();
+      const updatedEmissionsByPrice = [...emissionsByPrice];
+      updatedEmissionsByPrice[monthIndex].value -= transactionToDelete.emissions;
+      setEmissionsByPrice(updatedEmissionsByPrice);
     } catch (err) {
       console.error('Error deleting transaction:', err);
-      alert('Failed to delete transaction. Please try again.');
+      setError('Failed to delete transaction. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -261,23 +291,37 @@ const userId = user?.id || user?.User_ID || DEFAULT_USER_ID;
       date: transaction.date
     });
     setIsEditing(true);
+    setError(null);
   };
 
   // Handle update transaction
   const handleUpdateTransaction = async () => {
-    if (!editingTransaction) return;
+    if (!editingTransaction) {
+      setError('No transaction selected for editing');
+      return;
+    }
     
     if (!newTransaction.category || !newTransaction.amount) {
-      alert('Please select a category and enter an amount');
+      setError('Please select a category and enter an amount');
       return;
     }
     
     setIsLoading(true);
+    setError(null);
     
     try {
       // Find category
       const category = categories.find(c => c.name === newTransaction.category);
-      if (!category) throw new Error('Category not found');
+      if (!category) {
+        throw new Error('Category not found');
+      }
+      
+      // Prepare the update data
+      const updateData = {
+        category_id: category.id, // Added category_id to ensure proper category association
+        amount: parseFloat(newTransaction.amount),
+        date: newTransaction.date
+      };
       
       // Send update request to API
       const response = await fetch(`${API_BASE_URL}/users/${userId}/transactions/${editingTransaction.id}`, {
@@ -285,17 +329,16 @@ const userId = user?.id || user?.User_ID || DEFAULT_USER_ID;
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          amount: parseFloat(newTransaction.amount),
-          date: newTransaction.date
-        }),
+        body: JSON.stringify(updateData),
       });
       
       if (!response.ok) {
-        throw new Error('Failed to update transaction');
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to update transaction');
       }
       
       const updatedTransaction = await response.json();
+      console.log('Transaction updated successfully:', updatedTransaction);
       
       // Update in local state
       const updatedTransactions = transactions.map(t => 
@@ -343,6 +386,26 @@ const userId = user?.id || user?.User_ID || DEFAULT_USER_ID;
       
       setEmissionsByCategory(updatedCategoryData);
       
+      // Update emissions by month chart
+      const oldDate = new Date(editingTransaction.date);
+      const newDate = new Date(updatedTransaction.date);
+      const oldMonthIndex = oldDate.getMonth();
+      const newMonthIndex = newDate.getMonth();
+      
+      const updatedEmissionsByPrice = [...emissionsByPrice];
+      
+      // If the month changed, update both months
+      if (oldMonthIndex !== newMonthIndex) {
+        updatedEmissionsByPrice[oldMonthIndex].value -= oldEmissions;
+        updatedEmissionsByPrice[newMonthIndex].value += updatedTransaction.emissions;
+      } else {
+        // Just update the emissions for the same month
+        updatedEmissionsByPrice[oldMonthIndex].value = 
+          updatedEmissionsByPrice[oldMonthIndex].value - oldEmissions + updatedTransaction.emissions;
+      }
+      
+      setEmissionsByPrice(updatedEmissionsByPrice);
+      
       // Reset form and editing state
       setNewTransaction({
         category: '',
@@ -353,7 +416,7 @@ const userId = user?.id || user?.User_ID || DEFAULT_USER_ID;
       setIsEditing(false);
     } catch (err) {
       console.error('Error updating transaction:', err);
-      alert('Failed to update transaction. Please try again.');
+      setError(`Failed to update transaction: ${err.message}`);
     } finally {
       setIsLoading(false);
     }
@@ -363,6 +426,7 @@ const userId = user?.id || user?.User_ID || DEFAULT_USER_ID;
   const handleCancelEdit = () => {
     setEditingTransaction(null);
     setIsEditing(false);
+    setError(null);
     setNewTransaction({
       category: '',
       amount: '',
@@ -373,6 +437,7 @@ const userId = user?.id || user?.User_ID || DEFAULT_USER_ID;
   // Toggle insights view
   const toggleInsights = () => {
     setShowInsights(!showInsights);
+    setError(null);
   };
 
   return (
@@ -401,6 +466,21 @@ const userId = user?.id || user?.User_ID || DEFAULT_USER_ID;
         </div>
       ) : (
         <div className="planner-content">
+          {/* Display error message if there is one */}
+          {error && (
+            <div style={{ 
+              padding: '10px 15px', 
+              backgroundColor: '#ffebee', 
+              color: '#e74c3c',
+              borderRadius: '4px',
+              marginBottom: '20px',
+              width: '100%',
+              textAlign: 'center'
+            }}>
+              {error}
+            </div>
+          )}
+          
           {showInsights ? (
             <>
               <CarbonInsights user={user} />
@@ -429,28 +509,34 @@ const userId = user?.id || user?.User_ID || DEFAULT_USER_ID;
                   </div>
                   
                   <div className="table-body">
-                    {transactions.map((transaction) => (
-                      <div className="table-row" key={transaction.id}>
-                        <div className="table-cell">{transaction.category}</div>
-                        <div className="table-cell">${transaction.amount.toFixed(2)}</div>
-                        <div className="table-cell">{transaction.date}</div>
-                        <div className="table-cell">{transaction.emissions}</div>
-                        <div className="table-cell">
-                          <button 
-                            className="edit-btn"
-                            onClick={() => handleEditClick(transaction)}
-                          >
-                            Edit
-                          </button>
-                          <button 
-                            className="delete-btn"
-                            onClick={() => handleDeleteTransaction(transaction.id)}
-                          >
-                            Delete
-                          </button>
+                    {transactions.length > 0 ? (
+                      transactions.map((transaction) => (
+                        <div className="table-row" key={transaction.id}>
+                          <div className="table-cell">{transaction.category}</div>
+                          <div className="table-cell">${transaction.amount.toFixed(2)}</div>
+                          <div className="table-cell">{transaction.date}</div>
+                          <div className="table-cell">{transaction.emissions.toFixed(2)}</div>
+                          <div className="table-cell">
+                            <button 
+                              className="edit-btn"
+                              onClick={() => handleEditClick(transaction)}
+                            >
+                              Edit
+                            </button>
+                            <button 
+                              className="delete-btn"
+                              onClick={() => handleDeleteTransaction(transaction.id)}
+                            >
+                              Delete
+                            </button>
+                          </div>
                         </div>
+                      ))
+                    ) : (
+                      <div className="table-row" style={{ justifyContent: 'center', padding: '20px' }}>
+                        <div>No transactions yet. Add your first transaction below.</div>
                       </div>
-                    ))}
+                    )}
                   </div>
                 </div>
                 
@@ -521,7 +607,7 @@ const userId = user?.id || user?.User_ID || DEFAULT_USER_ID;
               <div className="emissions-section">
                 <div className="emissions-card">
                   <h3>Total Emissions</h3>
-                  <div className="emissions-value">{totalEmissions}</div>
+                  <div className="emissions-value">{totalEmissions.toFixed(2)}</div>
                   <div className="emissions-unit">kg CO₂e</div>
                 </div>
                 
