@@ -1,4 +1,4 @@
-/* Full screen layout */
+
 .fullscreen-landing-page {
   width: 100%;
   min-height: 100vh;
@@ -8,7 +8,7 @@
   font-family: 'Arial', sans-serif;
 }
 
-/* Header section */
+
 .fullscreen-header {
   text-align: center;
   padding: 2rem;
@@ -32,7 +32,7 @@
   margin: 0 auto;
 }
 
-/* Search Results Container */
+
 .search-results-container {
   width: 100%;
   padding: 2rem;
@@ -56,7 +56,7 @@
   background-color: #e8f5e9;
 }
 
-/* Dashboard layout */
+
 .fullscreen-dashboard {
   display: flex;
   flex: 1;
@@ -64,7 +64,7 @@
   gap: 2rem;
 }
 
-/* Left column with metrics */
+
 .metrics-column {
   flex: 1;
   display: flex;
@@ -72,7 +72,7 @@
   gap: 1.5rem;
 }
 
-/* Right column with visualizations */
+
 .visualization-column {
   flex: 2;
   display: flex;
@@ -80,7 +80,7 @@
   gap: 1.5rem;
 }
 
-/* Card styling */
+
 .dashboard-card {
   padding: 1.5rem;
   border-radius: 8px;
@@ -118,7 +118,7 @@
   color: #FFC107;
 }
 
-/* Visualization containers */
+
 .chart-container {
   padding: 1.5rem;
   border-radius: 8px;
@@ -152,7 +152,7 @@
   font-size: 1.2rem;
 }
 
-/* Risk table styling */
+
 .risk-table {
   width: 100%;
 }
@@ -200,7 +200,7 @@
   color: #4caf50;
 }
 
-/* Action button */
+
 .action-button-container {
   display: flex;
   justify-content: flex-start;
@@ -233,7 +233,7 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-/* Responsive design */
+
 @media (max-width: 992px) {
   .fullscreen-dashboard {
     flex-direction: column;
@@ -269,7 +269,7 @@
   }
 }
 
-/* Add these styles to your existing LandingPage.css file */
+
 
 .auth-container {
   position: absolute;
@@ -320,7 +320,7 @@
   background-color: #ffebee;
 }
 
-/* Responsive adjustments */
+
 @media (max-width: 768px) {
   .auth-container {
     position: relative;

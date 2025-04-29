@@ -2,7 +2,7 @@ import React from 'react';
 import './NotFound.css';
 
 function NotFound({ suggestions = [], onSuggestionClick }) {
-  // Ensure we have at least some default suggestions if none provided
+  
   const displaySuggestions = suggestions.length > 0 
     ? suggestions.slice(0, 5) 
     : ['Sporting Goods', 'Electronics', 'Footwear', 'Men\'s Clothing', 'Women\'s Clothing'];

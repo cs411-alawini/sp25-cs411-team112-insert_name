@@ -22,7 +22,7 @@ const Login = ({ onLogin, onClose }) => {
     setIsLoading(true);
     
     try {
-      // Simple login request
+      
       const response = await fetch(`${API_BASE_URL}/auth/login`, {
         method: 'POST',
         headers: {
@@ -37,7 +37,7 @@ const Login = ({ onLogin, onClose }) => {
         throw new Error(data.error || 'Login failed');
       }
       
-      // Call the onLogin callback with the user data
+      
       onLogin(data);
     } catch (err) {
       console.error('Login error:', err);

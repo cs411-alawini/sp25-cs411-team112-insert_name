@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import './CategoryResults.css';
 
-// Helper function to get risk level based on emissions value
+
 const getRiskLevel = (emissions) => {
   if (!emissions) return 'unknown';
   if (emissions >= 500) return 'high';
@@ -9,7 +9,7 @@ const getRiskLevel = (emissions) => {
   return 'low';
 };
 
-// Use React.memo to prevent unnecessary re-renders
+
 const ResultCard = memo(({ result }) => {
   const formattedEmission = result.emissionFactor ? 
     parseFloat(result.emissionFactor).toFixed(2) : 'N/A';
@@ -98,7 +98,7 @@ function CategoryResults({ results }) {
     <div className="category-results">
       <h2>Carbon Footprint Results</h2>
       
-      {/* Use a key based on unique values to help React reconciliation */}
+      {}
       {results.map((result, index) => (
         <ResultCard 
           key={`${result.naicsCode}-${result.categoryId}-${index}`} 
@@ -106,7 +106,7 @@ function CategoryResults({ results }) {
         />
       ))}
       
-      {/* If there are multiple results, show related categories */}
+      {}
       {results.length > 1 && (
         <div className="related-categories">
           <h3>Related Categories</h3>

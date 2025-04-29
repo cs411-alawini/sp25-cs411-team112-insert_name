@@ -1,4 +1,4 @@
-// src/pages/LandingPage/LandingPage.js
+
 import React, { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import SearchBar from '../../components/SearchBar/SearchBar';
@@ -20,11 +20,11 @@ const LandingPage = ({ user, onLogin, onLogout, onExploreFootprint }) => {
   const [categoryData, setCategoryData] = useState([]);
   const [highRiskCategories, setHighRiskCategories] = useState(0);
   
-  // Load real emissions data for the chart
+  
   useEffect(() => {
     const fetchEmissionsData = async () => {
       try {
-        // Replace mock data with API call to get real data
+        
         setIsLoading(true);
         const response = await fetch(`${API_BASE_URL}/dashboard/emissions`);
         
@@ -32,7 +32,7 @@ const LandingPage = ({ user, onLogin, onLogout, onExploreFootprint }) => {
           const data = await response.json();
           setCategoryData(data);
           
-          // Count high risk categories from real data
+          
           const highRiskCount = data.filter(cat => cat.riskLevel === 'high').length;
           setHighRiskCategories(highRiskCount);
         } else {
@@ -48,7 +48,7 @@ const LandingPage = ({ user, onLogin, onLogout, onExploreFootprint }) => {
     fetchEmissionsData();
   }, []);
   
-  // Load suggestions when search term changes
+  
   useEffect(() => {
     const fetchSuggestions = async () => {
       try {
@@ -83,7 +83,7 @@ const LandingPage = ({ user, onLogin, onLogout, onExploreFootprint }) => {
         const data = await response.json();
         setSearchResults(data);
       } else if (response.status === 404) {
-        // No results found
+        
         setSearchResults([]);
       } else {
         console.error('Error performing search:', await response.text());
@@ -97,19 +97,19 @@ const LandingPage = ({ user, onLogin, onLogout, onExploreFootprint }) => {
     }
   };
 
-  // Handle suggestion click
+  
   const handleSuggestionClick = (suggestion) => {
     handleSearch(suggestion);
   };
 
-  // Reset search and go back to dashboard
+  
   const handleBackToDashboard = () => {
     setSearchResults(null);
     setHasSearched(false);
     setShowDashboard(true);
   };
   
-  // Handle search term changes
+  
   const handleSearchTermChange = (term) => {
     setSearchTerm(term);
   };
@@ -141,7 +141,7 @@ const LandingPage = ({ user, onLogin, onLogout, onExploreFootprint }) => {
         </div>
       </div>
       
-      {/* Search Results Section */}
+      {}
       {hasSearched && (
         <div className="search-results-container">
           <button className="back-to-dashboard" onClick={handleBackToDashboard}>
@@ -161,7 +161,7 @@ const LandingPage = ({ user, onLogin, onLogout, onExploreFootprint }) => {
         </div>
       )}
       
-      {/* Dashboard */}
+      {}
       {showDashboard && (
         <div className="fullscreen-dashboard">
           {isLoading ? (

@@ -1,4 +1,4 @@
-// src/components/CarbonInsights/CarbonInsights.js
+
 import React, { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import './CarbonInsights.css';
@@ -29,7 +29,7 @@ const EmptyInsightsState = () => {
 };
 
 const CarbonInsights = ({ user }) => {
-  const DEFAULT_USER_ID = 1; // Default user ID for demo
+  const DEFAULT_USER_ID = 1; 
   const userId = user?.id || user?.User_ID || DEFAULT_USER_ID;
   
   const [insights, setInsights] = useState({
@@ -51,12 +51,12 @@ const CarbonInsights = ({ user }) => {
         
         const data = await response.json();
         
-        // Check if data is actually empty despite getting a 200 response
+        
         const isEmpty = 
           (!data.categoryInsights || data.categoryInsights.length === 0) && 
           (!data.monthlyInsights || data.monthlyInsights.length === 0);
 
-        // Set the data, handling empty values properly
+        
         setInsights({
           categoryInsights: data.categoryInsights || [],
           monthlyInsights: data.monthlyInsights || []
@@ -66,7 +66,7 @@ const CarbonInsights = ({ user }) => {
       } catch (err) {
         console.error('Error fetching carbon insights:', err);
         setError(err.message);
-        // Set empty state on error
+        
         setInsights({
           categoryInsights: [],
           monthlyInsights: []
@@ -86,7 +86,7 @@ const CarbonInsights = ({ user }) => {
     return <div>Error loading insights: {error}</div>;
   }
   
-  // Check for empty data in both arrays
+  
   if (
     (!insights.categoryInsights || insights.categoryInsights.length === 0) &&
     (!insights.monthlyInsights || insights.monthlyInsights.length === 0)

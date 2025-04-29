@@ -25,7 +25,7 @@ function SearchBar({ onSearch, isLoading, suggestions = [], onSearchTermChange }
     setIsFocused(false);
   };
   
-  // Filter suggestions based on current input
+  
   const filteredSuggestions = suggestions.filter(suggestion => 
     suggestion.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -49,7 +49,7 @@ function SearchBar({ onSearch, isLoading, suggestions = [], onSearchTermChange }
         </button>
       </form>
       
-      {/* Show suggestions dropdown when input is focused and we have matching suggestions */}
+      {}
       {isFocused && searchTerm.length > 1 && filteredSuggestions.length > 0 && (
         <div className="suggestions-dropdown">
           {filteredSuggestions.slice(0, 5).map((suggestion, index) => (

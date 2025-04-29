@@ -1,4 +1,4 @@
-// src/pages/ScenarioPlanner/ScenerioPlanner.js
+
 import React, { useState, useEffect } from 'react';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import CarbonInsights from '../../components/CarbonInsights/CarbonInsights';
@@ -7,7 +7,7 @@ import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
 
 const API_BASE_URL = 'http://localhost:3007/api';
 
-// New Empty State component 
+
 const EmptyState = () => {
   return (
     <div style={{
@@ -48,32 +48,32 @@ const ScenarioPlanner = ({ onBack, user, onLogout }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [error, setError] = useState(null);
   
-  // Use the user's ID from props
-  const DEFAULT_USER_ID = 1; // Fallback if no user
+  
+  const DEFAULT_USER_ID = 1; 
   const userId = user?.id || user?.User_ID || DEFAULT_USER_ID;
   
-  // Load initial data
+  
   useEffect(() => {
-    // Load categories
+    
     const loadCategories = async () => {
       try {
         const response = await fetch(`${API_BASE_URL}/categories?limit=20`);
         if (response.ok) {
           const data = await response.json();
-          // Map API categories to match our format
+          
           if (data.data && data.data.length) {
             const formattedCategories = data.data.map(cat => ({
               id: cat.Category_ID,
               name: cat.Category_Name,
-              emissionFactor: 0.11 // Default emission factor
+              emissionFactor: 0.11 
             }));
             setCategories(formattedCategories);
           } else {
-            // Set empty categories array
+            
             setCategories([]);
           }
         } else {
-          // Set empty categories array on error
+          
           setCategories([]);
           throw new Error('Failed to fetch categories');
         }
@@ -84,22 +84,22 @@ const ScenarioPlanner = ({ onBack, user, onLogout }) => {
       }
     };
 
-    // Initialize empty charts
+    
     const initializeEmptyCharts = () => {
       const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
       setEmissionsByPrice(months.map(name => ({ name, value: 0 })));
       setEmissionsByCategory([]);
     };
 
-    // Load data
+    
     loadCategories();
     fetchUserTransactions();
     initializeEmptyCharts();
   }, [userId]);
 
-  // Update charts after transactions change
+  
   const updateChartsAfterChange = (currentTransactions) => {
-    // Update emissions by category chart
+    
     const categoryMap = new Map();
     currentTransactions.forEach(transaction => {
       const existing = categoryMap.get(transaction.category) || 0;
@@ -113,7 +113,7 @@ const ScenarioPlanner = ({ onBack, user, onLogout }) => {
     
     setEmissionsByCategory(categoryData);
     
-    // Update emissions by month chart
+    
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     const monthData = Array(12).fill(0);
     
@@ -131,7 +131,7 @@ const ScenarioPlanner = ({ onBack, user, onLogout }) => {
     setEmissionsByPrice(priceData);
   };
 
-  // Fetch user transactions from API
+  
   const fetchUserTransactions = async () => {
     try {
       setIsLoading(true);
@@ -142,9 +142,9 @@ const ScenarioPlanner = ({ onBack, user, onLogout }) => {
       if (response.ok) {
         const data = await response.json();
         
-        // Check if data is empty array or not
+        
         if (Array.isArray(data) && data.length === 0) {
-          // Initialize with empty state for first-time users
+          
           setTransactions([]);
           setTotalEmissions(0);
           setEmissionsByCategory([]);
@@ -156,14 +156,14 @@ const ScenarioPlanner = ({ onBack, user, onLogout }) => {
           return;
         }
         
-        // Otherwise process the data normally
+        
         setTransactions(data);
         
-        // Calculate total emissions properly
+        
         const total = data.reduce((sum, transaction) => sum + parseFloat(transaction.emissions || 0), 0);
         setTotalEmissions(total);
         
-        // Prepare chart data for Emissions by Category
+        
         const categoryMap = new Map();
         data.forEach(transaction => {
           const existing = categoryMap.get(transaction.category) || 0;
@@ -177,7 +177,7 @@ const ScenarioPlanner = ({ onBack, user, onLogout }) => {
         
         setEmissionsByCategory(categoryData);
         
-        // Prepare chart data for Emissions by Month
+        
         const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         const monthData = Array(12).fill(0);
         
@@ -194,7 +194,7 @@ const ScenarioPlanner = ({ onBack, user, onLogout }) => {
         
         setEmissionsByPrice(priceData);
       } else if (response.status === 404) {
-        // If no transactions found, use empty arrays
+        
         setTransactions([]);
         setTotalEmissions(0);
         setEmissionsByCategory([]);
@@ -207,7 +207,7 @@ const ScenarioPlanner = ({ onBack, user, onLogout }) => {
     } catch (err) {
       console.error('Error fetching user transactions:', err);
       setError('Error loading transactions. Please try again later.');
-      // Set default empty state
+      
       setTransactions([]);
       setTotalEmissions(0);
       setEmissionsByCategory([]);
@@ -219,7 +219,7 @@ const ScenarioPlanner = ({ onBack, user, onLogout }) => {
     }
   };
   
-  // Add a new transaction
+  
   const handleAddTransaction = async () => {
     if (!newTransaction.category || !newTransaction.amount) {
       setError('Please select a category and enter an amount');
@@ -236,10 +236,10 @@ const ScenarioPlanner = ({ onBack, user, onLogout }) => {
     setError(null);
     
     try {
-      // Find category_id
+      
       const categoryId = category.id;
       
-      // Send request to API
+      
       const response = await fetch(`${API_BASE_URL}/users/${userId}/transactions`, {
         method: 'POST',
         headers: {
@@ -260,18 +260,18 @@ const ScenarioPlanner = ({ onBack, user, onLogout }) => {
       const addedTransaction = await response.json();
       console.log('Transaction added successfully:', addedTransaction);
       
-      // Update local state
+      
       const updatedTransactions = [...transactions, addedTransaction];
       setTransactions(updatedTransactions);
       
-      // Update total emissions properly
+      
       const newTotal = updatedTransactions.reduce((sum, t) => sum + parseFloat(t.emissions || 0), 0);
       setTotalEmissions(newTotal);
       
-      // Update charts
+      
       updateChartsAfterChange(updatedTransactions);
       
-      // Reset form
+      
       setNewTransaction({
         category: '',
         amount: '',
@@ -285,7 +285,7 @@ const ScenarioPlanner = ({ onBack, user, onLogout }) => {
     }
   };
   
-  // Delete a transaction
+  
   const handleDeleteTransaction = async (id) => {
     if (!id) {
       setError('Invalid transaction ID');
@@ -302,7 +302,7 @@ const ScenarioPlanner = ({ onBack, user, onLogout }) => {
     setError(null);
     
     try {
-      // Send delete request to API
+      
       const response = await fetch(`${API_BASE_URL}/users/${userId}/transactions/${id}`, {
         method: 'DELETE',
         headers: {
@@ -314,15 +314,15 @@ const ScenarioPlanner = ({ onBack, user, onLogout }) => {
         throw new Error(`Failed to delete transaction: ${response.status} ${response.statusText}`);
       }
       
-      // Remove from transactions
+      
       const updatedTransactions = transactions.filter(t => t.id !== id);
       setTransactions(updatedTransactions);
       
-      // Update total emissions properly
+      
       const newTotal = updatedTransactions.reduce((sum, t) => sum + parseFloat(t.emissions || 0), 0);
       setTotalEmissions(newTotal);
       
-      // Update charts
+      
       updateChartsAfterChange(updatedTransactions);
       
     } catch (err) {
@@ -333,7 +333,7 @@ const ScenarioPlanner = ({ onBack, user, onLogout }) => {
     }
   };
   
-  // Handle edit button click
+  
   const handleEditClick = (transaction) => {
     setEditingTransaction(transaction);
     setNewTransaction({
@@ -345,7 +345,7 @@ const ScenarioPlanner = ({ onBack, user, onLogout }) => {
     setError(null);
   };
 
-  // Handle update transaction
+  
   const handleUpdateTransaction = async () => {
     if (!editingTransaction) {
       setError('No transaction selected for editing');
@@ -361,20 +361,20 @@ const ScenarioPlanner = ({ onBack, user, onLogout }) => {
     setError(null);
     
     try {
-      // Find category
+      
       const category = categories.find(c => c.name === newTransaction.category);
       if (!category) {
         throw new Error('Category not found');
       }
       
-      // Prepare the update data
+      
       const updateData = {
         category_id: category.id,
         amount: parseFloat(newTransaction.amount),
         date: newTransaction.date
       };
       
-      // Send update request to API
+      
       const response = await fetch(`${API_BASE_URL}/users/${userId}/transactions/${editingTransaction.id}`, {
         method: 'PUT',
         headers: {
@@ -391,20 +391,20 @@ const ScenarioPlanner = ({ onBack, user, onLogout }) => {
       const updatedTransaction = await response.json();
       console.log('Transaction updated successfully:', updatedTransaction);
       
-      // Update in local state
+      
       const updatedTransactions = transactions.map(t => 
         t.id === editingTransaction.id ? updatedTransaction : t
       );
       setTransactions(updatedTransactions);
       
-      // Recalculate total emissions
+      
       const newTotal = updatedTransactions.reduce((sum, t) => sum + parseFloat(t.emissions || 0), 0);
       setTotalEmissions(newTotal);
       
-      // Update charts
+      
       updateChartsAfterChange(updatedTransactions);
       
-      // Reset form and editing state
+      
       setNewTransaction({
         category: '',
         amount: '',
@@ -420,7 +420,7 @@ const ScenarioPlanner = ({ onBack, user, onLogout }) => {
     }
   };
 
-  // Cancel editing
+  
   const handleCancelEdit = () => {
     setEditingTransaction(null);
     setIsEditing(false);
@@ -432,7 +432,7 @@ const ScenarioPlanner = ({ onBack, user, onLogout }) => {
     });
   };
   
-  // Toggle insights view
+  
   const toggleInsights = () => {
     setShowInsights(!showInsights);
     setError(null);
@@ -464,7 +464,7 @@ const ScenarioPlanner = ({ onBack, user, onLogout }) => {
         </div>
       ) : (
         <div className="planner-content">
-          {/* Display error message if there is one */}
+          {}
           {error && (
             <div style={{ 
               padding: '10px 15px', 

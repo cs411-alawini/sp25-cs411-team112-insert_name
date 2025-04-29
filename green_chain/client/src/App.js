@@ -1,4 +1,4 @@
-// src/App.js
+
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import LandingPage from './pages/LandingPage/LandingPage';
@@ -10,7 +10,7 @@ function App() {
   const [showLogin, setShowLogin] = useState(false);
   const [currentPage, setCurrentPage] = useState('landing');
 
-  // Check for existing user session in localStorage on load
+  
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
@@ -23,23 +23,23 @@ function App() {
     }
   }, []);
 
-  // Handle login success
+  
   const handleLogin = (userData) => {
     setUser(userData);
     setShowLogin(false);
     
-    // Store user data in localStorage for persistence
+    
     localStorage.setItem('user', JSON.stringify(userData));
   };
 
-  // Handle logout
+  
   const handleLogout = () => {
     setUser(null);
     setCurrentPage('landing');
     localStorage.removeItem('user');
   };
 
-  // Handle navigation to scenario planner
+  
   const navigateToScenarioPlanner = () => {
     if (user) {
       setCurrentPage('scenarioPlanner');
@@ -48,7 +48,7 @@ function App() {
     }
   };
 
-  // Navigate back to the landing page
+  
   const navigateToLanding = () => {
     setCurrentPage('landing');
   };
