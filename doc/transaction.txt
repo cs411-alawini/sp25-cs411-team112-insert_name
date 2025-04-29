@@ -1,0 +1,44 @@
+This is the transaction that we used in our application:
+
+app.delete('/api/users/:userId/transactions/:transactionId', async (req, res) => {
+  try {
+    const userId = parseInt(req.params.userId);
+    const transactionId = parseInt(req.params.transactionId);
+
+    const connection = await pool.getConnection();
+    try {
+      await connection.beginTransaction();
+
+      const [transactions] = await connection.execute(
+        'SELECT Order_ID FROM Orders WHERE Order_ID = ? AND Customer_ID = ?',
+        [transactionId, userId]
+      );
+
+      if (transactions.length === 0) {
+        await connection.rollback();
+        return res.status(404).json({ error: 'Transaction not found or does not belong to this user' });
+      }
+
+      await connection.execute(
+        'DELETE FROM Shipping_Details WHERE Order_ID = ?',
+        [transactionId]
+      );
+      await connection.execute(
+        'DELETE FROM Orders WHERE Order_ID = ? AND Customer_ID = ?',
+        [transactionId, userId]
+      );
+
+      await connection.commit();
+      res.status(204).send();
+    } catch (err) {
+      await connection.rollback();
+      console.error('Error deleting transaction:', err);
+      res.status(500).json({ error: 'Internal server error' });
+    } finally {
+      connection.release();
+    }
+  } catch (err) {
+    console.error('Error deleting transaction:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
