@@ -401,18 +401,30 @@ app.post('/api/users/:id/transactions', express.json(), async (req, res) => {
       const maxOrderId = orderRows[0].maxOrderId || 0;
       const newOrderId = maxOrderId + 1;
       
+      // Format Order_Date to YYYY-MM-DD
+      let formattedDate = null;
+      if (date) {
+        if (!isValidYYYYMMDD(date)) {
+          return res.status(400).json({ error: 'Invalid date format. Use YYYY-MM-DD.' });
+        }
+        formattedDate = date;
+      } else {
+        const d = new Date();
+        formattedDate = d.toISOString().slice(0, 10);
+      }
+      
       // Insert the transaction - IMPORTANT: Use the user's ID as Customer_ID
       const [result] = await connection.execute(`
         INSERT INTO Orders 
         (Order_ID, Customer_ID, Category_ID, Order_Date, Quantity, Total) 
         VALUES (?, ?, ?, ?, ?, ?)
-      `, [newOrderId, userId, category_id, date, 1, amount]);
+      `, [newOrderId, userId, category_id, formattedDate, 1, amount]);
       
       res.status(201).json({
         id: newOrderId,
         category: category.Category_Name,
         amount,
-        date,
+        date: formattedDate,
         emissions
       });
     } finally {
@@ -424,32 +436,46 @@ app.post('/api/users/:id/transactions', express.json(), async (req, res) => {
   }
 });
 
-// Update a transaction
+// NEW ENDPOINT: Update a transaction
 // Replace the existing DELETE transaction endpoint
 app.delete('/api/users/:userId/transactions/:transactionId', async (req, res) => {
   try {
     const userId = parseInt(req.params.userId);
     const transactionId = parseInt(req.params.transactionId);
-    
+
     const connection = await pool.getConnection();
     try {
+      await connection.beginTransaction();
+
       // Verify the transaction belongs to this user
       const [transactions] = await connection.execute(
         'SELECT Order_ID FROM Orders WHERE Order_ID = ? AND Customer_ID = ?',
         [transactionId, userId]
       );
-      
+
       if (transactions.length === 0) {
+        await connection.rollback();
         return res.status(404).json({ error: 'Transaction not found or does not belong to this user' });
       }
-      
-      // Delete the transaction
+
+      // Delete related shipping details first
+      await connection.execute(
+        'DELETE FROM Shipping_Details WHERE Order_ID = ?',
+        [transactionId]
+      );
+
+      // Now delete the transaction
       await connection.execute(
         'DELETE FROM Orders WHERE Order_ID = ? AND Customer_ID = ?',
         [transactionId, userId]
       );
-      
+
+      await connection.commit();
       res.status(204).send();
+    } catch (err) {
+      await connection.rollback();
+      console.error('Error deleting transaction:', err);
+      res.status(500).json({ error: 'Internal server error' });
     } finally {
       connection.release();
     }
@@ -459,6 +485,7 @@ app.delete('/api/users/:userId/transactions/:transactionId', async (req, res) =>
   }
 });
 
+// NEW ENDPOINT: Update a transaction
 // Replace the existing UPDATE transaction endpoint
 app.put('/api/users/:userId/transactions/:transactionId', express.json(), async (req, res) => {
   try {
@@ -529,6 +556,122 @@ app.put('/api/users/:userId/transactions/:transactionId', express.json(), async 
   }
 });
 
+// Helper function to validate YYYY-MM-DD format
+function isValidYYYYMMDD(dateStr) {
+  return /^\d{4}-\d{2}-\d{2}$/.test(dateStr);
+}
+
+// NEW ENDPOINT: Add a new transaction (bulk)
+// Replace the existing POST /api/users/:id/transactions endpoint with this updated version
+app.post('/api/users/:id/bulk-transaction', express.json(), async (req, res) => {
+  const connection = await pool.getConnection();
+  
+  try {
+    // Begin transaction with SERIALIZABLE isolation level
+    await connection.execute('SET TRANSACTION ISOLATION LEVEL SERIALIZABLE');
+    await connection.beginTransaction();
+    
+    const { transactions } = req.body;
+    const userId = req.params.id;
+    
+    if (!transactions || !Array.isArray(transactions) || transactions.length === 0) {
+      await connection.rollback();
+      return res.status(400).json({ error: 'Valid transactions array is required' });
+    }
+    
+    const results = [];
+    
+    // Process each transaction
+    for (const tx of transactions) {
+      const { category_id, amount, date } = tx;
+      
+      if (!category_id || !amount) {
+        await connection.rollback();
+        return res.status(400).json({ error: 'Category ID and amount are required for each transaction' });
+      }
+      
+      // ADVANCED QUERY 1: JOIN multiple relations
+      const [categories] = await connection.execute(`
+        SELECT c.Category_Name, i.Emissions 
+        FROM Category c
+        JOIN Industries i ON c.NAICS_Code = i.NAICS_Code
+        WHERE c.Category_ID = ?
+      `, [category_id]);
+      
+      if (categories.length === 0) {
+        await connection.rollback();
+        return res.status(404).json({ error: `Category with ID ${category_id} not found` });
+      }
+      
+      const category = categories[0];
+      const emissions = (amount * category.Emissions / 100);
+      
+      // Find the current max Order_ID
+      const [orderRows] = await connection.execute('SELECT MAX(Order_ID) AS maxOrderId FROM Orders');
+      const maxOrderId = orderRows[0].maxOrderId || 0;
+      const newOrderId = maxOrderId + 1;
+      
+      // Format Order_Date to YYYY-MM-DD, or default to today
+      let formattedDate = null;
+      if (date) {
+        if (!isValidYYYYMMDD(date)) {
+          await connection.rollback();
+          return res.status(400).json({ error: 'Invalid date format. Use YYYY-MM-DD.' });
+        }
+        formattedDate = date;
+      } else {
+        const d = new Date();
+        formattedDate = d.toISOString().slice(0, 10);
+      }
+      
+      // Insert the transaction
+      const [result] = await connection.execute(`
+        INSERT INTO Orders 
+        (Order_ID, Customer_ID, Category_ID, Order_Date, Quantity, Total) 
+        VALUES (?, ?, ?, ?, ?, ?)
+      `, [newOrderId, userId, category_id, formattedDate, 1, amount]);
+      
+      // ADVANCED QUERY 2: Subquery with aggregation
+      await connection.execute(`
+        UPDATE Users 
+        SET Monthly_Emissions = (
+          SELECT SUM(o.Total * i.Emissions / 100)
+          FROM Orders o
+          JOIN Category c ON o.Category_ID = c.Category_ID
+          JOIN Industries i ON c.NAICS_Code = i.NAICS_Code
+          WHERE o.Customer_ID = ?
+            AND YEAR(o.Order_Date) = YEAR(CURRENT_DATE())
+            AND MONTH(o.Order_Date) = MONTH(CURRENT_DATE())
+          GROUP BY o.Customer_ID
+        )
+        WHERE User_ID = ?
+      `, [userId, userId]);
+      
+      results.push({
+        id: newOrderId,
+        category: category.Category_Name,
+        amount,
+        date: formattedDate,
+        emissions
+      });
+    }
+    
+    // Commit the transaction
+    await connection.commit();
+    
+    res.status(201).json({
+      userId,
+      transactions: results
+    });
+    
+  } catch (err) {
+    await connection.rollback();
+    console.error('Error in bulk transaction:', err);
+    res.status(500).json({ error: 'Internal server error during transaction' });
+  } finally {
+    connection.release();
+  }
+});
 
 // Update the trigger creation to handle missing fields
 async function createTriggers() {
@@ -837,12 +980,25 @@ app.post('/api/users/:id/bulk-transaction', express.json(), async (req, res) => 
       const maxOrderId = orderRows[0].maxOrderId || 0;
       const newOrderId = maxOrderId + 1;
       
+      // Format Order_Date to YYYY-MM-DD, or default to today
+      let formattedDate = null;
+      if (date) {
+        if (!isValidYYYYMMDD(date)) {
+          await connection.rollback();
+          return res.status(400).json({ error: 'Invalid date format. Use YYYY-MM-DD.' });
+        }
+        formattedDate = date;
+      } else {
+        const d = new Date();
+        formattedDate = d.toISOString().slice(0, 10);
+      }
+      
       // Insert the transaction
       const [result] = await connection.execute(`
         INSERT INTO Orders 
         (Order_ID, Customer_ID, Category_ID, Order_Date, Quantity, Total) 
         VALUES (?, ?, ?, ?, ?, ?)
-      `, [newOrderId, userId, category_id, date, 1, amount]);
+      `, [newOrderId, userId, category_id, formattedDate, 1, amount]);
       
       // ADVANCED QUERY 2: Subquery with aggregation
       await connection.execute(`
@@ -864,7 +1020,7 @@ app.post('/api/users/:id/bulk-transaction', express.json(), async (req, res) => 
         id: newOrderId,
         category: category.Category_Name,
         amount,
-        date,
+        date: formattedDate,
         emissions
       });
     }
