@@ -1109,21 +1109,7 @@ app.get('/api/users/:id/carbon-insights', async (req, res) => {
   }
 });
 
-// 6. Update the initialization section
-initializeDatabase()
-  .then(async () => {
-    await createTriggers();
-    await createStoredProcedures();
-    app.listen(PORT, () => {
-      console.log(`Server is running on http://localhost:${PORT}`);
-    });
-  })
-  .catch(err => {
-    console.error('Failed to connect to database, server not started:', err);
-    process.exit(1);
-  });
-
- // Replace the existing login endpoint with this improved version
+// Replace the existing login endpoint with this improved version
 app.post('/api/auth/login', express.json(), async (req, res) => {
   try {
     const { username, email, password } = req.body;
@@ -1152,6 +1138,65 @@ app.post('/api/auth/login', express.json(), async (req, res) => {
         const passwordMatches = true;
         
         if (passwordMatches) {
+          // Check if this user also exists in the Customers table
+          const [customers] = await connection.execute(
+            'SELECT * FROM Customers WHERE Customer_ID = ?',
+            [user.User_ID]
+          );
+          
+          // If not in Customers table, add them
+          if (customers.length === 0) {
+            try {
+              // Get the column names from the Customers table
+              const [columns] = await connection.execute('SHOW COLUMNS FROM Customers');
+              const columnNames = columns.map(col => col.Field);
+              
+              // Check if the table has Fname or First_Name
+              let firstNameField = null;
+              if (columnNames.includes('Fname')) {
+                firstNameField = 'Fname';
+              } else if (columnNames.includes('First_Name')) {
+                firstNameField = 'First_Name';
+              } else if (columnNames.includes('FName')) {
+                firstNameField = 'FName';
+              }
+              
+              // Check if the table has Email
+              const hasEmail = columnNames.includes('Email');
+              
+              // Build dynamic SQL query based on the available columns
+              let sql = 'INSERT INTO Customers (Customer_ID';
+              let placeholders = '?';
+              let values = [user.User_ID];
+              
+              if (firstNameField) {
+                sql += `, ${firstNameField}`;
+                placeholders += ', ?';
+                values.push(user.Username);
+              }
+              
+              if (hasEmail) {
+                sql += ', Email';
+                placeholders += ', ?';
+                values.push(user.Email);
+              }
+              
+              sql += ') VALUES (' + placeholders + ')';
+              
+              // Insert into Customers table
+              await connection.execute(sql, values);
+              console.log(`Added user ${user.User_ID} to Customers table`);
+            } catch (err) {
+              console.error('Error adding user to Customers table:', err);
+              // Fallback with minimum required fields
+              await connection.execute(
+                'INSERT INTO Customers (Customer_ID) VALUES (?)',
+                [user.User_ID]
+              );
+              console.log(`Added user ${user.User_ID} to Customers table with minimal fields`);
+            }
+          }
+          
           return res.json({
             id: user.User_ID,
             username: user.Username,
@@ -1164,8 +1209,8 @@ app.post('/api/auth/login', express.json(), async (req, res) => {
       } else {
         // User doesn't exist, create a new account
         
-        // Find the current max Customer_ID from Orders table
-        const [customerRows] = await connection.execute('SELECT MAX(Customer_ID) AS maxCustomerId FROM Orders');
+        // Find the current max Customer_ID from Customers table
+        const [customerRows] = await connection.execute('SELECT MAX(Customer_ID) AS maxCustomerId FROM Customers');
         const maxCustomerId = customerRows[0].maxCustomerId || 0;
         
         // Find the current max User_ID
@@ -1180,10 +1225,60 @@ app.post('/api/auth/login', express.json(), async (req, res) => {
         const hashedPassword = password; // For demo only
   
         // Create the user with the new ID
-        const [result] = await connection.execute(
+        await connection.execute(
           'INSERT INTO Users (User_ID, Username, Email, Password) VALUES (?, ?, ?, ?)',
           [newId, username, email, hashedPassword]
         );
+        
+        try {
+          // Get the column names from the Customers table
+          const [columns] = await connection.execute('SHOW COLUMNS FROM Customers');
+          const columnNames = columns.map(col => col.Field);
+          
+          // Check if the table has Fname or First_Name
+          let firstNameField = null;
+          if (columnNames.includes('Fname')) {
+            firstNameField = 'Fname';
+          } else if (columnNames.includes('First_Name')) {
+            firstNameField = 'First_Name';
+          } else if (columnNames.includes('FName')) {
+            firstNameField = 'FName';
+          }
+          
+          // Check if the table has Email
+          const hasEmail = columnNames.includes('Email');
+          
+          // Build dynamic SQL query based on the available columns
+          let sql = 'INSERT INTO Customers (Customer_ID';
+          let placeholders = '?';
+          let values = [newId];
+          
+          if (firstNameField) {
+            sql += `, ${firstNameField}`;
+            placeholders += ', ?';
+            values.push(username);
+          }
+          
+          if (hasEmail) {
+            sql += ', Email';
+            placeholders += ', ?';
+            values.push(email);
+          }
+          
+          sql += ') VALUES (' + placeholders + ')';
+          
+          // Insert into Customers table
+          await connection.execute(sql, values);
+        } catch (err) {
+          console.error('Error adding user to Customers table:', err);
+          // Fallback with minimum required fields
+          await connection.execute(
+            'INSERT INTO Customers (Customer_ID) VALUES (?)',
+            [newId]
+          );
+        }
+        
+        console.log(`Created user and customer with ID: ${newId}`);
   
         return res.status(201).json({
           id: newId,
@@ -1200,3 +1295,97 @@ app.post('/api/auth/login', express.json(), async (req, res) => {
     res.status(500).json({ error: 'Internal server error during authentication' });
   }
 });
+
+// Replace the existing initialization section to also create the customer record for all existing users
+initializeDatabase()
+  .then(async () => {
+    await createTriggers();
+    await createStoredProcedures();
+    
+    // Sync Users and Customers tables
+    try {
+      const connection = await pool.getConnection();
+      try {
+        // Get all columns from Customers table
+        const [columns] = await connection.execute('SHOW COLUMNS FROM Customers');
+        const columnNames = columns.map(col => col.Field);
+        
+        // Check if the table has Fname or First_Name
+        let firstNameField = null;
+        if (columnNames.includes('Fname')) {
+          firstNameField = 'Fname';
+        } else if (columnNames.includes('First_Name')) {
+          firstNameField = 'First_Name';
+        } else if (columnNames.includes('FName')) {
+          firstNameField = 'FName';
+        }
+        
+        // Check if the table has Email
+        const hasEmail = columnNames.includes('Email');
+        
+        // Get all users
+        const [users] = await connection.execute('SELECT * FROM Users');
+        
+        // For each user, make sure they exist in the Customers table
+        for (const user of users) {
+          const [customers] = await connection.execute(
+            'SELECT * FROM Customers WHERE Customer_ID = ?',
+            [user.User_ID]
+          );
+          
+          if (customers.length === 0) {
+            try {
+              // Build dynamic SQL query based on the available columns
+              let sql = 'INSERT INTO Customers (Customer_ID';
+              let placeholders = '?';
+              let values = [user.User_ID];
+              
+              if (firstNameField) {
+                sql += `, ${firstNameField}`;
+                placeholders += ', ?';
+                values.push(user.Username);
+              }
+              
+              if (hasEmail) {
+                sql += ', Email';
+                placeholders += ', ?';
+                values.push(user.Email);
+              }
+              
+              sql += ') VALUES (' + placeholders + ')';
+              
+              // Add the user to the Customers table
+              await connection.execute(sql, values);
+              console.log(`Synced user ${user.User_ID} to Customers table`);
+            } catch (err) {
+              console.error(`Error syncing user ${user.User_ID} to Customers table:`, err);
+              // Fallback with minimum required fields
+              try {
+                await connection.execute(
+                  'INSERT INTO Customers (Customer_ID) VALUES (?)',
+                  [user.User_ID]
+                );
+                console.log(`Synced user ${user.User_ID} to Customers table with minimal fields`);
+              } catch (err2) {
+                console.error(`Failed to sync user ${user.User_ID} even with minimal fields:`, err2);
+              }
+            }
+          }
+        }
+        
+        console.log('User-Customer sync complete');
+      } finally {
+        connection.release();
+      }
+    } catch (err) {
+      console.error('Error syncing Users and Customers tables:', err);
+    }
+    
+    app.listen(PORT, () => {
+      console.log(`Server is running on http://localhost:${PORT}`);
+    });
+  })
+  .catch(err => {
+    console.error('Failed to connect to database, server not started:', err);
+    process.exit(1);
+  });
