@@ -1,0 +1,65 @@
+The following is our stored procedure used in this application:
+
+async function createStoredProcedures() {
+  const connection = await pool.getConnection();
+  try {
+    await connection.query(`
+      DROP PROCEDURE IF EXISTS GetUserCarbonInsights;
+    `);
+    
+    await connection.query(`
+      CREATE PROCEDURE GetUserCarbonInsights(IN userId INT)
+      BEGIN
+        DECLARE total_emissions DECIMAL(10,2);
+        
+        SELECT SUM(o.Total * i.Emissions / 100) INTO total_emissions
+        FROM Orders o
+        JOIN Category c ON o.Category_ID = c.Category_ID
+        JOIN Industries i ON c.NAICS_Code = i.NAICS_Code
+        WHERE o.Customer_ID = userId;
+        
+        SELECT 
+          c.Category_Name AS category,
+          SUM(o.Total) AS total_spent,
+          SUM(o.Total * i.Emissions / 100) AS category_emissions,
+          COUNT(o.Order_ID) AS order_count,
+          IF(SUM(o.Total * i.Emissions / 100) > 100, 'High', 'Low') AS impact_level
+        FROM 
+          Orders o
+        JOIN 
+          Category c ON o.Category_ID = c.Category_ID
+        JOIN 
+          Industries i ON c.NAICS_Code = i.NAICS_Code
+        WHERE 
+          o.Customer_ID = userId
+        GROUP BY 
+          c.Category_Name
+        ORDER BY 
+          category_emissions DESC;
+          
+        SELECT 
+          DATE_FORMAT(o.Order_Date, '%Y-%m') AS month,
+          SUM(o.Total) AS monthly_spent,
+          SUM(o.Total * i.Emissions / 100) AS monthly_emissions
+        FROM 
+          Orders o
+        JOIN 
+          Category c ON o.Category_ID = c.Category_ID
+        JOIN 
+          Industries i ON c.NAICS_Code = i.NAICS_Code
+        WHERE 
+          o.Customer_ID = userId
+        GROUP BY 
+          DATE_FORMAT(o.Order_Date, '%Y-%m')
+        ORDER BY 
+          month DESC;
+      END
+    `);
+    
+    console.log('Stored procedures created successfully');
+  } catch (err) {
+    console.error('Error creating stored procedures:', err);
+  } finally {
+    connection.release();
+  }
+}
