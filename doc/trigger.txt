@@ -54,24 +54,19 @@ async function createTriggers() {
         DECLARE emission_factor DECIMAL(10,2);
         DECLARE order_emissions DECIMAL(10,2);
         
-        -- Get the emission factor for this category
         SELECT i.Emissions INTO emission_factor
         FROM Category c
         JOIN Industries i ON c.NAICS_Code = i.NAICS_Code
         WHERE c.Category_ID = NEW.Category_ID;
         
-        -- Only proceed if we found a valid emission factor
         IF emission_factor IS NOT NULL THEN
-          -- Calculate emissions for this order
           SET order_emissions = (NEW.Total * emission_factor / 100);
           
-          -- Update user's total emissions
           UPDATE Users
           SET 
             Total_Emissions = IFNULL(Total_Emissions, 0) + order_emissions
           WHERE User_ID = NEW.Customer_ID;
           
-          -- Update monthly emissions if the order is from the current month
           IF YEAR(NEW.Order_Date) = YEAR(CURRENT_DATE()) AND MONTH(NEW.Order_Date) = MONTH(CURRENT_DATE()) THEN
             UPDATE Users
             SET Monthly_Emissions = IFNULL(Monthly_Emissions, 0) + order_emissions
@@ -91,7 +86,6 @@ async function createTriggers() {
         DECLARE old_emissions DECIMAL(10,2);
         DECLARE new_emissions DECIMAL(10,2);
         
-        -- Get the emission factors
         SELECT i.Emissions INTO old_emission_factor
         FROM Category c
         JOIN Industries i ON c.NAICS_Code = i.NAICS_Code
@@ -102,7 +96,6 @@ async function createTriggers() {
         JOIN Industries i ON c.NAICS_Code = i.NAICS_Code
         WHERE c.Category_ID = NEW.Category_ID;
         
-        -- Calculate emissions
         IF old_emission_factor IS NOT NULL THEN
           SET old_emissions = (OLD.Total * old_emission_factor / 100);
         ELSE
@@ -115,12 +108,10 @@ async function createTriggers() {
           SET new_emissions = 0;
         END IF;
         
-        -- Update total emissions
         UPDATE Users
         SET Total_Emissions = GREATEST(0, IFNULL(Total_Emissions, 0) - old_emissions + new_emissions)
         WHERE User_ID = NEW.Customer_ID;
         
-        -- Update monthly emissions if needed
         IF YEAR(OLD.Order_Date) = YEAR(CURRENT_DATE()) AND MONTH(OLD.Order_Date) = MONTH(CURRENT_DATE()) THEN
           UPDATE Users
           SET Monthly_Emissions = GREATEST(0, IFNULL(Monthly_Emissions, 0) - old_emissions)
@@ -143,24 +134,19 @@ async function createTriggers() {
         DECLARE emission_factor DECIMAL(10,2);
         DECLARE order_emissions DECIMAL(10,2);
         
-        -- Get the emission factor for this category
         SELECT i.Emissions INTO emission_factor
         FROM Category c
         JOIN Industries i ON c.NAICS_Code = i.NAICS_Code
         WHERE c.Category_ID = OLD.Category_ID;
         
-        -- Only proceed if we found a valid emission factor
         IF emission_factor IS NOT NULL THEN
-          -- Calculate emissions for this order
           SET order_emissions = (OLD.Total * emission_factor / 100);
           
-          -- Update user's total emissions
           UPDATE Users
           SET 
             Total_Emissions = GREATEST(0, IFNULL(Total_Emissions, 0) - order_emissions)
           WHERE User_ID = OLD.Customer_ID;
           
-          -- Update monthly emissions if the order was from the current month
           IF YEAR(OLD.Order_Date) = YEAR(CURRENT_DATE()) AND MONTH(OLD.Order_Date) = MONTH(CURRENT_DATE()) THEN
             UPDATE Users
             SET Monthly_Emissions = GREATEST(0, IFNULL(Monthly_Emissions, 0) - order_emissions)
